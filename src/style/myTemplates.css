@@ -1,0 +1,52 @@
+#MyTemplates {
+  background-color: rgb(37, 37, 37);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+#myTemplatesDisplayContainer {
+  height: 312px;
+  width: 312px;
+  z-index: 1;
+  position: relative;
+  background-color: rgba(0, 0, 0, 0.24);
+  border-radius: 18px;
+}
+.myTemplatesHoverButton {
+  z-index: 2;
+  position: absolute;
+  display: none;
+}
+#myTemplatesHoverPen {
+  height: 32px;
+  width: 32px;
+  background-color: #ffc700;
+  border-radius: 50%;
+  bottom: 28px;
+  right: 28px;
+}
+#myTemplatesHoverInsert {
+  width: 137px;
+  height: 20px;
+  bottom: 0px;
+  left: 83px;
+  background-color: rgba(255, 199, 0, 0.1);
+  color: #ffc700;
+  /* border-radius: 14px; */
+}
+#myTemplatesDisplayContainer:hover > .myTemplatesHoverButton {
+  display: block;
+}
+/* #addUserDefinedTemplate {
+  height: 90px;
+  width: 90px;
+  background: rgb(45, 45, 45);
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#addUserDefinedTemplate:hover {
+  opacity: 0.8;
+} */

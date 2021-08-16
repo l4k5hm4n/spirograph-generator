@@ -1,0 +1,162 @@
+:root {
+  --yellow: #ffc700;
+  --white: #fff;
+  --bgdGrey: rgba(37, 37, 37, 1);
+  --mediumGrey: rgba(45, 45, 45, 1);
+  --darkGrey: rgba(29, 29, 29, 1);
+  --black: #000;
+  --mediumDarkTranslucency: rgba(0, 0, 0, 0.6);
+  --mediumLightTranslucency: rgba(255, 255, 255, 0.6);
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  /* background-color: var(--bgdGrey); */
+}
+
+/* Hide and Display Classes */
+.hideClass {
+  display: none;
+}
+.displayClass {
+  display: block;
+}
+
+/* Button Classes */
+.btnPair {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+.btnPrimary {
+  color: var(--black);
+  background-color: var(--white);
+  width: 132px;
+  height: 40px;
+}
+.btnSecondary {
+  color: var(--white);
+  background-color: transparent;
+  border: 1px solid var(--white);
+  width: 132px;
+  height: 40px;
+  outline: none;
+}
+
+/* Hover Classes */
+.hoverBtn {
+  position: absolute;
+  display: none;
+  z-index: 2;
+}
+.hoverBtnPrimary {
+  height: 32px;
+  width: 32px;
+  background-color: #ffc700;
+  border-radius: 50%;
+  bottom: 28px;
+  right: 28px;
+  z-index: 2;
+}
+.hoverBtnPrimary > svg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.hoverBtnInsert {
+  width: 137px;
+  height: 20px;
+  bottom: 0px;
+  left: 83px;
+  background-color: rgba(255, 199, 0, 0.1);
+  color: #ffc700;
+  font-size: 10px;
+  font-weight: 500;
+  border-radius: 14px 14px 0 0;
+  z-index: 2;
+}
+.hoverBtnInsert > div {
+  margin: 4px 16px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+.hoverBtnInsert > div > span {
+  width: 85px;
+  text-align: center;
+}
+.hoverBtnSecondary {
+  height: 24px;
+  width: 24px;
+  background: var(--mediumDarkTranslucency);
+  border-radius: 4px;
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  z-index: 100;
+}
+.hoverBtnSecondary > svg {
+  margin: 6px;
+}
+/* Modal Classes */
+.modalText {
+  font-size: 14px;
+  font-weight: 500;
+  text-align: center;
+  outline: none;
+}
+
+/* Text Classes */
+.boldTxtWhite {
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--white);
+}
+.lightTxtWhite {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--white);
+}
+.lightTxtYellow {
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--yellow);
+}
+.lightTxtGrey {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--mediumLightTranslucency);
+}
+
+/* Background Classes */
+.greyBgd {
+  background-color: var(--mediumGrey);
+}
+.shapeBgd {
+  background-color: var(--darkGrey);
+  height: 44px;
+  width: 44px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Special */
+.listDiv {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}

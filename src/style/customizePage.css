@@ -1,0 +1,57 @@
+#CustomizePage {
+  background-color: rgb(37, 37, 37);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 16px;
+}
+#randomizeBtn {
+  position: absolute;
+  top: 16px;
+  right: 56px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 32px;
+  width: 32px;
+  border: 1px solid var(--yellow);
+  border-radius: 50%;
+  z-index: 100;
+}
+#customizeDisplayContainer {
+  height: 312px;
+  width: 312px;
+  z-index: 1;
+  position: relative;
+  background-color: rgba(0, 0, 0, 0.24);
+  border-radius: 18px;
+}
+
+.customizeHoverButton {
+  position: absolute;
+  display: none;
+}
+
+/* #customizeHoverCheck {
+  height: 32px;
+  width: 32px;
+  background-color: #ffc700;
+  border-radius: 50%;
+  bottom: 28px;
+  right: 28px;
+  z-index: 2;
+} */
+/* #customizeHoverInsert {
+  width: 137px;
+  height: 20px;
+  bottom: 0px;
+  left: 83px;
+  background-color: rgba(255, 199, 0, 0.1);
+  color: #ffc700;
+  z-index: 2;
+} */
+
+#customizeDisplayContainer:hover > .hoverBtn {
+  display: block;
+}

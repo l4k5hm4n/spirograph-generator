@@ -1,0 +1,33 @@
+#AboutUsPage {
+  height: 652px;
+  width: 100%;
+  background: var(--bgdGrey);
+}
+#aboutUsContainer {
+  height: 100%;
+  width: 100%;
+  padding: 24px;
+  border-radius: 18px 18px 0 0;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+#aboutUsDetails {
+  width: 312px;
+  height: 176px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: flex-start;
+  border-radius: 8px;
+  margin-bottom: 24px;
+}
+#pluginDetails {
+  width: 312px;
+  height: 248px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: flex-start;
+  border-radius: 8px;
+}

@@ -1,0 +1,55 @@
+.navbar {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  height: 68px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: rgb(37, 37, 37);
+}
+/* .logo {
+  font-size: 20;
+  font-weight: 400;
+  color: rgb(247, 199, 68);
+  text-decoration: none;
+} */
+
+.links {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 120px;
+  height: 28px;
+}
+.links #createPage {
+  width: 72px;
+  height: 100%;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  color: #fff;
+  font-size: 12px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  text-decoration: none;
+}
+.links #createPage > div {
+  height: 100%;
+  width: 100%;
+  padding: 9px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+.links #navLoginPageLink {
+  width: 28px;
+  height: 100%;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+}

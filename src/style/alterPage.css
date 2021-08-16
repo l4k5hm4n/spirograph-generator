@@ -1,0 +1,107 @@
+.activeTab {
+  border: 1px solid var(--yellow);
+}
+/* .activeTab > svg {
+  fill: var(--yellow);
+} */
+.alterPage {
+  height: 312px;
+  width: 312px;
+  display: block;
+}
+#alterTab {
+  margin: 24px 0;
+}
+.tabs {
+  margin: 12px 0 12px 0;
+  width: 312px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+.tab {
+  height: 48px;
+  width: 48px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  position: relative;
+}
+.tab > svg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+#alterTab input[type="range"] {
+  width: 100%;
+  height: 8px;
+}
+#alterTab input[type="range"]:foucs {
+  outline: none;
+}
+#alterTab .range {
+  /* #alterTab input[type="range"]::-webkit-slider-runnable-track { */
+  width: 100%;
+  height: 8px;
+  -webkit-appearance: none;
+  background: rgb(69, 66, 66);
+  outline: none;
+  overflow: hidden;
+  border-radius: 30px;
+}
+#alterTab input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 3px solid rgba(60, 60, 60);
+  background: var(--yellow);
+  cursor: pointer;
+  box-shadow: -407px 0 0 400px var(--yellow);
+}
+.sliderInfo {
+  width: 100%;
+  height: 24px;
+  margin: 8px 0 20px 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--white);
+}
+.sliderName {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.sliderName > p {
+  font-size: 12px;
+  font-weight: 400;
+}
+.sliderName > div {
+  margin-left: 8px;
+  height: 18px;
+  width: 18px;
+  border-radius: 50%;
+  background-color: var(--mediumDarkTranslucency);
+  text-align: center;
+  font-size: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.sliderInfoValue {
+  height: 100%;
+  width: 40px;
+  font-size: 12px;
+  font-weight: 500;
+  border: 1px solid var(--white);
+  border-radius: 6px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.slider #parametersTab {
+  height: 200px;
+  width: 100%;
+}
