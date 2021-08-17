@@ -1,32 +1,58 @@
 // import { create } from "@svgdotjs/svg.js";
 import React, { useCallback, useState } from "react";
-import ReactDOM from "react-dom";
 import DisplaySpirograph from "./DisplaySpirograph";
+import { db } from "../config/firebase-config";
 import AlterPage from "./AlterPage";
 import { useSelector, useDispatch, connect } from "react-redux";
 import { insert_template } from "../actions/insert_template";
+
 import "../style/style.css";
 import "../style/customizePage.css";
 
 function CustomizePage(props) {
   var svg;
-  const dispatch = useDispatch();
+  let db__users = db.collection("users");
+
   var templateLength = useSelector(
     (state) => state.userDefinedTemplates
   ).length;
 
   const handleCustomizeHoverClick = (event) => {
-    event.stopPropagation();
-    var tempPayload = {
-      fValue: customizeFValue,
-      mValue: customizeMValue,
-      nValue: customizeNValue,
-      scaleValue: customizeScaleValue,
-      strokeWidthValue: customizeStrokeWidthValue,
-      colorValue: customizeColorValue,
-    };
-    dispatch(insert_template(tempPayload));
-    // props.insert_template(tempPayload);
+    let tempUser = db__users.doc("lakshmans@zeta.tech");
+    let template = {
+        fValue: customizeFValue,
+        mValue: customizeMValue,
+        nValue: customizeNValue,
+        scaleValue: customizeScaleValue,
+        strokeWidthValue: customizeStrokeWidthValue,
+        colorValue: customizeColorValue,
+      }
+
+    tempUser.get().then( (user) => {
+      // if user already exists update profile details with latest data
+
+      tempUser.update({
+        'myTemplates': [...user.data().myTemplates, template] 
+      })
+
+      // sync favorites & mycopies to localstorage for quick access in the plugin, favorites are shown as bookmarks in UI
+      parent.postMessage({ pluginMessage: { type: 'sync_myTemplates', myTemplates : user.data().myTemplates} }, '*')
+          
+      }).catch(error => {
+        console.log('error while getting user fields', error)
+      })
+
+    // event.stopPropagation();
+    // var tempPayload = {
+    //   fValue: customizeFValue,
+    //   mValue: customizeMValue,
+    //   nValue: customizeNValue,
+    //   scaleValue: customizeScaleValue,
+    //   strokeWidthValue: customizeStrokeWidthValue,
+    //   colorValue: customizeColorValue,
+    // };
+    // dispatch(insert_template(tempPayload));
+    // // props.insert_template(tempPayload);
   };
 
   const getRandomColor = () => {

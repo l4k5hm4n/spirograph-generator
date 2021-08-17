@@ -1,22 +1,17 @@
-import React, { useState, createRef } from "react";
-import { googleProvider } from "../config/authMethods";
-import socialMediaAuth from "../service/auth";
+import React, { useState, createRef, useEffect } from "react";
 import { db } from "../config/firebase-config";
-import { Route, Link, MemoryRouter as Router } from "react-router-dom";
+import { Link, MemoryRouter as Router } from "react-router-dom";
 import MyTemplates from "./MyTemplates";
 import Modal from "./Modal";
 import { useSelector, useDispatch } from "react-redux";
-import { insert_template } from "../actions/insert_template";
-import { remove_template } from "../actions/remove_template";
 import "../style/style.css";
 import "../style/loginPage.css";
 function LoginPage() {
   var userTemplates = useSelector((state) => state.userDefinedTemplates);
-  const dispatch = useDispatch();
 
   const [loggedIn, setLoggedIn] = useState(false);
   const modalRef = createRef();
-  var UserLoggedIn, UserDetails, myTemplates;
+  let UserLoggedIn, UserDetails, myTemplates;
   // const handleSignIn = async (provider) => {
   //   const response = await socialMediaAuth(provider);
   //   console.log(response);
@@ -41,7 +36,7 @@ function LoginPage() {
 
     // Send Sign In request to firestore
     db__loginAttempt
-      .doc("225")
+      .doc(uniqueString)
       .set({
         time: timeStamp,
         authStatus: false,
@@ -51,15 +46,15 @@ function LoginPage() {
       })
       .then(() => {
         // Open Signin link to browser
-        window.open("https://google.com");
-        let loginEventListener = db__loginAttempt
-          .doc("225")
-          .onSnapshot((doc) => {
+        window.open(`http://localhost:3000/?ref=${uniqueString}`);
+        let loginEventListener = db__loginAttempt.doc(uniqueString).onSnapshot((doc) => {
             let tempData = doc.data();
 
             //Continue only if authStatus is true
             if (tempData.authStatus) {
               // Post User details to figma for local storage
+              setLoggedIn(true);
+              console.log(tempData.userInfo, 'user info ')
               parent.postMessage(
                 {
                   pluginMessage: {
@@ -82,20 +77,20 @@ function LoginPage() {
                       photo: tempData.userInfo.photo,
                       lastLogin: new Date().toLocaleString(),
                     });
-                    myTemplates = user.data().myTemplates;
-                    myTemplates.forEach((myTemplate) =>
-                      dispatch(insert_template())
-                    );
+                    // myTemplates = user.data().myTemplates;
+                    // myTemplates.forEach((myTemplate) =>
+                    //   dispatch(insert_template())
+                    // );
                     // Sync Templates to localStorage for quick access in plug in
-                    parent.postMessage(
-                      {
-                        pluginMessage: {
-                          type: "sync_myTemplates",
-                          myTemplates: myTemplates,
-                        },
-                      },
-                      "*"
-                    );
+                    // parent.postMessage(
+                    //   {
+                    //     pluginMessage: {
+                    //       type: "sync_myTemplates",
+                    //       myTemplates: myTemplates,
+                    //     },
+                    //   },
+                    //   "*"
+                    // );
                   } else {
                     // create new user profile if email doesn't exist already
                     tempUser.set({
@@ -146,35 +141,39 @@ function LoginPage() {
     setLoggedIn(false);
   };
 
+  useEffect(() => {
   // Self Invoking function to check if user has logged in
-  (async () => {
+
     // Check if user is logged in and redirect to homepage
     parent.postMessage({ pluginMessage: { type: "checkUserLogin" } }, "*");
     // Listen for messages from figma
-    window.onmessage = async (event) => {
+    window.addEventListener("message", async (event) => {
       if (event.data.pluginMessage.type === "checkUserLogin") {
         UserLoggedIn = event.data.pluginMessage.UserLoggedIn;
         UserDetails = event.data.pluginMessage.UserDetails;
         myTemplates = event.data.pluginMessage.myTemplates;
+        console.log(UserLoggedIn, UserDetails, myTemplates);
         if (UserLoggedIn) {
           // Update User Details in Login Page i.e photo etc
           console.log("USer logged in");
-          document
-            .getElementById("UserAvatar")
-            .setAttribute("src", `${UserDetails.photo}`);
-          document.getElementById("UserAvatar").classList.remove("removeClass");
-          document
-            .getElementById("accountInfo")
-            .classList.remove("removeClass");
-          document.getElementById(
-            "accountInfo"
-          ).firstChild.innerHTML = `${UserDetails.name}`;
-          document.getElementById(
-            "accountInfo"
-          ).lastChild.innerHTML = `${UserDetails.email}`;
+          // document
+          //   .getElementById("UserAvatar")
+          //   .setAttribute("src", `${UserDetails.photo}`);
+          // document.getElementById("UserAvatar").classList.remove("removeClass");
+          // document
+          //   .getElementById("accountInfo")
+          //   .classList.remove("removeClass");
+          // document.getElementById(
+          //   "accountInfo"
+          // ).firstChild.innerHTML = `${UserDetails.name}`;
+          // document.getElementById(
+          //   "accountInfo"
+          // ).lastChild.innerHTML = `${UserDetails.email}`;
+          console.log(loggedIn, ' if');
           setLoggedIn(true);
         } else {
           // Keep stock details about user
+          console.log(loggedIn, ' else');
         }
       }
       // else if (event.data.pluginMessage.type === "setTemplates") {
@@ -183,8 +182,8 @@ function LoginPage() {
       //   });
       //   console.log("Final Message Received");
       // }
-    };
-  })();
+    });
+  });
 
   return (
     <div id="loginPage">

@@ -1,5 +1,4 @@
 import firebase from "firebase";
-import "firebase/auth";
 const firebaseConfig = {
   apiKey: "AIzaSyAYgk5sh6NUcVoeXwXdRQHr69yT2FW5XnI",
   authDomain: "spirous-demo.firebaseapp.com",
@@ -11,9 +10,8 @@ const firebaseConfig = {
 };
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
-firebase.firestore().settings({ timestampsInSnapshots: true });
+// firebase.firestore().settings({ timestampsInSnapshots: true });
 let db = firebase.firestore();
-firebase.analytics();
 
 export default firebase;
 export { db };

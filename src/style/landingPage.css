@@ -43,3 +43,16 @@
 #linesContainer:hover > .hoverBtn {
   display: block;
 }
+
+div#hoverPen:hover {
+  background-color: white;
+}
+
+#linesContainer {
+  cursor: pointer;
+}
+
+#hoverInsert {
+  display: block
+}
+

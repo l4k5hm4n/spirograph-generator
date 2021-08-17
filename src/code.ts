@@ -11,16 +11,9 @@ figma.ui.onmessage = async (msg) => {
       UserDetails: UserDetails,
       myTemplates: myTemplates,
     });
-    console.log(
-      `CheckUserLogin Message: Uselogged in is ${UserLoggedIn} and User Details are ${UserDetails} and myTemplates is ${myTemplates[0]}`
-    );
-    console.log(myTemplates);
   } else if (msg.type === "login") {
     await figma.clientStorage.setAsync("UserLoggedIn", true);
     await figma.clientStorage.setAsync("UserDetails", msg.userDetails);
-    console.log(
-      `Login Message: Userlogged in is ${UserLoggedIn} and User Details are ${UserDetails}`
-    );
     figma.ui.postMessage({
       type: "checkUserLogin",
       UserLoggedIn: true,

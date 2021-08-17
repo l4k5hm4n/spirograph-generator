@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import ReactDOM from "react-dom";
 import { useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
@@ -11,52 +11,17 @@ import AlterPage from "./AlterPage";
 import { db } from "../config/firebase-config";
 import "../style/myTemplates.css";
 function MyTemplates(props) {
-  // const location = useLocation();
-  // const { xyz } = location.state;
-  // console.log(location);
-  // console.log(location.state);
-  // var userDefinedTemplates = useSelector((state) => state.userDefinedTemplates);
-  console.log(props);
-  const { userDefinedTemplates } = props;
-  // var { userDefinedTemplates } = props;
-  console.log(userDefinedTemplates);
-  // const tempTemplates = useSelector((state) => state.userDefinedTemplates);
-  // console.log(tempTemplates);
-  const dispatch = useDispatch();
-  console.log("Start of Template page");
-  const callChooseScale = (userDefinedTemplateID) => {
-    // if (userDefinedTemplates[userDefinedTemplateID].scaleValue > 30) {
-    //   if (
-    //     userDefinedTemplates[userDefinedTemplateID].nValue -
-    //       userDefinedTemplates[userDefinedTemplateID].mValue >
-    //     3
-    //   ) {
-    //     console.log("Scale is 15");
-    //     return "15";
-    //   } else {
-    //     console.log("Scale is 30");
-    //     return "30";
-    //   }
-    // } else {
-    //   if (
-    //     userDefinedTemplates[userDefinedTemplateID].nValue -
-    //       userDefinedTemplates[userDefinedTemplateID].mValue >
-    //     3
-    //   ) {
-    //     console.log("Scale is 15");
-    //     return "15";
-    //   } else {
-    //     console.log(
-    //       "Scale is ",
-    //       userDefinedTemplates[userDefinedTemplateID].scaleValue
-    //     );
-    //     return userDefinedTemplates[
-    //       userDefinedTemplateID
-    //     ].scaleValue.toString();
-    //   }
-    // }
-  };
-  // console.log(props.location.userDefinedTemplatesProps);
+
+  let userDefinedTemplates;
+  useEffect(() => {
+  parent.postMessage({ pluginMessage: { type: "checkUserLogin" } }, "*");
+  window.addEventListener("message", (event) => { 
+  if (event.data.pluginMessage.type === "checkUserLogin") { 
+    userDefinedTemplates = event.data.pluginMessage.myTemplates;
+  }
+  })
+}, []);
+  console.log(userDefinedTemplates, 'temp')
 
   const [showAlterMyTemplatesPage, setShowAlterMyTemplatePage] =
     useState(false);
@@ -104,67 +69,9 @@ function MyTemplates(props) {
       setAlterMyTemplateScaleValue(argScale);
       setAlterMyTemplateStrokeWidthValue(argStrokeWidth);
       setAlterMyTemplateColorValue(argColor);
-      // var myTemplateNode,
-      //   myTemplateChild,
-      //   myTemplateLinesContainer = document.getElementById(
-      //     "myTemplateLinesContainer"
-      //   );
-      // var newDisplaySpirograph = (
-      //   <DisplaySpirograph
-      //     id="myTemplatesDisplaySpirograph"
-      //     linesID="myTemplateLines"
-      //     f={argF}
-      //     m={argM}
-      //     n={argN}
-      //     scale={argScale}
-      //     strokeWidth={argStrokeWidth}
-      //     color={argColor}
-      //   />
-      // );
 
-      // myTemplateNode = document.createElement("div");
-      // myTemplateChild = document.getElementById("myTemplateLines");
-      // myTemplateLinesContainer.replaceChild(myTemplateNode, myTemplateChild);
-      // myTemplateNode.setAttribute("id", "myTemplateLines");
-      // ReactDOM.render(
-      //   newDisplaySpirograph,
-      //   document.getElementById("myTemplateLines")
-      // );
-
-      // node = document.createElement("div");
-      // child = document.getElementById("myTemplateLines");
-      // myTemplateLinesContainer.replaceChild(node, child);
-      // node.setAttribute("id", "myTemplateLines");
-      // ReactDOM.render(
-      //   newDisplaySpirograph,
-      //   document.getElementById("myTemplateLines")
-      // );
-      // myTemplateLinesContainer.addEventListener("click", (e) => {
-      //   e.stopPropagation();
-      //   svg = document
-      //     .getElementById("myTemplateLines")
-      //     .firstChild.outerHTML.toString();
-      //   parent.postMessage(
-      //     { pluginMessage: { type: "create-spirograph", svg } },
-      //     "*"
-      //   );
-      //   console.log(svg);
-      // });
-      // document
-      //   .getElementById("myTemplatesHoverPen")
-      //   .addEventListener("click", (e) => {
-      //     e.stopPropagation();
-      //     setShowAlterMyTemplatePage(true);
-      //   });
     }
-    // [
-    //   alterMyTemplateFValue,
-    //   alterMyTemplateMValue,
-    //   alterMyTemplateNValue,
-    //   alterMyTemplateScaleValue,
-    //   alterMyTemplateStrokeWidthValue,
-    //   alterMyTemplateColorValue,
-    // ]
+
   );
 
   return (
@@ -282,14 +189,6 @@ function MyTemplates(props) {
                         console.log("Clicked Delete");
                         // dispatch(remove_template(userDefinedTemplate.id));
                         props.remove_template(userDefinedTemplate.id);
-                        // parent.postMessage(
-                        //   {
-                        //     pluginMessage: {
-                        //       type: "insert_template",
-                        //     },
-                        //   },
-                        //   "*"
-                        // );
                       }}
                     >
                       <svg
@@ -307,89 +206,6 @@ function MyTemplates(props) {
                     </div>
                   </div>
                 ))}
-                {/* {userDefinedTemplates.map((userDefinedTemplate) => (
-                  <div
-                    key={userDefinedTemplate.id}
-                    className="templateDisplay"
-                    onClick={() => {
-                      console.log("calling from changing template");
-                      setAlterMyTemplateFValue(userDefinedTemplate.f);
-                      setAlterMyTemplateMValue(userDefinedTemplate.m);
-                      setAlterMyTemplateNValue(userDefinedTemplate.n);
-                      setAlterMyTemplateScaleValue(userDefinedTemplate.scale);
-                      setAlterMyTemplateStrokeWidthValue(
-                        userDefinedTemplate.strokeWidth
-                      );
-                      setAlterMyTemplateColorValue(userDefinedTemplate.color);
-                      callChangeMyTemplateDisplay(
-                        userDefinedTemplate.f,
-                        userDefinedTemplate.m,
-                        userDefinedTemplate.n,
-                        userDefinedTemplate.scale,
-                        userDefinedTemplate.stokeWidth,
-                        userDefinedTemplate.color
-                      );
-                    }}
-                  >
-                    <Spirograph
-                      templateId={userDefinedTemplate.userDefinedTemplateNumber}
-                      f={userDefinedTemplate.f}
-                      m={userDefinedTemplate.m}
-                      n={userDefinedTemplate.n}
-                      scale="40"
-                      strokeWidth={userDefinedTemplate.strokeWidth}
-                      color={userDefinedTemplate.color}
-                    />
-                    <div
-                      className="hoverTemplateDisplay"
-                      onClick={(event) => {
-                        event.stopPropagation();
-                        dispatch(remove_template());
-                        parent.postMessage(
-                          {
-                            pluginMessage: {
-                              type: "insert_template",
-                            },
-                          },
-                          "*"
-                        );
-                      }}
-                    >
-                      delete
-                    </div>
-                  </div>
-                ))} */}
-                {/* <div
-                  className="templateDisplay"
-                  onClick={() => {
-                    dispatch(insert_template());
-                  }}
-                >
-                  +
-                </div>*/}
-                {/* <div className="templateDisplay">
-                  Templates are: {myTemplates}
-                </div> */}
-                {/* <div
-                  id="addUserDefinedTemplate"
-                  onClick={() => {
-                    setInsertTemplate(true);
-                    callInsertTemplate;
-                  }}
-                >
-                  <svg
-                    width="64"
-                    height="64"
-                    viewBox="0 0 64 64"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M59.4286 36.5714H36.5714V59.4285C36.5714 61.9429 34.5142 64 32 64C29.4857 64 27.4285 61.9429 27.4285 59.4285V36.5714H4.57143C2.05714 36.5714 0 34.5143 0 32C0 29.4857 2.05714 27.4285 4.57143 27.4285H27.4285V4.57143C27.4285 2.05714 29.4857 0 32 0C34.5142 0 36.5714 2.05714 36.5714 4.57143V27.4285H59.4286C61.9428 27.4285 64 29.4857 64 32C64 34.5143 61.9428 36.5714 59.4286 36.5714Z"
-                      fill="white"
-                    />
-                  </svg>
-                </div> */}
               </div>
             </div>
           </div>
@@ -398,20 +214,7 @@ function MyTemplates(props) {
     </div>
   );
 }
-// const mapStateToProps = (state) => {
-//   console.log(state);
-//   return {
-//     userDefinedTemplates: state.userDefinedTemplates,
-//   };
-// };
-// dispatch(remove_template(userDefinedTemplate.id));
-// const mapDispatchToProps = (dispatch) => {
-//   return {
-//     remove_template: (id) => {
-//       dispatch({ type: "REMOVE_TEMPLATE", id: id });
-//     },
-//   };
-// };
+
 const mapStateToProps = (state) => {
   return {
     userDefinedTemplates: state.userDefinedTemplates,
