@@ -1,4 +1,4 @@
-import React from "react";
+import React, { createRef} from "react";
 import Spirograph from "./Spirograph";
 import "../style/style.css";
 import "../style/landingPage.css";
@@ -114,9 +114,17 @@ import "../style/templates.css";
     },
   ];
 
-  React.useEffect(() => {
-    console.log("existing templates render")
-  }, [])
+  const arrLength = predefinedTemplates.length;
+  const elRefs = React.useRef([]);
+
+  if (elRefs.current.length !== arrLength) {
+    // add or remove refs
+    elRefs.current = Array(arrLength).fill().map((_, i) => elRefs.current[i] || createRef());
+  }
+
+  // React.useEffect(() => {
+  //   console.log("existing templates render")
+  // }, [])
 
   return (
     <div>
@@ -124,7 +132,7 @@ import "../style/templates.css";
     <div className="templatesContainer">
       <div className="templateTransition"></div>
       <div className="gridContainer">
-        {predefinedTemplates.map((predefinedTemplate) => (
+        {predefinedTemplates.map((predefinedTemplate, i) => (
           <div
             key={predefinedTemplate.id}
             className="templateDisplay"
@@ -147,11 +155,12 @@ import "../style/templates.css";
               scale="30"
               strokeWidth="1"
               color="#fff"
+              ref={elRefs.current[i]}
             />
             <div
               className="hoverBtnSecondary hideClass"
               onClick={(event) => {
-                svg = linesRef.innerHTML.toString();
+                let svg = elRefs.current[i].current.innerHTML.toString();
                 parent.postMessage(
                   { pluginMessage: { type: "create-spirograph", svg } },
                   "*"

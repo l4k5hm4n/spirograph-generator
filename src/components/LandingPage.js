@@ -6,13 +6,14 @@ import React, {
 import DisplaySpirograph from "./DisplaySpirograph";
 import AlterPage from "./AlterPage";
 import ExistingTemplates from "./ExistingTemplates";
+import { Route, Link, MemoryRouter as Router } from "react-router-dom";
 import "../style/style.css";
 import "../style/landingPage.css";
 import "../style/templates.css";
 
-function LandingPage() {
+function LandingPage(props) {
   const linesRef = useRef();
-  const [showAlterPage, setShowAlterPage] = useState(false);
+  const [showAlterPage, setShowAlterPage] = useState('existing');
   const [alterFValue, setAlterFValue] = useState(0.6);
   const [alterMValue, setAlterMValue] = useState(70);
   const [alterNValue, setAlterNValue] = useState(50);
@@ -32,16 +33,24 @@ function LandingPage() {
     }
   );
 
-  React.useEffect(() => {
-      
-  }, [showAlterPage])
+  // React.useEffect(() => {
+
+  //   if (props.location.homeProps) {
+  //     setShowAlterPage('existing')
+  //   }
+
+  // }, [props.location.homeProps])
+
+  React.useEffect(() => { 
+  }, [props.location.homeProps])
 
   return (
     <div id="landingPage">
       <div className="displayContainer">
         <div
           id="linesContainer"
-          onClick={() => {
+          onClick={(event) => {
+            event.stopPropagation();
             svg = linesRef.current.innerHTML.toString();
             parent.postMessage(
               { pluginMessage: { type: "create-spirograph", svg } },
@@ -49,13 +58,22 @@ function LandingPage() {
             );
           }}
         >
+        <Link 
+        to={{
+          pathname:"/",
+          homeProps: { 
+            activeSection:"alter"
+          },
+        } 
+        }
+        >
           <div
             id="hoverPen"
             className="hoverBtn hoverBtnPrimary"
-            onClick={(event) => {
-              event.stopPropagation();
-              setShowAlterPage(true);
-            }}
+            // onClick={(event) => {
+            //   event.stopPropagation();
+            //   setShowAlterPage('alter');
+            // }}
           >
             <svg
               width="13"
@@ -70,6 +88,7 @@ function LandingPage() {
               />
             </svg>
           </div>
+          </Link>
 
           <div id="hoverInsert" className="hoverBtn hoverBtnInsert">
             <div>
@@ -103,7 +122,9 @@ function LandingPage() {
           </div>
         </div>
 
-        {showAlterPage ? (
+        {props.location.homeProps ?
+        (props.location.homeProps.activeSection == "alter" 
+        ? (
           <AlterPage
             callChangeDisplay={callChangeDisplay}
             alterFValue={alterFValue}
@@ -113,13 +134,19 @@ function LandingPage() {
             alterStrokeWidthValue={alterStrokeWidthValue}
             alterColorValue={alterColorValue}
           />
+        ) : 
+          <ExistingTemplates 
+              callChangeDisplay={callChangeDisplay}
+          />
         ) : (
           <ExistingTemplates 
             callChangeDisplay={callChangeDisplay}
           />
         )}
+
       </div>
     </div>
   );
 }
+
 export default LandingPage;

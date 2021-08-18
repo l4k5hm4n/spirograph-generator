@@ -42,7 +42,7 @@ function drawSpirograph(
   return str;
 
 }
-function Spirograph(props) {
+export default React.forwardRef((props, ref) => {
   const { f, m, n, scale, strokeWidth, color } = props;
   const templateSpirographRef = useRef();
   var draw = SVG().size(constants.height, constants.width);
@@ -52,7 +52,7 @@ function Spirograph(props) {
   };
 
   useEffect(() => {
-    console.log("test")
+    console.log("spirograph is drawn")
     var temp = draw.path(
       drawSpirograph(constants.cx, constants.cy, f, m, n, scale)
     );
@@ -60,10 +60,8 @@ function Spirograph(props) {
     temp.stroke({ color: color, width: strokeWidth });
     var svg = draw.svg();
 
-    templateSpirographRef.current.innerHTML = svg;
+    ref.current.innerHTML = svg;
 
   }, []);
-  return <div className="templateSpirograph" ref={templateSpirographRef}></div>;
-}
-
-export default Spirograph;
+  return <div className="templateSpirograph" ref={ref}></div>;
+});

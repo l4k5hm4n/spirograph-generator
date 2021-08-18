@@ -12,11 +12,6 @@ function LoginPage() {
   const [loggedIn, setLoggedIn] = useState(false);
   const modalRef = createRef();
   let UserLoggedIn, UserDetails, myTemplates;
-  // const handleSignIn = async (provider) => {
-  //   const response = await socialMediaAuth(provider);
-  //   console.log(response);
-  // };
-  // console.log(db);
   const clickedLogin = async () => {
     let uniqueString = "";
     let characters =

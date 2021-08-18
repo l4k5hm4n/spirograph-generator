@@ -15,7 +15,10 @@ function App() {
         <Router>
           <Nav />
           <Switch>
-            <Route exact path="/" component={() => <LandingPage />} />
+            <Route exact path="/" 
+            //used render instead of component here to pass dynamic props
+            render={(props) => (<LandingPage {...props} />) }            
+            />
             <Route
               exact
               path="/customizePage"

@@ -40,7 +40,12 @@
   color: #ffc700;
   z-index: 2;
 } */
-#linesContainer:hover > .hoverBtn {
+
+#linesContainer a {
+  z-index: 999999;
+}
+
+#linesContainer:hover a > .hoverBtn {
   display: block;
 }
 

@@ -20,8 +20,16 @@ function Nav() {
   return (
     <div>
       <div className="navbar">
-        <NavLink to="/">
-          <svg
+        <NavLink 
+        to={{
+          pathname:"/",
+          homeProps: { 
+            activeSection: "home"
+          },
+        } 
+        }
+        >
+        <svg
             width="71"
             height="21"
             viewBox="0 0 71 21"
@@ -68,10 +76,6 @@ function Nav() {
           </NavLink>
         </div>
       </div>
-
-      {/* <Route exact path="/" component={landingPage} />
-      <Route exact path="/customizepage" component={customizePage} />
-      <Route exact path="/loginpage" component={loginPage} /> */}
     </div>
   );
 }
