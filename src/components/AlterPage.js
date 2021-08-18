@@ -11,181 +11,20 @@ function AlterPage({
   alterStrokeWidthValue,
   alterColorValue,
 }) {
-  const infoHoverRef = React.createRef();
-  const infoHoverEnter = () => {
-    infoHoverRef.current.openInfoHover();
-  };
-  const infoHoverLeave = () => {
-    infoHoverRef.current.closeInfoHover();
-  };
-  console.log(
-    "Alter Parameters in Alter Page are : ",
-    alterFValue,
-    alterMValue,
-    alterNValue,
-    alterScaleValue,
-    alterStrokeWidthValue,
-    alterColorValue
-  );
-  const callShowParametersTab = () => {
-    setShowParametersTab(true);
-    setShowColorPaletteTab(false);
-    setShowStrokeWidthTab(false);
-    document.getElementById("parameters").classList.add("activeTab");
-    document.getElementById("colorPalette").classList.remove("activeTab");
-    document
-      .getElementById("strokeWidthSelector")
-      .classList.remove("activeTab");
-  };
-  const callShowColorPaletteTab = () => {
-    setShowParametersTab(false);
-    setShowColorPaletteTab(true);
-    setShowStrokeWidthTab(false);
-    document.getElementById("parameters").classList.remove("activeTab");
-    document.getElementById("colorPalette").classList.add("activeTab");
-    document
-      .getElementById("strokeWidthSelector")
-      .classList.remove("activeTab");
-  };
-  const callShowStrokeWidthTab = () => {
-    setShowParametersTab(false);
-    setShowColorPaletteTab(false);
-    setShowStrokeWidthTab(true);
-    document.getElementById("parameters").classList.remove("activeTab");
-    document.getElementById("colorPalette").classList.remove("activeTab");
-    document.getElementById("strokeWidthSelector").classList.add("activeTab");
-  };
-  const [showParametersTab, setShowParametersTab] = useState(true);
-  const [showColorPaletteTab, setShowColorPaletteTab] = useState(false);
-  const [showStrokeWidthTab, setShowStrokeWidthTab] = useState(false);
-  const [isChanged, setIsChanged] = useState(false);
-  // var defaultFValue = alterFValue;
-  // var defaultMValue = alterMValue;
-  // var defaultNValue = alterNValue;
-  // var defaultScaleValue = alterScaleValue;
-  // var defaultStrokeWidthValue = alterStrokeWidthValue;
-  // var defaultColorValue = alterColorValue;
 
+  const [activeParameter, setActiveParameter] = useState('config');
   const [fValue, setFValue] = useState(alterFValue);
   const [mValue, setMValue] = useState(alterMValue);
   const [nValue, setNValue] = useState(alterNValue);
   const [scaleValue, setScaleValue] = useState(alterScaleValue);
-  const [strokeWidthValue, setStrokeWidthValue] = useState(
-    alterStrokeWidthValue
-  );
+  const [strokeWidthValue, setStrokeWidthValue] = useState(alterStrokeWidthValue);
   const [colorValue, setColorValue] = useState(alterColorValue);
-  {
-    // useEffect(() => {
-    //   console.log("Inside first useEffect");
-    //   defaultFValue = alterFValue;
-    //   defaultMValue = alterMValue;
-    //   defaultNValue = alterNValue;
-    //   defaultScaleValue = alterScaleValue;
-    //   defaultStrokeWidthValue = alterStrokeWidthValue;
-    //   defaultColorValue = alterColorValue;
-    //   if (
-    //     showParametersTab == true &&
-    //     showColorPaletteTab == false &&
-    //     showStrokeWidthTab == false
-    //   ) {
-    //     document.getElementById("fValueInput").value = defaultFValue;
-    //     document.getElementById("mValueInput").value = defaultMValue;
-    //     document.getElementById("nValueInput").value = defaultNValue;
-    //     document.getElementById("scaleValueInput").value = defaultScaleValue;
-    //   } else if (
-    //     showParametersTab == false &&
-    //     showColorPaletteTab == true &&
-    //     showStrokeWidthTab == false
-    //   ) {
-    //     document.getElementById("colorValueInput").value = defaultColorValue;
-    //   } else if (
-    //     showParametersTab == false &&
-    //     showColorPaletteTab == false &&
-    //     showStrokeWidthTab == true
-    //   ) {
-    //     document.getElementById("strokeWidthValueInput").value =
-    //       defaultStrokeWidthValue;
-    //   }
-    // }, [
-    //   alterFValue,
-    //   alterMValue,
-    //   alterNValue,
-    //   alterScaleValue,
-    //   alterStrokeWidthValue,
-    //   alterColorValue,
-    // ]);
-    // useEffect(() => {
-    //   console.log("inside second useEffect");
-    //   defaultFValue = fValue;
-    //   defaultMValue = mValue;
-    //   defaultNValue = nValue;
-    //   defaultScaleValue = scaleValue;
-    //   defaultStrokeWidthValue = strokeWidthValue;
-    //   defaultColorValue = colorValue;
-    //   console.log(
-    //     defaultFValue,
-    //     defaultMValue,
-    //     defaultNValue,
-    //     defaultScaleValue,
-    //     defaultStrokeWidthValue,
-    //     defaultColorValue
-    //   );
-    //   if (
-    //     showParametersTab == true &&
-    //     showColorPaletteTab == false &&
-    //     showStrokeWidthTab == false
-    //   ) {
-    //   document.getElementById("fValueInput").value = defaultFValue;
-    //   document.getElementById("mValueInput").value = defaultMValue;
-    //   document.getElementById("nValueInput").value = defaultNValue;
-    //   document.getElementById("scaleValueInput").value = defaultScaleValue;
-    //   } else if (
-    //     showParametersTab == false &&
-    //     showColorPaletteTab == true &&
-    //     showStrokeWidthTab == false
-    //   ) {
-    //   document.getElementById("colorValueInput").value = defaultColorValue;
-    //   } else if (
-    //     showParametersTab == false &&
-    //     showColorPaletteTab == false &&
-    //     showStrokeWidthTab == true
-    //   ) {
-    //   document.getElementById("strokeWidthValueInput").value =
-    //     defaultStrokeWidthValue;
-    //   }
-    // }, [fValue, mValue, nValue, scaleValue, strokeWidthValue, colorValue]);
+
+  const toggleParameters = (parameter) => { 
+    setActiveParameter(parameter)
   }
+
   useEffect(() => {
-    setFValue(alterFValue);
-    setMValue(alterMValue);
-    setNValue(alterNValue);
-    setScaleValue(alterScaleValue);
-    setStrokeWidthValue(alterStrokeWidthValue);
-    setColorValue(alterColorValue);
-    // callChangeDisplay(
-    //   fValue,
-    //   mValue,
-    //   nValue,
-    //   scaleValue,
-    //   strokeWidthValue,
-    //   colorValue
-    // );
-  }, [
-    alterFValue,
-    alterMValue,
-    alterNValue,
-    alterScaleValue,
-    alterStrokeWidthValue,
-    alterColorValue,
-  ]);
-  useEffect(() => {
-    // defaultFValue = fValue;
-    // defaultMValue = mValue;
-    // defaultNValue = nValue;
-    // defaultScaleValue = scaleValue;
-    // defaultStrokeWidthValue = strokeWidthValue;
-    // defaultColorValue = colorValue;
-    console.log("calling changeDisplay from alter page");
     callChangeDisplay(
       fValue,
       mValue,
@@ -194,26 +33,15 @@ function AlterPage({
       strokeWidthValue,
       colorValue
     );
-    setIsChanged(true);
-  }, [fValue, mValue, nValue, scaleValue, strokeWidthValue, colorValue]);
-
-  console.log(
-    "Default values are: ",
-    fValue,
-    mValue,
-    nValue,
-    scaleValue,
-    strokeWidthValue,
-    colorValue
-  );
+  });
 
   return (
     <div className="alterPage">
       <div className="tabs">
         <div
           id="parameters"
-          className="tab activeTab"
-          onClick={callShowParametersTab}
+          className={`tab ${activeParameter === "config" ? "activeTab" : null}`}
+          onClick={() => toggleParameters("config")}
         >
           <svg
             width="18"
@@ -230,8 +58,8 @@ function AlterPage({
         </div>
         <div
           id="colorPalette"
-          className="tab"
-          onClick={callShowColorPaletteTab}
+          className={`tab ${activeParameter === "color" ? "activeTab" : null}`}
+          onClick={() => toggleParameters("color")}
         >
           <svg
             width="18"
@@ -248,8 +76,8 @@ function AlterPage({
         </div>
         <div
           id="strokeWidthSelector"
-          className="tab"
-          onClick={callShowStrokeWidthTab}
+          className={`tab ${activeParameter === "stroke" ? "activeTab" : null}`}
+          onClick={ () => toggleParameters("stroke")}
         >
           <svg
             width="20"
@@ -265,7 +93,7 @@ function AlterPage({
         </div>
       </div>
       <div id="alterTab">
-        {showParametersTab && (
+        { activeParameter === "config" && (
           <div id="parametsTab">
             <div>
               <input
@@ -277,7 +105,6 @@ function AlterPage({
                 step="0.1"
                 value={fValue}
                 onChange={(e) => {
-                  console.log("Changing fValue", e.target.value);
                   setFValue(e.target.value);
                 }}
               ></input>
@@ -310,7 +137,6 @@ function AlterPage({
                 step="1"
                 value={mValue}
                 onChange={(e) => {
-                  console.log("Changing nValue", e.target.value);
                   setMValue(e.target.value);
                 }}
               ></input>
@@ -344,7 +170,6 @@ function AlterPage({
                 step="1"
                 value={nValue}
                 onChange={(e) => {
-                  console.log("Changing nValue", e.target.value);
                   setNValue(e.target.value);
                 }}
               ></input>
@@ -378,7 +203,6 @@ function AlterPage({
                 step="5"
                 value={scaleValue}
                 onChange={(e) => {
-                  console.log("Changing scaleValue", e.target.value);
                   setScaleValue(e.target.value);
                 }}
               ></input>
@@ -404,7 +228,7 @@ function AlterPage({
             </div>
           </div>
         )}
-        {showColorPaletteTab && (
+        { activeParameter === "color" && (
           <div id="colorPaletteTab">
             <div>
               <input
@@ -413,7 +237,6 @@ function AlterPage({
                 name="color"
                 value={colorValue}
                 onChange={(e) => {
-                  console.log("Changing colorValue", e.target.value);
                   setColorValue(e.target.value);
                 }}
               ></input>
@@ -421,7 +244,7 @@ function AlterPage({
             </div>
           </div>
         )}
-        {showStrokeWidthTab && (
+        {activeParameter === "stroke" && (
           <div>
             <div>
               <input
@@ -433,7 +256,6 @@ function AlterPage({
                 step="0.1"
                 value={strokeWidthValue}
                 onChange={(e) => {
-                  console.log("Changing strokeWidthValue", e.target.value);
                   setStrokeWidthValue(e.target.value);
                 }}
               ></input>

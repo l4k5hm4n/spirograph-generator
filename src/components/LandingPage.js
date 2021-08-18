@@ -1,243 +1,52 @@
 import React, {
   useState,
-  useEffect,
   useRef,
   useCallback,
-  useMemo,
 } from "react";
-import { SVG } from "@svgdotjs/svg.js";
-import ReactDOM from "react-dom";
 import DisplaySpirograph from "./DisplaySpirograph";
 import AlterPage from "./AlterPage";
-import Spirograph from "./Spirograph";
+import ExistingTemplates from "./ExistingTemplates";
 import "../style/style.css";
 import "../style/landingPage.css";
 import "../style/templates.css";
-const predefinedTemplates = [
-  {
-    id: 0,
-    predefinedTemplateNumber: 0,
-    f: 0.6,
-    m: 70,
-    n: 50,
-  },
-  {
-    id: 1,
-    predefinedTemplateNumber: 1,
-    f: 2,
-    m: 100,
-    n: 10,
-  },
-  {
-    id: 2,
-    predefinedTemplateNumber: 2,
-    f: -0.9,
-    m: 47,
-    n: 26,
-  },
-  {
-    id: 3,
-    predefinedTemplateNumber: 3,
-    f: -1.1,
-    m: 64,
-    n: 12,
-  },
-  {
-    id: 4,
-    predefinedTemplateNumber: 4,
-    f: 0.4,
-    m: 26,
-    n: 16,
-  },
-  {
-    id: 5,
-    predefinedTemplateNumber: 5,
-    f: 0.62,
-    m: 64,
-    n: 46,
-  },
-  {
-    id: 6,
-    predefinedTemplateNumber: 6,
-    f: -1.1,
-    m: 19,
-    n: 13,
-  },
-  {
-    id: 7,
-    predefinedTemplateNumber: 7,
-    f: 0.4,
-    m: 54,
-    n: 16,
-  },
-  {
-    id: 8,
-    predefinedTemplateNumber: 8,
-    f: 0.62,
-    m: 90,
-    n: 34,
-  },
-  {
-    id: 9,
-    predefinedTemplateNumber: 9,
-    f: -1.1,
-    m: 19,
-    n: 13,
-  },
-  {
-    id: 10,
-    predefinedTemplateNumber: 10,
-    f: 0.4,
-    m: 54,
-    n: 16,
-  },
-  {
-    id: 11,
-    predefinedTemplateNumber: 11,
-    f: 0.62,
-    m: 90,
-    n: 34,
-  },
-  {
-    id: 12,
-    predefinedTemplateNumber: 12,
-    f: 0.62,
-    m: 90,
-    n: 34,
-  },
-  {
-    id: 13,
-    predefinedTemplateNumber: 13,
-    f: 0.62,
-    m: 90,
-    n: 34,
-  },
-  {
-    id: 14,
-    predefinedTemplateNumber: 14,
-    f: 0.62,
-    m: 90,
-    n: 34,
-  },
-];
+
 function LandingPage() {
-  console.log("Start of page");
   const linesRef = useRef();
   const [showAlterPage, setShowAlterPage] = useState(false);
-  // const callShowAlterPage = ;
-
-  const [alterFValue, setAlterFValue] = useState(predefinedTemplates[0].f);
-  const [alterMValue, setAlterMValue] = useState(predefinedTemplates[0].m);
-  const [alterNValue, setAlterNValue] = useState(predefinedTemplates[0].n);
+  const [alterFValue, setAlterFValue] = useState(0.6);
+  const [alterMValue, setAlterMValue] = useState(70);
+  const [alterNValue, setAlterNValue] = useState(50);
   const [alterScaleValue, setAlterScaleValue] = useState(110);
   const [alterStrokeWidthValue, setAlterStrokeWidthValue] = useState(2);
   const [alterColorValue, setAlterColorValue] = useState("#ffc700");
-  var svg;
+  let svg;
 
-  // const callChangeDisplay = useCallback(
-  //   (argF, argM, argN, argScale, argStrokeWidth, argColor) => {
-  //     console.log(
-  //       "Inside Call Change display: ",
-  //       argF,
-  //       argM,
-  //       argN,
-  //       argScale,
-  //       argStrokeWidth,
-  //       argColor
-  //     );
-  //     var node,
-  //       child,
-  //       linesContainer = document.getElementById("linesContainer");
-  //     var newDisplaySpirograph = (
-  //       <DisplaySpirograph
-  //         id="displaySpirograph"
-  //         linesID="lines"
-  //         f={argF}
-  //         m={argM}
-  //         n={argN}
-  //         scale={argScale}
-  //         strokeWidth={argStrokeWidth}
-  //         color={argColor}
-  //       />
-  //     );
-  //     node = document.createElement("div");
-  //     child = document.getElementById("lines");
-  //     linesContainer.replaceChild(node, child);
-  //     node.setAttribute("id", "lines");
-  //     linesContainer.addEventListener("click", () => {
-  //       // e.stopPropagation();
-  //       let count = 0;
-  //       svg = document.getElementById("lines").firstChild.outerHTML.toString();
-  //       parent.postMessage(
-  //         { pluginMessage: { type: "create-spirograph", svg } },
-  //         "*"
-  //       );
-  //       count++;
-  //       console.log(count);
-  //     });
-  //     document.getElementById("hoverPen").addEventListener("click", () => {
-  //       // e.stopPropagation();
-  //       setShowAlterPage(true);
-  //     });
-  //     ReactDOM.render(newDisplaySpirograph, document.getElementById("lines"));
-  //   },
-  //   [
-  //     alterFValue,
-  //     alterMValue,
-  //     alterNValue,
-  //     alterScaleValue,
-  //     alterStrokeWidthValue,
-  //     alterColorValue,
-  //   ]
-  // );
   const callChangeDisplay = useCallback(
     (argF, argM, argN, argScale, argStrokeWidth, argColor) => {
-      console.log(
-        "Inside Call Change display: ",
-        argF,
-        argM,
-        argN,
-        argScale,
-        argStrokeWidth,
-        argColor
-      );
-      var child = document.getElementById("lines");
-      // child.fir;
       setAlterFValue(argF);
       setAlterMValue(argM);
       setAlterNValue(argN);
       setAlterScaleValue(argScale);
       setAlterStrokeWidthValue(argStrokeWidth);
       setAlterColorValue(argColor);
-      // var linesContainer = document.getElementById("FUCKME");
-      // var node = document.createElement("div");
-      // linesContainer.replaceChild(node, child);
-      // node.setAttribute("id", "lines");
     }
-    // [
-    //   alterFValue,
-    //   alterMValue,
-    //   alterNValue,
-    //   alterScaleValue,
-    //   alterStrokeWidthValue,
-    //   alterColorValue,
-    // ]
   );
+
+  React.useEffect(() => {
+      
+  }, [showAlterPage])
+
   return (
     <div id="landingPage">
       <div className="displayContainer">
         <div
           id="linesContainer"
-          onClick={(e) => {
-            e.stopPropagation();
-            svg = document
-              .querySelector(".actualSpirograph")
-              .firstChild.outerHTML.toString();
+          onClick={() => {
+            svg = linesRef.current.innerHTML.toString();
             parent.postMessage(
               { pluginMessage: { type: "create-spirograph", svg } },
               "*"
             );
-            // console.log(count);
           }}
         >
           <div
@@ -280,10 +89,10 @@ function LandingPage() {
             </div>
           </div>
           <div id="lines">
-            {/* <div id="lines" onClick={insertSpirograph}> */}
             <DisplaySpirograph
               id="displaySpirograph"
               linesID="lines"
+              ref={linesRef}
               f={alterFValue}
               m={alterMValue}
               n={alterNValue}
@@ -293,15 +102,7 @@ function LandingPage() {
             />
           </div>
         </div>
-        {console.log(
-          "Alter Parameters in Main Page are: ",
-          alterFValue,
-          alterMValue,
-          alterNValue,
-          alterScaleValue,
-          alterStrokeWidthValue,
-          alterColorValue
-        )}
+
         {showAlterPage ? (
           <AlterPage
             callChangeDisplay={callChangeDisplay}
@@ -313,74 +114,9 @@ function LandingPage() {
             alterColorValue={alterColorValue}
           />
         ) : (
-          <div>
-            <h3 className="chooseTemplates">Choose From Existing Templates</h3>
-            <div className="templatesContainer">
-              <div className="templateTransition"></div>
-              <div className="gridContainer">
-                {predefinedTemplates.map((predefinedTemplate) => (
-                  <div
-                    key={predefinedTemplate.id}
-                    className="templateDisplay"
-                    onClick={(event) => {
-                      console.log("calling from changing template");
-                      event.stopPropagation();
-                      setAlterFValue(predefinedTemplate.f);
-                      setAlterMValue(predefinedTemplate.m);
-                      setAlterNValue(predefinedTemplate.n);
-                      setAlterScaleValue(110);
-                      setAlterStrokeWidthValue(2);
-                      setAlterColorValue("#ffc700");
-                      callChangeDisplay(
-                        predefinedTemplate.f,
-                        predefinedTemplate.m,
-                        predefinedTemplate.n,
-                        110,
-                        2,
-                        "#ffc700"
-                      );
-                    }}
-                  >
-                    <Spirograph
-                      templateId={predefinedTemplate.predefinedTemplateNumber}
-                      f={predefinedTemplate.f}
-                      m={predefinedTemplate.m}
-                      n={predefinedTemplate.n}
-                      scale="30"
-                      strokeWidth="1"
-                      color="#fff"
-                    />
-                    <div
-                      className="hoverBtnSecondary hideClass"
-                      onClick={(event) => {
-                        event.stopPropagation();
-                        svg = document
-                          .getElementById("lines")
-                          .firstChild.outerHTML.toString();
-                        parent.postMessage(
-                          { pluginMessage: { type: "create-spirograph", svg } },
-                          "*"
-                        );
-                      }}
-                    >
-                      <svg
-                        width="12"
-                        height="12"
-                        viewBox="0 0 12 12"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M8 12V10.4H2.728L12 1.128L10.872 0L1.6 9.272V4H0V12H8Z"
-                          fill="white"
-                        />
-                      </svg>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
+          <ExistingTemplates 
+            callChangeDisplay={callChangeDisplay}
+          />
         )}
       </div>
     </div>

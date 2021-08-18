@@ -25,6 +25,7 @@
   background-color: rgba(255, 255, 255, 0.1);
   border-radius: 50%;
   position: relative;
+  cursor: pointer;
 }
 .tab > svg {
   position: absolute;
@@ -104,4 +105,5 @@
 .slider #parametersTab {
   height: 200px;
   width: 100%;
+
 }

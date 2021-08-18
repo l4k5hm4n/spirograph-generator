@@ -12,45 +12,38 @@ import { db } from "../config/firebase-config";
 import "../style/myTemplates.css";
 function MyTemplates(props) {
 
-  let userDefinedTemplates;
-  useEffect(() => {
-  parent.postMessage({ pluginMessage: { type: "checkUserLogin" } }, "*");
-  window.addEventListener("message", (event) => { 
-  if (event.data.pluginMessage.type === "checkUserLogin") { 
-    userDefinedTemplates = event.data.pluginMessage.myTemplates;
-  }
-  })
-}, []);
-  console.log(userDefinedTemplates, 'temp')
-
-  const [showAlterMyTemplatesPage, setShowAlterMyTemplatePage] =
-    useState(false);
+  const [userDefinedTemplates, setUserDefinedTemplates] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [showAlterMyTemplatesPage, setShowAlterMyTemplatePage] = useState(false);
   const [insertTemplate, setInsertTemplate] = useState(false);
-  const [alterMyTemplateFValue, setAlterMyTemplateFValue] = useState(
-    userDefinedTemplates[0].fValue
-  );
-  const [alterMyTemplateMValue, setAlterMyTemplateMValue] = useState(
-    userDefinedTemplates[0].mValue
-  );
-  const [alterMyTemplateNValue, setAlterMyTemplateNValue] = useState(
-    userDefinedTemplates[0].nValue
-  );
-  const [alterMyTemplateScaleValue, setAlterMyTemplateScaleValue] = useState(
-    userDefinedTemplates[0].scaleValue
-  );
-  const [alterMyTemplateStrokeWidthValue, setAlterMyTemplateStrokeWidthValue] =
-    useState(userDefinedTemplates[0].strokeWidthValue);
-  const [alterMyTemplateColorValue, setAlterMyTemplateColorValue] = useState(
-    userDefinedTemplates[0].colorValue
-  );
+  const [alterMyTemplateFValue, setAlterMyTemplateFValue] = useState('');
+  const [alterMyTemplateMValue, setAlterMyTemplateMValue] = useState('');
+  const [alterMyTemplateNValue, setAlterMyTemplateNValue] = useState('');
+  const [alterMyTemplateScaleValue, setAlterMyTemplateScaleValue] = useState('');
+  const [alterMyTemplateStrokeWidthValue, setAlterMyTemplateStrokeWidthValue] = useState('');
+  const [alterMyTemplateColorValue, setAlterMyTemplateColorValue] = useState('');
 
-  // let db__users = db.collection("users");
-  var svg;
+  useEffect(() => {
+    parent.postMessage({ pluginMessage: { type: "checkUserLogin" } }, "*");
+    window.addEventListener("message", async (event) => { 
+    if (event.data.pluginMessage.type === "checkUserLogin") { 
+      setUserDefinedTemplates(event.data.pluginMessage.myTemplates)
+    }
+  
+    console.log(userDefinedTemplates);
+  
+    // setAlterMyTemplateFValue(userDefinedTemplates[0].fValue);
+    // setAlterMyTemplateMValue(userDefinedTemplates[0].mValue);
+    // setAlterMyTemplateNValue(userDefinedTemplates[0].nValue);
+    // setAlterMyTemplateScaleValue(userDefinedTemplates[0].scaleValue);
+    // setAlterMyTemplateStrokeWidthValue(userDefinedTemplates[0].strokeWidthValue);
+    // setAlterMyTemplateColorValue(userDefinedTemplates[0].colorValue);
+    setLoading(false);
+  
+    })
+  }, [loading]);
 
-  // const callInsertTemplate = useCallback(() => {
-  //   setShowAlterMyTemplatePage(true);
-
-  // });
+  let svg;
 
   const callChangeMyTemplateDisplay = useCallback(
     (argF, argM, argN, argScale, argStrokeWidth, argColor) => {
@@ -69,13 +62,13 @@ function MyTemplates(props) {
       setAlterMyTemplateScaleValue(argScale);
       setAlterMyTemplateStrokeWidthValue(argStrokeWidth);
       setAlterMyTemplateColorValue(argColor);
-
     }
 
   );
 
   return (
     <div id="MyTemplates">
+      {loading == true ? <div> loading </div> : (
       <div className="myTemplatesContainer">
         <div
           id="myTemplatesDisplayContainer"
@@ -117,12 +110,6 @@ function MyTemplates(props) {
                 scale={alterMyTemplateScaleValue}
                 strokeWidth={alterMyTemplateStrokeWidthValue}
                 color={alterMyTemplateColorValue}
-                // f={userDefinedTemplates[0].f}
-                // m={userDefinedTemplates[0].m}
-                // n={userDefinedTemplates[0].n}
-                // scale={userDefinedTemplates[0].scale}
-                // strokeWidth={userDefinedTemplates[0].strokeWidth}
-                // color={userDefinedTemplates[0].color}
               />
             </div>
           </div>
@@ -211,22 +198,9 @@ function MyTemplates(props) {
           </div>
         )}
       </div>
+      )}
     </div>
   );
 }
 
-const mapStateToProps = (state) => {
-  return {
-    userDefinedTemplates: state.userDefinedTemplates,
-  };
-};
-const mapDispatchToProps = (dispatch) => {
-  return {
-    remove_template: (id) => {
-      dispatch({ type: "REMOVE_TEMPLATE", id: id });
-    },
-  };
-};
-export default connect(mapStateToProps, mapDispatchToProps)(MyTemplates);
-// export default MyTemplates;
-// export default connect(mapStateToProps, mapDispatchToProps)(MyTemplates);
+export default MyTemplates;
