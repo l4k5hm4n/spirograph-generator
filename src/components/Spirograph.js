@@ -44,7 +44,6 @@ function drawSpirograph(
 }
 export default React.forwardRef((props, ref) => {
   const { f, m, n, scale, strokeWidth, color } = props;
-  const templateSpirographRef = useRef();
   var draw = SVG().size(constants.height, constants.width);
   const style = {
     height: constants.height,

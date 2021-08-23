@@ -3,15 +3,16 @@ import { db } from "../config/firebase-config";
 import { Link, MemoryRouter as Router } from "react-router-dom";
 import MyTemplates from "./MyTemplates";
 import Modal from "./Modal";
-import { useSelector, useDispatch } from "react-redux";
 import "../style/style.css";
 import "../style/loginPage.css";
 function LoginPage() {
-  var userTemplates = useSelector((state) => state.userDefinedTemplates);
+  // var userTemplates = useSelector((state) => state.userDefinedTemplates);
 
-  const [loggedIn, setLoggedIn] = useState(false);
+  let [loggedIn, setLoggedIn] = useState(false);
   const modalRef = createRef();
-  let UserLoggedIn, UserDetails, myTemplates;
+  let [UserDetails, setUserDetails] = useState('');
+  let [myTemplates, setmyTemplates] = useState('');
+
   const clickedLogin = async () => {
     let uniqueString = "";
     let characters =
@@ -72,20 +73,7 @@ function LoginPage() {
                       photo: tempData.userInfo.photo,
                       lastLogin: new Date().toLocaleString(),
                     });
-                    // myTemplates = user.data().myTemplates;
-                    // myTemplates.forEach((myTemplate) =>
-                    //   dispatch(insert_template())
-                    // );
-                    // Sync Templates to localStorage for quick access in plug in
-                    // parent.postMessage(
-                    //   {
-                    //     pluginMessage: {
-                    //       type: "sync_myTemplates",
-                    //       myTemplates: myTemplates,
-                    //     },
-                    //   },
-                    //   "*"
-                    // );
+
                   } else {
                     // create new user profile if email doesn't exist already
                     tempUser.set({
@@ -97,9 +85,7 @@ function LoginPage() {
                       myTemplates: [],
                     });
                     myTemplates = [];
-                    // console.log(
-                    //   `User is new: ${user.uid} ${user.name} ${user.email} ${user.photo} ${user.lastLogin}`
-                    // );
+
                     parent.postMessage(
                       {
                         pluginMessage: {
@@ -123,8 +109,6 @@ function LoginPage() {
       });
   };
 
-  function fetchMyTemplates() {}
-
   // Modal Functions
   const clickedLogoutPrompt = () => {
     modalRef.current.openModal();
@@ -137,56 +121,28 @@ function LoginPage() {
   };
 
   useEffect(() => {
-  // Self Invoking function to check if user has logged in
 
     // Check if user is logged in and redirect to homepage
     parent.postMessage({ pluginMessage: { type: "checkUserLogin" } }, "*");
     // Listen for messages from figma
+
     window.addEventListener("message", async (event) => {
-      if (event.data.pluginMessage.type === "checkUserLogin") {
-        UserLoggedIn = event.data.pluginMessage.UserLoggedIn;
-        UserDetails = event.data.pluginMessage.UserDetails;
-        myTemplates = event.data.pluginMessage.myTemplates;
-        console.log(UserLoggedIn, UserDetails, myTemplates);
-        if (UserLoggedIn) {
-          // Update User Details in Login Page i.e photo etc
-          console.log("USer logged in");
-          // document
-          //   .getElementById("UserAvatar")
-          //   .setAttribute("src", `${UserDetails.photo}`);
-          // document.getElementById("UserAvatar").classList.remove("removeClass");
-          // document
-          //   .getElementById("accountInfo")
-          //   .classList.remove("removeClass");
-          // document.getElementById(
-          //   "accountInfo"
-          // ).firstChild.innerHTML = `${UserDetails.name}`;
-          // document.getElementById(
-          //   "accountInfo"
-          // ).lastChild.innerHTML = `${UserDetails.email}`;
-          console.log(loggedIn, ' if');
-          setLoggedIn(true);
-        } else {
-          // Keep stock details about user
-          console.log(loggedIn, ' else');
-        }
+      if (event.data.pluginMessage.type === "checkUserLogin") { 
+        setLoggedIn(event.data.pluginMessage.UserLoggedIn)
+        setUserDetails(event.data.pluginMessage.UserDetails)
+        setmyTemplates(event.data.pluginMessage.myTemplates)
+        console.log(loggedIn, UserDetails, myTemplates);
       }
-      // else if (event.data.pluginMessage.type === "setTemplates") {
-      //   db.collection("users").doc(UserDetails.email).update({
-      //     myTemplates: msg.myTemplates,
-      //   });
-      //   console.log("Final Message Received");
-      // }
     });
-  });
+  }, []);
 
   return (
     <div id="loginPage">
       <div id="loginContainer">
         <div id="loginDisplay">
           <div id="loginAvatar">
-            {!loggedIn && (
-              <svg
+            {!loggedIn ?
+             ( <svg
                 width="116"
                 height="117"
                 viewBox="0 0 116 117"
@@ -214,8 +170,9 @@ function LoginPage() {
                   fill="black"
                 />
               </svg>
-            )}
-            {loggedIn && <img id="UserAvatar" />}
+            ) : 
+            <img src={UserDetails.photo ? UserDetails.photo : ''} id="UserAvatar" /> 
+            }
           </div>
           <div id="googleAccountInfo">
             <div id="signInContainer">
@@ -258,8 +215,8 @@ function LoginPage() {
               {loggedIn && (
                 <div id="accountInfo">
                   {/* <div id="accountInfo" className="removeClass"> */}
-                  <h4></h4>
-                  <h6></h6>
+                  <h4>{UserDetails.name}</h4>
+                  <h6>{UserDetails.email}</h6>
                 </div>
               )}
             </div>
@@ -267,6 +224,8 @@ function LoginPage() {
         </div>
         <div id="loginLinks">
           <div id="loginTabs">
+          {loggedIn ? (
+            <React.Fragment>
             <Link to="/loginPage/myTemplates">
               <div className="greyBgd loginTab">
                 <div className="shapeBgd">
@@ -286,7 +245,7 @@ function LoginPage() {
                 <div className="loginTabTxt">
                   <div className="boldTxtWhite">My Templates</div>
                   <div className="lightTxtGrey">
-                    Login to manage your saved templates
+                    Manage your saved templates
                   </div>
                 </div>
               </div>
@@ -313,6 +272,55 @@ function LoginPage() {
                 </div>
               </div>
             </Link>
+            </React.Fragment>
+          ) : (
+            <React.Fragment>
+              <div className="greyBgd loginTab">
+                <div className="shapeBgd">
+                  <svg
+                    width="19"
+                    height="20"
+                    viewBox="0 0 19 20"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M8 11.5V19.5H0V11.5H8ZM9 0L14.5 9H3.5L9 0ZM14.5 11C17 11 19 13 19 15.5C19 18 17 20 14.5 20C12 20 10 18 10 15.5C10 13 12 11 14.5 11Z"
+                      fill="#EDB92E"
+                    />
+                  </svg>
+                </div>
+                <div className="loginTabTxt">
+                  <div className="boldTxtWhite">My Templates</div>
+                  <div className="lightTxtGrey">
+                    Login to manage your saved templates
+                  </div>
+                </div>
+              </div>
+              <Link to="/loginPage/AboutUs" id="aboutUsLink">
+              <div className="greyBgd loginTab">
+                <div className="shapeBgd">
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 20 20"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M11 7H9V5H11V7ZM11 15H9V9H11V15ZM10 0C8.68678 0 7.38642 0.258658 6.17317 0.761205C4.95991 1.26375 3.85752 2.00035 2.92893 2.92893C1.05357 4.8043 0 7.34784 0 10C0 12.6522 1.05357 15.1957 2.92893 17.0711C3.85752 17.9997 4.95991 18.7362 6.17317 19.2388C7.38642 19.7413 8.68678 20 10 20C12.6522 20 15.1957 18.9464 17.0711 17.0711C18.9464 15.1957 20 12.6522 20 10C20 8.68678 19.7413 7.38642 19.2388 6.17317C18.7362 4.95991 17.9997 3.85752 17.0711 2.92893C16.1425 2.00035 15.0401 1.26375 13.8268 0.761205C12.6136 0.258658 11.3132 0 10 0Z"
+                      fill="#EDB92E"
+                    />
+                  </svg>
+                </div>
+                <div className="loginTabTxt">
+                  <div className="boldTxtWhite">About Us</div>
+                  <div className="lightTxtGrey">Learn about our journey!</div>
+                </div>
+              </div>
+              </Link>
+            </React.Fragment>
+          )}
           </div>
           <div id="logoutContainer">
             {loggedIn && (
@@ -376,31 +384,3 @@ function LoginPage() {
 }
 
 export default LoginPage;
-
-// window.onmessage = async (event) => {
-//   if (event.data.pluginMessage.type === "checkUserLogin") {
-//     UserLoggedIn = event.data.pluginMessage.UserLoggedIn;
-//     UserDetails = event.data.pluginMessage.UserDetails;
-//     favorites = event.data.pluginMessage.favorites;
-//     myCopies = event.data.pluginMessage.myCopies;
-
-//     if (UserLoggedIn) {
-//       document.querySelector("html").classList = "";
-//       document.querySelector("body").classList = "home";
-//       document.querySelector("#onboarding").style.display = "none";
-//       document.querySelector("svg.profile__placeholder").style.display =
-//         "none";
-//       document.querySelector(
-//         ".profile img.profile__image--small"
-//       ).style.display = "block";
-//       document.querySelector(".profile img.profile__image--small").src =
-//         UserDetails.photo;
-//       document.querySelector("#splashScreen").style.display = "none";
-//     } else {
-//       document.querySelector("body").classList = "onboarding";
-//       document.querySelector("html").classList = "no-login";
-//       document.querySelector("#splashScreen").style.display = "none";
-//     }
-//   }
-// };
-// })();

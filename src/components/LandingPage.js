@@ -12,6 +12,115 @@ import "../style/landingPage.css";
 import "../style/templates.css";
 
 function LandingPage(props) {
+
+  const predefinedTemplates = [
+    {
+      id: 0,
+      predefinedTemplateNumber: 0,
+      f: 0.6,
+      m: 70,
+      n: 50,
+    },
+    {
+      id: 1,
+      predefinedTemplateNumber: 1,
+      f: 2,
+      m: 100,
+      n: 10,
+    },
+    {
+      id: 2,
+      predefinedTemplateNumber: 2,
+      f: -0.9,
+      m: 47,
+      n: 26,
+    },
+    {
+      id: 3,
+      predefinedTemplateNumber: 3,
+      f: -1.1,
+      m: 64,
+      n: 12,
+    },
+    {
+      id: 4,
+      predefinedTemplateNumber: 4,
+      f: 0.4,
+      m: 26,
+      n: 16,
+    },
+    {
+      id: 5,
+      predefinedTemplateNumber: 5,
+      f: 0.62,
+      m: 64,
+      n: 46,
+    },
+    {
+      id: 6,
+      predefinedTemplateNumber: 6,
+      f: -1.1,
+      m: 19,
+      n: 13,
+    },
+    {
+      id: 7,
+      predefinedTemplateNumber: 7,
+      f: 0.4,
+      m: 54,
+      n: 16,
+    },
+    {
+      id: 8,
+      predefinedTemplateNumber: 8,
+      f: 0.62,
+      m: 90,
+      n: 34,
+    },
+    {
+      id: 9,
+      predefinedTemplateNumber: 9,
+      f: -1.1,
+      m: 19,
+      n: 13,
+    },
+    {
+      id: 10,
+      predefinedTemplateNumber: 10,
+      f: 0.4,
+      m: 54,
+      n: 16,
+    },
+    {
+      id: 11,
+      predefinedTemplateNumber: 11,
+      f: 0.62,
+      m: 90,
+      n: 34,
+    },
+    {
+      id: 12,
+      predefinedTemplateNumber: 12,
+      f: 0.62,
+      m: 90,
+      n: 34,
+    },
+    {
+      id: 13,
+      predefinedTemplateNumber: 13,
+      f: 0.62,
+      m: 90,
+      n: 34,
+    },
+    {
+      id: 14,
+      predefinedTemplateNumber: 14,
+      f: 0.62,
+      m: 90,
+      n: 34,
+    },
+  ];
+
   const linesRef = useRef();
   const [showAlterPage, setShowAlterPage] = useState('existing');
   const [alterFValue, setAlterFValue] = useState(0.6);
@@ -32,31 +141,12 @@ function LandingPage(props) {
       setAlterColorValue(argColor);
     }
   );
-
-  // React.useEffect(() => {
-
-  //   if (props.location.homeProps) {
-  //     setShowAlterPage('existing')
-  //   }
-
-  // }, [props.location.homeProps])
-
-  React.useEffect(() => { 
-  }, [props.location.homeProps])
-
+  
   return (
     <div id="landingPage">
       <div className="displayContainer">
         <div
           id="linesContainer"
-          onClick={(event) => {
-            event.stopPropagation();
-            svg = linesRef.current.innerHTML.toString();
-            parent.postMessage(
-              { pluginMessage: { type: "create-spirograph", svg } },
-              "*"
-            );
-          }}
         >
         <Link 
         to={{
@@ -70,10 +160,6 @@ function LandingPage(props) {
           <div
             id="hoverPen"
             className="hoverBtn hoverBtnPrimary"
-            // onClick={(event) => {
-            //   event.stopPropagation();
-            //   setShowAlterPage('alter');
-            // }}
           >
             <svg
               width="13"
@@ -89,7 +175,6 @@ function LandingPage(props) {
             </svg>
           </div>
           </Link>
-
           <div id="hoverInsert" className="hoverBtn hoverBtnInsert">
             <div>
               <svg
@@ -107,7 +192,17 @@ function LandingPage(props) {
               <span>CLICK TO INSERT</span>
             </div>
           </div>
-          <div id="lines">
+          <div 
+            id="lines"
+            onClick={(event) => {
+              event.stopPropagation();
+              svg = linesRef.current.innerHTML.toString();
+              parent.postMessage(
+                { pluginMessage: { type: "create-spirograph", svg } },
+                "*"
+              );
+            }}
+            >
             <DisplaySpirograph
               id="displaySpirograph"
               linesID="lines"
@@ -122,10 +217,9 @@ function LandingPage(props) {
           </div>
         </div>
 
-        {props.location.homeProps ?
-        (props.location.homeProps.activeSection == "alter" 
-        ? (
-          <AlterPage
+        <div className={`alterSection ${props.location.homeProps ? (props.location.homeProps.activeSection == "alter" ? "active" : "") : "" }`}>
+        <AlterPage
+            visible={props.location.homeProps ? (props.location.homeProps.activeSection == "alter" ? true : false) : false}
             callChangeDisplay={callChangeDisplay}
             alterFValue={alterFValue}
             alterMValue={alterMValue}
@@ -134,15 +228,13 @@ function LandingPage(props) {
             alterStrokeWidthValue={alterStrokeWidthValue}
             alterColorValue={alterColorValue}
           />
-        ) : 
-          <ExistingTemplates 
+        </div>
+        <div className={`ETSection ${props.location.homeProps ? (props.location.homeProps.activeSection == "home" ? "active" : "") : "active" }`}>
+        <ExistingTemplates 
               callChangeDisplay={callChangeDisplay}
-          />
-        ) : (
-          <ExistingTemplates 
-            callChangeDisplay={callChangeDisplay}
-          />
-        )}
+              predefinedTemplates={predefinedTemplates}
+        />
+        </div>
 
       </div>
     </div>

@@ -10,6 +10,7 @@ function AlterPage({
   alterScaleValue,
   alterStrokeWidthValue,
   alterColorValue,
+  visible
 }) {
 
   const [activeParameter, setActiveParameter] = useState('config');
@@ -33,7 +34,13 @@ function AlterPage({
       strokeWidthValue,
       colorValue
     );
-  });
+  }, [fValue, mValue, nValue, scaleValue, strokeWidthValue, colorValue]);
+
+  useEffect(() => { 
+    if(visible) {
+      setActiveParameter('config')
+    }
+  }, [visible])
 
   return (
     <div className="alterPage">
