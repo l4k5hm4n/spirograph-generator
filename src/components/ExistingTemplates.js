@@ -8,12 +8,6 @@ const Spirograph = React.lazy(() => import('./Spirograph'));
 export default function ExistingTemplates(props){
       
   const arrLength = props.predefinedTemplates.length;
-  const elRefs = React.useRef([]);
-
-  if (elRefs.current.length !== arrLength) {
-    // add or remove refs
-    elRefs.current = Array(arrLength).fill().map((_, i) => elRefs.current[i] || createRef());
-  }
 
   return (
     <div>
@@ -46,7 +40,7 @@ export default function ExistingTemplates(props){
               scale="30"
               strokeWidth="1"
               color="#ffc700"
-              ref={elRefs.current[i]}
+              ref={React.createRef()}
             />
           </Suspense>
             <div

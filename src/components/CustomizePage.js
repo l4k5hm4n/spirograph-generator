@@ -1,27 +1,42 @@
-// import { create } from "@svgdotjs/svg.js";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useState, useEffect, useRef } from "react";
 import DisplaySpirograph from "./DisplaySpirograph";
+import { useHistory, MemoryRouter as Router } from "react-router-dom";
 import { db } from "../config/firebase-config";
 import AlterPage from "./AlterPage";
-import { useSelector, useDispatch, connect } from "react-redux";
-import { insert_template } from "../actions/insert_template";
-
 import "../style/style.css";
 import "../style/customizePage.css";
 
 function CustomizePage(props) {
-  var svg;
+
+  const history = useHistory();
+
+  const linesRef = useRef();
+  const [userEmail, setuserEmail] = useState();
+  const [customizeFValue, setCustomizeFValue] = useState(0.6);
+  const [customizeMValue, setCustomizeMValue] = useState(70);
+  const [customizeNValue, setCustomizeNValue] = useState(50);
+  const [customizeScaleValue, setCustomizeScaleValue] = useState(110);
+  const [customizeStrokeWidthValue, setCustomizeStrokeWidthValue] = useState(2);
+  const [customizeColorValue, setCustomizeColorValue] = useState("#ffc700");
+
+  let svg;
   let db__users = db.collection("users");
 
-  var templateLength = useSelector(
-    (state) => state.userDefinedTemplates
-  ).length;
+  useEffect(() => {
+    parent.postMessage({ pluginMessage: { type: "checkUserLogin" } }, "*");
+    window.addEventListener("message", async (event) => { 
+    if (event.data.pluginMessage.type === "checkUserLogin") { 
+      setuserEmail(event.data.pluginMessage.UserDetails.email)
+    }
+    })
+
+  }, []);
 
   const handleCustomizeHoverClick = (event) => {
-    let tempUser = db__users.doc("lakshmans@zeta.tech");
+    let tempUser = db__users.doc(userEmail);
     let template = {
         fValue: customizeFValue,
-        mValue: customizeMValue,
+        mValue: customizeMValue,    
         nValue: customizeNValue,
         scaleValue: customizeScaleValue,
         strokeWidthValue: customizeStrokeWidthValue,
@@ -42,17 +57,7 @@ function CustomizePage(props) {
         console.log('error while getting user fields', error)
       })
 
-    // event.stopPropagation();
-    // var tempPayload = {
-    //   fValue: customizeFValue,
-    //   mValue: customizeMValue,
-    //   nValue: customizeNValue,
-    //   scaleValue: customizeScaleValue,
-    //   strokeWidthValue: customizeStrokeWidthValue,
-    //   colorValue: customizeColorValue,
-    // };
-    // dispatch(insert_template(tempPayload));
-    // // props.insert_template(tempPayload);
+      history.push("/");
   };
 
   const getRandomColor = () => {
@@ -63,140 +68,32 @@ function CustomizePage(props) {
     }
     return color;
   };
+
   const randomizeParams = () => {
-    setCustomizeFValue(Math.floor(Math.random() * (40 - 10 + 10) - 20) / 10);
-    setCustomizeMValue(Math.floor(Math.random() * (100 - 35 + 1) + 15));
-    setCustomizeNValue(Math.floor(Math.random() * (40 - 1 + 1)) + 1);
+    setCustomizeFValue(Math.floor(Math.random() * 40 - 20) / 10);
+    setCustomizeMValue(Math.floor(Math.random() * 64 + 15));
+    setCustomizeNValue(Math.floor(Math.random() * 40) + 1);
     setCustomizeScaleValue((Math.floor(Math.random() * 16) + 4) * 5);
     setCustomizeStrokeWidthValue(
-      (Math.floor(Math.random() * (40 - 6 + 1)) + 1) / 10
+      (Math.floor(Math.random() * 35) + 1) / 10
     );
     setCustomizeColorValue(
       getRandomColor
-      // `#${Math.floor(Math.random() * 16777215).toString(16)}`
     );
   };
-  const [customizeFValue, setCustomizeFValue] = useState(0.6);
-  const [customizeMValue, setCustomizeMValue] = useState(70);
-  const [customizeNValue, setCustomizeNValue] = useState(50);
-  const [customizeScaleValue, setCustomizeScaleValue] = useState(110);
-  const [customizeStrokeWidthValue, setCustomizeStrokeWidthValue] = useState(2);
-  const [customizeColorValue, setCustomizeColorValue] = useState("#ffc700");
-  {
-    // const callChangeDisplay = useCallback(
-    //   (argF, argM, argN, argScale, argStrokeWidth, argColor) => {
-    //     console.log(
-    //       "Inside Call Change display: ",
-    //       argF,
-    //       argM,
-    //       argN,
-    //       argScale,
-    //       argStrokeWidth,
-    //       argColor
-    //     );
-    //     var node,
-    //       child,
-    //       linesContainer = document.getElementById("customizeLinesContainer");
-    //     setCustomizeFValue(argF);
-    //     setCustomizeMValue(argM);
-    //     setCustomizeNValue(argN);
-    //     setCustomizeScaleValue(argScale);
-    //     setCustomizeFValStrokeWidthe(argStrokeWidth);
-    //     setCustomizeColorValue(argColor);
-    //     var newDisplaySpirograph = (
-    //       <DisplaySpirograph
-    //         id="displaySpirograph"
-    //         linesID="customizeLines"
-    //         f={argF}
-    //         m={argM}
-    //         n={argN}
-    //         scale={argScale}
-    //         strokeWidth={argStrokeWidth}
-    //         color={argColor}
-    //       />
-    //     );
-    //     node = document.createElement("div");
-    //     child = document.getElementById("customizeLines");
-    //     linesContainer.replaceChild(node, child);
-    //     node.setAttribute("id", "customizeLines");
-    //     ReactDOM.render(
-    //       newDisplaySpirograph,
-    //       document.getElementById("customizeLines")
-    //     );
-    //     linesContainer.addEventListener("click", (event) => {
-    //       event.stopPropagation();
-    //       svg = document
-    //         .getElementById("customizeLines")
-    //         .firstChild.outerHTML.toString();
-    //       parent.postMessage(
-    //         { pluginMessage: { type: "create-spirograph", svg } },
-    //         "*"
-    //       );
-    //       console.log(svg);
-    //     });
-    //     document
-    //       .getElementById("customizeHoverCheck")
-    //       .addEventListener("click", (event) => {
-    //         event.stopPropagation();
-    //         var temp = {
-    //           id: templateLength + 1,
-    //           templateId: templateLength + 1,
-    //           f: argF,
-    //           m: argM,
-    //           n: argN,
-    //           scale: argScale,
-    //           strokeWidth: argStrokeWidth,
-    //           color: argColor,
-    //         };
-    //         console.log(temp);
-    //         // dispatch(insert_template(temp));
-    //         //   parent.postMessage(
-    //         //     { pluginMessage: { type: "insert_template", template: temp}
-    //         // }, "*");
-    //         // parent.postMessage(
-    //         //   {
-    //         //     pluginMessage: { type: "insert_template", template: temp },
-    //         //   },
-    //         //   "*"
-    //         // );
-    //       });
-    //   },
-    //   []
-    // );
-  }
 
   const callChangeDisplay = useCallback(
     (argF, argM, argN, argScale, argStrokeWidth, argColor) => {
-      console.log(
-        "Inside Call Change display: ",
-        argF,
-        argM,
-        argN,
-        argScale,
-        argStrokeWidth,
-        argColor
-      );
       setCustomizeFValue(argF);
       setCustomizeMValue(argM);
       setCustomizeNValue(argN);
       setCustomizeScaleValue(argScale);
       setCustomizeStrokeWidthValue(argStrokeWidth);
       setCustomizeColorValue(argColor);
-      // var linesContainer = document.getElementById("customizeLinesContainer");
-      // var node = document.createElement("div");
-      // var child = document.getElementById("customizeLines");
-      // linesContainer.replaceChild(node, child);
-      // node.setAttribute("id", "customizeLines");
-    },
-    [
-      customizeFValue,
-      customizeMValue,
-      customizeNValue,
-      customizeScaleValue,
-      customizeStrokeWidthValue,
-      customizeColorValue,
-    ]
+
+    }
   );
+
   return (
     <div id="CustomizePage">
       <div
@@ -221,42 +118,12 @@ function CustomizePage(props) {
       <div className="customizeContainer">
         <div
           id="customizeDisplayContainer"
-          onClick={(e) => {
-            e.stopPropagation();
-            svg = document
-              .querySelector(".actualSpirograph")
-              .firstChild.outerHTML.toString();
-            parent.postMessage(
-              { pluginMessage: { type: "create-spirograph", svg } },
-              "*"
-            );
-            // console.log(count);
-          }}
         >
           <div
             id="customizeHoverCheck"
             className="hoverBtn hoverBtnPrimary"
             onClick={(event) => {
               handleCustomizeHoverClick(event);
-
-              // event.stopPropagation();
-              // var tempPayload = {
-              //   fValue: customizeFValue,
-              //   mValue: customizeMValue,
-              //   nValue: customizeNValue,
-              //   scaleValue: customizeScaleValue,
-              //   strokeWidthValue: customizeStrokeWidthValue,
-              //   colorValue: customizeColorValue,
-              // };
-              // dispatch(insert_template(tempPayload));
-              // parent.postMessage(
-              //   {
-              //     pluginMessage: {
-              //       type: "insert_template",
-              //     },
-              //   },
-              //   "*"
-              // );
             }}
           >
             <svg
@@ -279,7 +146,7 @@ function CustomizePage(props) {
               </defs>
             </svg>
           </div>
-          <div id="customizeHoverInsert" className="hoverBtn hoverBtnInsert">
+          <div id="hoverInsert" className="hoverBtn hoverBtnInsert">
             <div>
               <svg
                 width="12"
@@ -296,7 +163,14 @@ function CustomizePage(props) {
               <span>CLICK TO INSERT</span>
             </div>
           </div>
-          <div id="customizeLinesContainer">
+          <div id="customizeLinesContainer"
+                    onClick={(e) => {
+                      svg = linesRef.current.innerHTML.toString();
+                      parent.postMessage(
+                        { pluginMessage: { type: "create-spirograph", svg } },
+                        "*"
+                      );
+                    }}>
             <div id="customizeLines">
               <DisplaySpirograph
                 id="displaySpirograph"
@@ -307,12 +181,7 @@ function CustomizePage(props) {
                 scale={customizeScaleValue}
                 strokeWidth={customizeStrokeWidthValue}
                 color={customizeColorValue}
-                // f="0.6"
-                // m="70"
-                // n="50"
-                // scale="110"
-                // strokeWidth="2"
-                // color="#ffc700"
+                ref={linesRef}
               />
             </div>
           </div>
@@ -331,10 +200,5 @@ function CustomizePage(props) {
     </div>
   );
 }
-// const mapDispatchToProps = (dispatch) => {
-//   return {
-//     insert_template: (template) => dispatch(insert_template(template)),
-//   };
-// };
+
 export default CustomizePage;
-// export default connect(null, mapDispatchToProps)(CustomizePage);

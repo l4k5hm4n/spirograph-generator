@@ -16,30 +16,6 @@
   background-color: rgba(0, 0, 0, 0.24);
   border-radius: 18px;
 }
-/* .hoverButton {
-  position: absolute;
-  display: none;
-  z-index: 2;
-} */
-
-/* #hoverPen {
-  height: 32px;
-  width: 32px;
-  background-color: #ffc700;
-  border-radius: 50%;
-  bottom: 28px;
-  right: 28px;
-  z-index: 2;
-} */
-/* #hoverInsert {
-  width: 137px;
-  height: 20px;
-  bottom: 0px;
-  left: 83px;
-  background-color: rgba(255, 199, 0, 0.1);
-  color: #ffc700;
-  z-index: 2;
-} */
 
 #linesContainer a {
   z-index: 999999;
@@ -75,5 +51,10 @@ div#hoverPen:hover {
 
 .ETSection.active {
   display: block;
+}
+
+.shadowSpirograph {
+  position: absolute;
+  top: 0;
 }
 

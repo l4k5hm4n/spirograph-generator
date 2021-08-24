@@ -1,21 +1,7 @@
 import React from "react";
-import LandingPage from "./LandingPage";
-import CustomizePage from "./CustomizePage";
-import LoginPage from "./LoginPage";
-import ReactDOM from "react-dom";
-import { Route, NavLink, MemoryRouter as Router } from "react-router-dom";
+import { NavLink, MemoryRouter as Router } from "react-router-dom";
 import "../style/nav.css";
-// const landingPage = () => {
-//   return <LandingPage />;
-// };
 
-// const customizePage = () => {
-//   return <CustomizePage />;
-// };
-
-// const loginPage = () => {
-//   return <LoginPage />;
-// };
 function Nav() {
   return (
     <div>

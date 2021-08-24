@@ -3,7 +3,7 @@ figma.showUI(__html__, { width: 360, height: 720 });
 figma.ui.onmessage = async (msg) => {
   let UserLoggedIn = await figma.clientStorage.getAsync("UserLoggedIn");
   let UserDetails = await figma.clientStorage.getAsync("UserDetails");
-  let myTemplates = (await figma.clientStorage.getAsync("myTemplates")) || [];
+  let myTemplates = await figma.clientStorage.getAsync("myTemplates");
   if (msg.type === "checkUserLogin") {
     figma.ui.postMessage({
       type: "checkUserLogin",

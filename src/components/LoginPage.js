@@ -1,7 +1,6 @@
 import React, { useState, createRef, useEffect } from "react";
 import { db } from "../config/firebase-config";
 import { Link, MemoryRouter as Router } from "react-router-dom";
-import MyTemplates from "./MyTemplates";
 import Modal from "./Modal";
 import "../style/style.css";
 import "../style/loginPage.css";
@@ -11,7 +10,6 @@ function LoginPage() {
   let [loggedIn, setLoggedIn] = useState(false);
   const modalRef = createRef();
   let [UserDetails, setUserDetails] = useState('');
-  let [myTemplates, setmyTemplates] = useState('');
 
   const clickedLogin = async () => {
     let uniqueString = "";
@@ -74,6 +72,16 @@ function LoginPage() {
                       lastLogin: new Date().toLocaleString(),
                     });
 
+                    parent.postMessage(
+                      {
+                        pluginMessage: {
+                          type: "sync_myTemplates",
+                          myTemplates: user.data().myTemplates,
+                        },
+                      },
+                      "*"
+                    );
+
                   } else {
                     // create new user profile if email doesn't exist already
                     tempUser.set({
@@ -84,18 +92,19 @@ function LoginPage() {
                       lastLogin: new Date().toLocaleString(),
                       myTemplates: [],
                     });
-                    myTemplates = [];
 
                     parent.postMessage(
                       {
                         pluginMessage: {
                           type: "sync_myTemplates",
-                          myTemplates: myTemplates,
+                          myTemplates: [],
                         },
                       },
                       "*"
                     );
+
                   }
+           
                 })
                 .catch((error) => {
                   console.log("error while getting user fields", error);
@@ -122,18 +131,15 @@ function LoginPage() {
 
   useEffect(() => {
 
-    // Check if user is logged in and redirect to homepage
     parent.postMessage({ pluginMessage: { type: "checkUserLogin" } }, "*");
-    // Listen for messages from figma
 
     window.addEventListener("message", async (event) => {
       if (event.data.pluginMessage.type === "checkUserLogin") { 
         setLoggedIn(event.data.pluginMessage.UserLoggedIn)
         setUserDetails(event.data.pluginMessage.UserDetails)
-        setmyTemplates(event.data.pluginMessage.myTemplates)
-        console.log(loggedIn, UserDetails, myTemplates);
       }
     });
+
   }, []);
 
   return (

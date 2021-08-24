@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, createRef } from "react";
+import React, { useState, useEffect } from "react";
 import InfoHover from "./InfoHover";
 import "../style/style.css";
 import "../style/alterPage.css";
@@ -35,6 +35,15 @@ function AlterPage({
       colorValue
     );
   }, [fValue, mValue, nValue, scaleValue, strokeWidthValue, colorValue]);
+
+  useEffect(() => {
+    setFValue(alterFValue);
+    setMValue(alterMValue);
+    setNValue(alterNValue);
+    setScaleValue(alterScaleValue);
+    setStrokeWidthValue(alterStrokeWidthValue);
+    setColorValue(alterColorValue);
+  }, [alterFValue, alterMValue, alterNValue, alterScaleValue, alterStrokeWidthValue, alterColorValue]);
 
   useEffect(() => { 
     if(visible) {

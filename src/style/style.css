@@ -8,6 +8,7 @@
   --mediumDarkTranslucency: rgba(0, 0, 0, 0.6);
   --mediumLightTranslucency: rgba(255, 255, 255, 0.6);
 }
+
 * {
   margin: 0;
   padding: 0;
@@ -16,10 +17,15 @@
   /* background-color: var(--bgdGrey); */
 }
 
+body {
+  background-color: var(--bgdGrey);
+}
+
 /* Hide and Display Classes */
 .hideClass {
   display: none;
 }
+
 .displayClass {
   display: block;
 }
@@ -78,7 +84,7 @@
   font-size: 10px;
   font-weight: 500;
   border-radius: 14px 14px 0 0;
-  z-index: 2;
+  z-index: 999999;
 }
 .hoverBtnInsert > div {
   margin: 4px 16px;

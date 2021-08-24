@@ -1,5 +1,7 @@
 import React, { useEffect } from "react";
 import { SVG } from "@svgdotjs/svg.js";
+import  "@svgdotjs/svg.filter.js";
+
 const constants = {
   cx: 156,
   cy: 156,
@@ -43,9 +45,24 @@ export default React.forwardRef((props, ref) => {
     let draw = SVG().size(constants.width, constants.height);
     draw.path(drawSpirograph(constants.cx, constants.cy, f, m, n, scale))
     .fill("none")
-    .stroke({ color: color, width: strokeWidth });
-    ref.current.innerHTML = draw.svg();
-  });
+    .stroke({ color: color, width: strokeWidth })
 
-  return <div className="actualSpirograph" ref={ref}></div>;
+    ref.current.innerHTML = draw.svg();
+
+    // draw.scale(1.2)
+    // .filterWith(function(add) {
+    //   var blur = add.offset(0, 0).gaussianBlur(8)
+    //   add.blend(add.$source, blur)
+    // })
+    // // ref.current.nextSibling.innerHTML = draw.svg();
+
+  });
+  
+
+  return (
+  <React.Fragment>
+      <div className="actualSpirograph" ref={ref}></div>
+      {/* <div className="shadowSpirograph"></div> */}
+  </React.Fragment>
+  )
  });
