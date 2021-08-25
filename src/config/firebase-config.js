@@ -8,9 +8,9 @@ const firebaseConfig = {
   appId: "1:330106529581:web:d8252430ef837eb7f115a4",
   measurementId: "G-4QV28SJJKE"
 };
+
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
-// firebase.firestore().settings({ timestampsInSnapshots: true });
 let db = firebase.firestore();
 
 export default firebase;
