@@ -29,16 +29,13 @@
     "webpack-cli": "^4.7.2"
   },
   "dependencies": {
+    "@reduxjs/toolkit": "^1.6.1",
     "@svgdotjs/svg.filter.js": "^3.0.7",
     "@svgdotjs/svg.js": "^3.1.1",
     "firebase": "^8.9.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-redux": "^7.2.4",
-    "react-redux-firebase": "^3.10.0",
-    "react-router-dom": "^5.2.0",
-    "redux": "^4.1.1",
-    "redux-firestore": "^0.15.0",
-    "redux-thunk": "^2.3.0"
+    "react-router-dom": "^5.2.0"
   }
 }

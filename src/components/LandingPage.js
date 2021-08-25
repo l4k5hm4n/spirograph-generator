@@ -1,18 +1,23 @@
-import React, {
-  useState,
-  useRef,
-  useCallback,
-} from "react";
+import React, { useState, useRef, useCallback } from "react";
 import DisplaySpirograph from "./DisplaySpirograph";
 import AlterPage from "./AlterPage";
 import ExistingTemplates from "./ExistingTemplates";
-import predefinedTemplates from '../config/predefinedTemplates'
+import predefinedTemplates from "../config/predefinedTemplates";
 import { Route, Link, MemoryRouter as Router } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { addUserTemplate } from "../store/userDetailsSlice";
 import "../style/style.css";
 import "../style/landingPage.css";
 import "../style/templates.css";
 
 function LandingPage(props) {
+  let templates = useSelector((state) => state.userDetails.myTemplates);
+
+  React.useEffect(() => {
+    console.log(templates);
+  }, [templates]);
+
+  let dispatch = useDispatch();
 
   const linesRef = useRef();
   const shadowLinesRef = useRef();
@@ -34,40 +39,77 @@ function LandingPage(props) {
       setAlterColorValue(argColor);
     }
   );
-  
+
   return (
     <div id="landingPage">
       <div className="displayContainer">
-        <div
-          id="linesContainer"
-        >
-        <Link 
-        to={{
-          pathname:"/",
-          homeProps: { 
-            activeSection:"alter"
-          },
-        } 
-        }
-        >
+        <div id="linesContainer">
+          <Link
+            to={{
+              pathname: "/",
+              homeProps: {
+                activeSection: "alter",
+              },
+            }}
+            className={`${
+              props.location.homeProps
+                ? props.location.homeProps.activeSection == "alter"
+                  ? "disable"
+                  : ""
+                : ""
+            }`}
+          >
+            <div id="hoverPen" className="hoverBtn hoverBtnPrimary">
+              <svg
+                width="13"
+                height="13"
+                viewBox="0 0 13 13"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M0 10.4999V12.9999H2.5L9.87333 5.62659L7.37333 3.12659L0 10.4999ZM11.8067 3.69325C11.8685 3.63158 11.9175 3.55832 11.951 3.47767C11.9844 3.39702 12.0016 3.31057 12.0016 3.22325C12.0016 3.13594 11.9844 3.04949 11.951 2.96884C11.9175 2.88819 11.8685 2.81493 11.8067 2.75325L10.2467 1.19325C10.185 1.13145 10.1117 1.08242 10.0311 1.04897C9.95044 1.01551 9.86398 0.998291 9.77667 0.998291C9.68936 0.998291 9.6029 1.01551 9.52225 1.04897C9.4416 1.08242 9.36834 1.13145 9.30667 1.19325L8.08667 2.41325L10.5867 4.91325L11.8067 3.69325Z"
+                  fill="black"
+                />
+              </svg>
+            </div>
+          </Link>
+
           <div
-            id="hoverPen"
-            className="hoverBtn hoverBtnPrimary"
+            onClick={() => {
+              dispatch(
+                addUserTemplate({
+                  fValue: alterFValue,
+                  mValue: alterMValue,
+                  nValue: alterNValue,
+                  scaleValue: alterScaleValue,
+                  strokeWidthValue: alterStrokeWidthValue,
+                  colorValue: alterColorValue,
+                })
+              );
+            }}
+            className={`hoverBtn insertTemplate hoverBtnPrimary ${
+              props.location.homeProps
+                ? props.location.homeProps.activeSection == "alter"
+                  ? "enable"
+                  : ""
+                : ""
+            }`}
           >
             <svg
-              width="13"
-              height="13"
-              viewBox="0 0 13 13"
-              fill="none"
               xmlns="http://www.w3.org/2000/svg"
+              width="32"
+              height="32"
+              viewBox="0 0 32 32"
+              fill="none"
             >
+              <circle cx="16" cy="16" r="16" fill="#FFC700" />
               <path
-                d="M0 10.4999V12.9999H2.5L9.87333 5.62659L7.37333 3.12659L0 10.4999ZM11.8067 3.69325C11.8685 3.63158 11.9175 3.55832 11.951 3.47767C11.9844 3.39702 12.0016 3.31057 12.0016 3.22325C12.0016 3.13594 11.9844 3.04949 11.951 2.96884C11.9175 2.88819 11.8685 2.81493 11.8067 2.75325L10.2467 1.19325C10.185 1.13145 10.1117 1.08242 10.0311 1.04897C9.95044 1.01551 9.86398 0.998291 9.77667 0.998291C9.68936 0.998291 9.6029 1.01551 9.52225 1.04897C9.4416 1.08242 9.36834 1.13145 9.30667 1.19325L8.08667 2.41325L10.5867 4.91325L11.8067 3.69325Z"
+                d="M13 20.2001L8.79999 16.0001L7.39999 17.4001L13 23.0001L25 11.0001L23.6 9.6001L13 20.2001Z"
                 fill="black"
               />
             </svg>
           </div>
-          </Link>
           <div id="hoverInsert" className="hoverBtn hoverBtnInsert">
             <div>
               <svg
@@ -85,7 +127,7 @@ function LandingPage(props) {
               <span>CLICK TO INSERT</span>
             </div>
           </div>
-          <div 
+          <div
             id="lines"
             onClick={(event) => {
               svg = linesRef.current.innerHTML.toString();
@@ -94,7 +136,7 @@ function LandingPage(props) {
                 "*"
               );
             }}
-            >
+          >
             <DisplaySpirograph
               id="displaySpirograph"
               linesID="lines"
@@ -110,9 +152,23 @@ function LandingPage(props) {
           </div>
         </div>
 
-        <div className={`alterSection ${props.location.homeProps ? (props.location.homeProps.activeSection == "alter" ? "active" : "") : "" }`}>
-        <AlterPage
-            visible={props.location.homeProps ? (props.location.homeProps.activeSection == "alter" ? true : false) : false}
+        <div
+          className={`alterSection ${
+            props.location.homeProps
+              ? props.location.homeProps.activeSection == "alter"
+                ? "active"
+                : ""
+              : ""
+          }`}
+        >
+          <AlterPage
+            visible={
+              props.location.homeProps
+                ? props.location.homeProps.activeSection == "alter"
+                  ? true
+                  : false
+                : false
+            }
             callChangeDisplay={callChangeDisplay}
             alterFValue={alterFValue}
             alterMValue={alterMValue}
@@ -122,13 +178,20 @@ function LandingPage(props) {
             alterColorValue={alterColorValue}
           />
         </div>
-        <div className={`ETSection ${props.location.homeProps ? (props.location.homeProps.activeSection == "home" ? "active" : "") : "active" }`}>
-        <ExistingTemplates 
-              callChangeDisplay={callChangeDisplay}
-              predefinedTemplates={predefinedTemplates}
-        />
+        <div
+          className={`ETSection ${
+            props.location.homeProps
+              ? props.location.homeProps.activeSection == "home"
+                ? "active"
+                : ""
+              : "active"
+          }`}
+        >
+          <ExistingTemplates
+            callChangeDisplay={callChangeDisplay}
+            predefinedTemplates={predefinedTemplates}
+          />
         </div>
-
       </div>
     </div>
   );

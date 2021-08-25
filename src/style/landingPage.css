@@ -25,6 +25,18 @@
   display: block;
 }
 
+#linesContainer a.disable { 
+  display: none;
+}
+
+.insertTemplate {
+  display: none;
+}
+
+.insertTemplate.enable {
+  display: block;
+}
+
 div#hoverPen:hover {
   background-color: white;
 }
