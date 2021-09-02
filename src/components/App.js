@@ -28,7 +28,16 @@ function App() {
     <div>
       <Router>
         {onboarding ? (
-          <p>Onboarding Screens</p>
+          <div>
+            <p>Onboarding Screens</p>
+            <button
+              onClick={() => {
+                setOnboarding(false);
+              }}
+            >
+              Click Me
+            </button>
+          </div>
         ) : (
           <React.Fragment>
             <Nav />
@@ -65,13 +74,10 @@ function App() {
   );
 
   if (splash) {
-    return splashScreen
-  }
-
-  else {
+    return splashScreen;
+  } else {
     return App;
   }
-
 }
 
 export default App;

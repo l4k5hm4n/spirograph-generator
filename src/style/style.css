@@ -7,6 +7,7 @@
   --black: #000;
   --mediumDarkTranslucency: rgba(0, 0, 0, 0.6);
   --mediumLightTranslucency: rgba(255, 255, 255, 0.6);
+  --red: #f00;
 }
 
 * {
@@ -43,6 +44,8 @@ body {
   background-color: var(--white);
   width: 132px;
   height: 40px;
+  border: none;
+  border-radius: 8px;
 }
 .btnSecondary {
   color: var(--white);
@@ -50,7 +53,12 @@ body {
   border: 1px solid var(--white);
   width: 132px;
   height: 40px;
+  border-radius: 8px;
   outline: none;
+}
+.btnDisabled {
+  background-color: #676767;
+  pointer-events: none;
 }
 
 /* Hover Classes */
