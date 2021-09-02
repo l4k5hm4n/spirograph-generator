@@ -1,7 +1,8 @@
 import React, { useCallback, useState, useEffect, useRef } from "react";
 import DisplaySpirograph from "./DisplaySpirograph";
 import { useHistory, MemoryRouter as Router } from "react-router-dom";
-import { db } from "../config/firebase-config";
+import { useSelector, useDispatch } from "react-redux";
+import { addUserTemplate } from "../store/userDetailsSlice";
 import AlterPage from "./AlterPage";
 import "../style/style.css";
 import "../style/customizePage.css";
@@ -9,9 +10,8 @@ import "../style/customizePage.css";
 function CustomizePage(props) {
 
   const history = useHistory();
-
+  const dispatch = useDispatch();
   const linesRef = useRef();
-  const [userEmail, setuserEmail] = useState();
   const [customizeFValue, setCustomizeFValue] = useState(0.6);
   const [customizeMValue, setCustomizeMValue] = useState(70);
   const [customizeNValue, setCustomizeNValue] = useState(50);
@@ -20,42 +20,19 @@ function CustomizePage(props) {
   const [customizeColorValue, setCustomizeColorValue] = useState("#ffc700");
 
   let svg;
-  let db__users = db.collection("users");
 
-  useEffect(() => {
-    parent.postMessage({ pluginMessage: { type: "checkUserLogin" } }, "*");
-    window.addEventListener("message", async (event) => { 
-    if (event.data.pluginMessage.type === "checkUserLogin") { 
-      setuserEmail(event.data.pluginMessage.UserDetails.email)
-    }
-    })
+  const addTemplateListener = () => {
 
-  }, []);
-
-  const handleCustomizeHoverClick = (event) => {
-    let tempUser = db__users.doc(userEmail);
-    let template = {
-        fValue: customizeFValue,
-        mValue: customizeMValue,    
-        nValue: customizeNValue,
-        scaleValue: customizeScaleValue,
-        strokeWidthValue: customizeStrokeWidthValue,
-        colorValue: customizeColorValue,
-      }
-
-    tempUser.get().then( (user) => {
-      // if user already exists update profile details with latest data
-
-      tempUser.update({
-        'myTemplates': [...user.data().myTemplates, template] 
-      })
-
-      // sync favorites & mycopies to localstorage for quick access in the plugin, favorites are shown as bookmarks in UI
-      parent.postMessage({ pluginMessage: { type: 'sync_myTemplates', myTemplates : user.data().myTemplates} }, '*')
-          
-      }).catch(error => {
-        console.log('error while getting user fields', error)
-      })
+      dispatch(
+        addUserTemplate({
+          fValue: customizeFValue,
+          mValue: customizeMValue,
+          nValue: customizeNValue,
+          scaleValue: customizeScaleValue,
+          strokeWidthValue: customizeStrokeWidthValue,
+          colorValue: customizeColorValue,
+        })
+      );
 
       history.push("/");
   };
@@ -122,9 +99,7 @@ function CustomizePage(props) {
           <div
             id="customizeHoverCheck"
             className="hoverBtn hoverBtnPrimary"
-            onClick={(event) => {
-              handleCustomizeHoverClick(event);
-            }}
+            onClick={() => { addTemplateListener(); }}
           >
             <svg
               width="18"

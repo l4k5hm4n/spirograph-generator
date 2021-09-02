@@ -1,32 +1,24 @@
 import React, { useState, createRef, useEffect } from "react";
 import { db } from "../config/firebase-config";
 import { Link, MemoryRouter as Router } from "react-router-dom";
+import { nanoid } from "@reduxjs/toolkit";
+import { useSelector, useDispatch } from "react-redux";
+import { fetchUserDetails, updateUserDetails } from "../store/userDetailsSlice";
 import Modal from "./Modal";
 import "../style/style.css";
 import "../style/loginPage.css";
 function LoginPage() {
-  // var userTemplates = useSelector((state) => state.userDefinedTemplates);
+  let userDetails = useSelector((state) => state.userDetails);
+  let dispatch = useDispatch();
 
-  let [loggedIn, setLoggedIn] = useState(false);
   const modalRef = createRef();
-  let [UserDetails, setUserDetails] = useState('');
 
   const clickedLogin = async () => {
-    let uniqueString = "";
-    let characters =
-      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    let charactersLength = characters.length;
-    for (let i = 0; i < 16; i++) {
-      uniqueString += characters.charAt(
-        Math.floor(Math.random() * charactersLength)
-      );
-    }
 
-    let date = new Date();
-    var timeStamp = date.toLocaleString();
+    let uniqueString = nanoid();
+    let timeStamp = new Date().toLocaleString();
     let db__loginAttempt = db.collection("login_attempts");
     let db__users = db.collection("users");
-    // console.log(timeStamp);
 
     // Send Sign In request to firestore
     db__loginAttempt
@@ -47,7 +39,6 @@ function LoginPage() {
             //Continue only if authStatus is true
             if (tempData.authStatus) {
               // Post User details to figma for local storage
-              setLoggedIn(true);
               console.log(tempData.userInfo, 'user info ')
               parent.postMessage(
                 {
@@ -82,6 +73,8 @@ function LoginPage() {
                       "*"
                     );
 
+                    dispatch(fetchUserDetails());
+
                   } else {
                     // create new user profile if email doesn't exist already
                     tempUser.set({
@@ -102,6 +95,8 @@ function LoginPage() {
                       },
                       "*"
                     );
+
+                    dispatch(fetchUserDetails());
 
                   }
            
@@ -124,30 +119,17 @@ function LoginPage() {
   };
   const clickedLogout = () => {
     parent.postMessage({ pluginMessage: { type: "logout" } }, "*");
+    dispatch(updateUserDetails( {status : logout}));
     document.getElementById("UserAvatar").classList.add("removeClass");
     document.getElementById("accountInfo").classList.add("removeClass");
-    setLoggedIn(false);
   };
-
-  useEffect(() => {
-
-    parent.postMessage({ pluginMessage: { type: "checkUserLogin" } }, "*");
-
-    window.addEventListener("message", async (event) => {
-      if (event.data.pluginMessage.type === "checkUserLogin") { 
-        setLoggedIn(event.data.pluginMessage.UserLoggedIn)
-        setUserDetails(event.data.pluginMessage.UserDetails)
-      }
-    });
-
-  }, []);
 
   return (
     <div id="loginPage">
       <div id="loginContainer">
         <div id="loginDisplay">
           <div id="loginAvatar">
-            {!loggedIn ?
+            {!userDetails.loggedIn ?
              ( <svg
                 width="116"
                 height="117"
@@ -177,12 +159,12 @@ function LoginPage() {
                 />
               </svg>
             ) : 
-            <img src={UserDetails.photo ? UserDetails.photo : ''} id="UserAvatar" /> 
+            <img src={userDetails.photo ? userDetails.photo : ''} id="UserAvatar" /> 
             }
           </div>
           <div id="googleAccountInfo">
             <div id="signInContainer">
-              {!loggedIn && (
+              {!userDetails.loggedIn && (
                 <button
                   onClick={() => {
                     clickedLogin();
@@ -218,11 +200,11 @@ function LoginPage() {
               )}
             </div>
             <div>
-              {loggedIn && (
+              {userDetails.loggedIn && (
                 <div id="accountInfo">
                   {/* <div id="accountInfo" className="removeClass"> */}
-                  <h4>{UserDetails.name}</h4>
-                  <h6>{UserDetails.email}</h6>
+                  <h4>{userDetails.name}</h4>
+                  <h6>{userDetails.email}</h6>
                 </div>
               )}
             </div>
@@ -230,7 +212,7 @@ function LoginPage() {
         </div>
         <div id="loginLinks">
           <div id="loginTabs">
-          {loggedIn ? (
+          {userDetails.loggedIn ? (
             <React.Fragment>
             <Link to="/loginPage/myTemplates">
               <div className="greyBgd loginTab">
@@ -329,7 +311,7 @@ function LoginPage() {
           )}
           </div>
           <div id="logoutContainer">
-            {loggedIn && (
+            {userDetails.loggedIn && (
               <button
                 id="logout"
                 onClick={() => {

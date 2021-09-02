@@ -11,11 +11,6 @@ import "../style/landingPage.css";
 import "../style/templates.css";
 
 function LandingPage(props) {
-  let templates = useSelector((state) => state.userDetails.myTemplates);
-
-  React.useEffect(() => {
-    console.log(templates);
-  }, [templates]);
 
   let dispatch = useDispatch();
 
@@ -39,6 +34,19 @@ function LandingPage(props) {
       setAlterColorValue(argColor);
     }
   );
+
+  const addTemplateListener = () => {
+    dispatch(
+      addUserTemplate({
+        fValue: alterFValue,
+        mValue: alterMValue,
+        nValue: alterNValue,
+        scaleValue: alterScaleValue,
+        strokeWidthValue: alterStrokeWidthValue,
+        colorValue: alterColorValue,
+      })
+    );
+  }
 
   return (
     <div id="landingPage">
@@ -76,18 +84,7 @@ function LandingPage(props) {
           </Link>
 
           <div
-            onClick={() => {
-              dispatch(
-                addUserTemplate({
-                  fValue: alterFValue,
-                  mValue: alterMValue,
-                  nValue: alterNValue,
-                  scaleValue: alterScaleValue,
-                  strokeWidthValue: alterStrokeWidthValue,
-                  colorValue: alterColorValue,
-                })
-              );
-            }}
+            onClick={addTemplateListener}
             className={`hoverBtn insertTemplate hoverBtnPrimary ${
               props.location.homeProps
                 ? props.location.homeProps.activeSection == "alter"

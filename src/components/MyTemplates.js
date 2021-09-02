@@ -2,13 +2,15 @@ import React, { useState, useCallback, useEffect, useRef } from "react";
 import DisplaySpirograph from "./DisplaySpirograph";
 import AlterPage from "./AlterPage";
 import Spirograph from "./Spirograph";
-import { db } from "../config/firebase-config";
+import { useSelector, useDispatch } from "react-redux";
+import { deleteUserTemplate, editUserTemplate } from "../store/userDetailsSlice";
 import "../style/myTemplates.css";
 function MyTemplates(props) {
 
+  let userDetails = useSelector((state) => state.userDetails);
+  let dispatch = useDispatch();
+
   const linesRef = useRef();
-  const [userDefinedTemplates, setUserDefinedTemplates] = useState([]);
-  const [userEmail, setuserEmail] = useState();
   const [showAlterMyTemplatesPage, setShowAlterMyTemplatePage] = useState(false);
   const [alterMyTemplateFValue, setAlterMyTemplateFValue] = useState('');
   const [alterMyTemplateMValue, setAlterMyTemplateMValue] = useState('');
@@ -17,21 +19,6 @@ function MyTemplates(props) {
   const [alterMyTemplateStrokeWidthValue, setAlterMyTemplateStrokeWidthValue] = useState('');
   const [alterMyTemplateColorValue, setAlterMyTemplateColorValue] = useState('');
   
-  useEffect(() => {
-    parent.postMessage({ pluginMessage: { type: "checkUserLogin" } }, "*");
-    window.addEventListener("message", async (event) => { 
-    if (event.data.pluginMessage.type === "checkUserLogin") { 
-      // setUserDefinedTemplates(event.data.pluginMessage.myTemplates)
-      setuserEmail(event.data.pluginMessage.UserDetails.email)
-
-      db.collection("users").doc(event.data.pluginMessage.UserDetails.email).get().then( (user) => {
-        setUserDefinedTemplates(user.data().myTemplates)
-       })
-
-    }
-    })
-  }, []);
-
   let svg;
 
   const callChangeMyTemplateDisplay = useCallback(
@@ -48,7 +35,7 @@ function MyTemplates(props) {
   return (
     <div id="MyTemplates">
 
-      { userDefinedTemplates.length > 0 ? (
+      { userDetails.myTemplates && userDetails.myTemplates.length > 0 ? (
       <div className="myTemplatesContainer">
         <div
           id="myTemplatesDisplayContainer"
@@ -111,12 +98,12 @@ function MyTemplates(props) {
                 id="myTemplatesDisplaySpirograph"
                 linesID="myTemplateLines"
                 ref={linesRef}
-                f={alterMyTemplateFValue == '' ? userDefinedTemplates[0].fValue : alterMyTemplateFValue}
-                m={alterMyTemplateMValue == '' ? userDefinedTemplates[0].mValue : alterMyTemplateMValue}
-                n={alterMyTemplateNValue == '' ? userDefinedTemplates[0].nValue : alterMyTemplateNValue}
-                scale={alterMyTemplateScaleValue == '' ? userDefinedTemplates[0].scaleValue : alterMyTemplateScaleValue}
-                strokeWidth={alterMyTemplateStrokeWidthValue  == '' ? userDefinedTemplates[0].strokeWidthValue : alterMyTemplateStrokeWidthValue}
-                color={alterMyTemplateColorValue == '' ? userDefinedTemplates[0].colorValue : alterMyTemplateColorValue}
+                f={alterMyTemplateFValue == '' ? userDetails.myTemplates[0].fValue : alterMyTemplateFValue}
+                m={alterMyTemplateMValue == '' ? userDetails.myTemplates[0].mValue : alterMyTemplateMValue}
+                n={alterMyTemplateNValue == '' ? userDetails.myTemplates[0].nValue : alterMyTemplateNValue}
+                scale={alterMyTemplateScaleValue == '' ? userDetails.myTemplates[0].scaleValue : alterMyTemplateScaleValue}
+                strokeWidth={alterMyTemplateStrokeWidthValue  == '' ? userDetails.myTemplates[0].strokeWidthValue : alterMyTemplateStrokeWidthValue}
+                color={alterMyTemplateColorValue == '' ? userDetails.myTemplates[0].colorValue : alterMyTemplateColorValue}
               />
             </div>
           </div>
@@ -138,55 +125,33 @@ function MyTemplates(props) {
             
             <div className="templatesContainer">
               <div className="gridContainer">
-                {userDefinedTemplates.map((userDefinedTemplate, index) => (
+                {userDetails.myTemplates.map((userTemplate, index) => (
                   <div
-                    key={index*Math.random()}
+                    key={userTemplate.id}
                     className="templateDisplay"
                     onClick={() => {
                       callChangeMyTemplateDisplay(
-                        userDefinedTemplate.fValue,
-                        userDefinedTemplate.mValue,
-                        userDefinedTemplate.nValue,
-                        userDefinedTemplate.scaleValue,
-                        userDefinedTemplate.strokeWidthValue,
-                        userDefinedTemplate.colorValue
+                        userTemplate.fValue,
+                        userTemplate.mValue,
+                        userTemplate.nValue,
+                        userTemplate.scaleValue,
+                        userTemplate.strokeWidthValue,
+                        userTemplate.colorValue
                       );
                     }}
                   >
                     <Spirograph
-                      f={userDefinedTemplate.fValue}
-                      m={userDefinedTemplate.mValue}
-                      n={userDefinedTemplate.nValue}
+                      f={userTemplate.fValue}
+                      m={userTemplate.mValue}
+                      n={userTemplate.nValue}
                       scale="30"
-                      strokeWidth={userDefinedTemplate.strokeWidthValue}
-                      color={userDefinedTemplate.colorValue}
+                      strokeWidth={userTemplate.strokeWidthValue}
+                      color={userTemplate.colorValue}
                       ref={React.createRef()}
                     />
                     <div
                       className="hoverBtnSecondary hideClass"
-                      onClick={(event) => {
-                        
-                        let updatedTemplates = userDefinedTemplates.filter((item, i)  => {
-                          return i !== index;
-                        })
-
-                        db.collection("users").doc(userEmail).update({
-                          myTemplates : updatedTemplates
-                        })
-
-                        setUserDefinedTemplates(updatedTemplates)
-
-                        parent.postMessage(
-                          {
-                            pluginMessage: {
-                              type: "sync_myTemplates",
-                              myTemplates: updatedTemplates,
-                            },
-                          },
-                          "*"
-                        );
-
-                      }}
+                      onClick={() => dispatch(deleteUserTemplate(userTemplate.id)) }
                     >
                       <svg
                         width="10"

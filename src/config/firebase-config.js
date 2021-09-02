@@ -1,4 +1,5 @@
 import firebase from "firebase";
+
 const firebaseConfig = {
   apiKey: "AIzaSyDZpknla6NEtTmHl1GQ8EqfwaWKc2atsGM",
   authDomain: "spirous-figma-plugin.firebaseapp.com",

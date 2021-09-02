@@ -25,11 +25,6 @@ figma.ui.onmessage = async (msg) => {
     // await figma.clientStorage.setAsync("myTemplates", msg.myTemplates);
     myTemplates = [...myTemplates, msg.template];
     figma.clientStorage.setAsync("myTemplates", myTemplates);
-    figma.ui.postMessage({
-      type: "setTemplates",
-      UserDetails: UserDetails,
-      myTemplates: myTemplates,
-    });
   } else if (msg.type === "remove_template") {
     // await figma.clientStorage.setAsync("myTemplates", msg.myTemplates);
     myTemplates = myTemplates.filter((myTemplate) => {
@@ -53,8 +48,6 @@ figma.ui.onmessage = async (msg) => {
   } else if (msg.type === "logout") {
     await figma.clientStorage.setAsync("UserLoggedIn", false);
     await figma.clientStorage.setAsync("UserDetails", "");
-    await figma.clientStorage.setAsync("favorites", "");
-    await figma.clientStorage.setAsync("myCopies", "");
     figma.ui.postMessage({
       type: "checkUserLogin",
       UserLoggedIn: false,

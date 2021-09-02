@@ -19,11 +19,8 @@ function App() {
   useEffect(() => {
     dispatch(fetchUserDetails());
     setOnboarding(!loginStatus);
-  }, [loginStatus, dispatch]);
-
-  useEffect(() => {
     setSplash(false);
-  }, []);
+  }, [loginStatus]);
 
   const splashScreen = <div>splash screen</div>;
 
