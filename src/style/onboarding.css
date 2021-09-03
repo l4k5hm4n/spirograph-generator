@@ -1,0 +1,126 @@
+/* Onboarding Screen */
+#splashscreen {
+  height: 720px;
+  width: 360px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  background-color: var(--bgdGrey);
+}
+#splashScreenTxt {
+  position: absolute;
+  width: 100%;
+  bottom: 36px;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 400;
+  color: var(--white);
+  text-align: center;
+}
+
+.onBoardingScreen {
+  height: 100%;
+  width: 100%;
+  position: relative;
+}
+.onBoardingScreen > img {
+  width: 360px;
+  height: 520px;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.onBoardingTxt {
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 28px;
+  position: absolute;
+  top: 60px;
+  left: 32px;
+  width: 296px;
+  text-align: left;
+  z-index: 99999;
+}
+.onBoardingRadioBtnSection {
+  position: absolute;
+  bottom: 148px;
+  left: 152px;
+  z-index: 99999;
+  cursor: pointer;
+  width: 56px;
+  height: 8px;
+  display: flex;
+  flex-direction: row;
+}
+.onBoardingRadioBtn {
+  width: 8px;
+  height: 8px;
+  margin: 0 4px;
+  background-color: var(--radioBtnColor);
+  border-radius: 32px;
+}
+.activeRadioBtn {
+  width: 24px;
+  background-color: var(--white);
+}
+.onBoardingBtnSection {
+  position: absolute;
+  bottom: 60px;
+  margin: auto;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.onBoardingBtnPrimary {
+  color: var(--white);
+  font-size: 14px;
+  font-weight: 600;
+  background-color: transparent;
+  border: 1px solid var(--mediumLightTranslucency);
+  border-radius: 8px;
+  text-align: center;
+  padding: 10px 16px;
+  margin: 0 6px;
+  outline: none;
+}
+.onBoardingBtnSecondary {
+  color: var(--yellow);
+  font-size: 14px;
+  font-weight: 600;
+  background-color: transparent;
+  border: 1px solid var(--mediumYellowTranslucency);
+  border-radius: 8px;
+  text-align: center;
+  padding: 10px 16px;
+  margin: 0 6px;
+  outline: none;
+}
+.onBoardingBtnHollow {
+  color: var(--white);
+  font-size: 14px;
+  font-weight: 600;
+  background-color: transparent;
+  border: none;
+  text-align: center;
+  padding: 10px 16px;
+  outline: none;
+}
+#onBoardingGoogleBtnSection {
+  position: absolute;
+  bottom: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 95px;
+}
+#onBoardingGoogleBtn {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 192px;
+}
