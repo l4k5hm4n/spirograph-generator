@@ -54,6 +54,7 @@ function AlterPage({
       strokeWidthValue,
       color ? color : colorValue,
     );
+    
   }, [fValue, mValue, nValue, scaleValue, strokeWidthValue, colorValue, color]);
 
   useEffect(() => {
@@ -61,6 +62,23 @@ function AlterPage({
       setActiveParameter("config");
     }
   }, [visible]);
+
+  useEffect(() => {
+    setFValue(alterFValue);
+    setMValue(alterMValue);
+    setNValue(alterNValue);
+    setScaleValue(alterScaleValue);
+    setStrokeWidthValue(alterStrokeWidthValue);
+    // setColor(alterColorValue);
+    setColorValue( color ? color : colorValue,);
+  }, [
+    alterFValue,
+    alterMValue,
+    alterNValue,
+    alterScaleValue,
+    alterStrokeWidthValue,
+    alterColorValue,
+  ]);
 
   return (
     <div className="alterPage">
