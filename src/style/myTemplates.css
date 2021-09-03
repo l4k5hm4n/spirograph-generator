@@ -83,27 +83,16 @@
 
 /* Empty MyTemplates Page */
 #emptyMyTemplatesContainer {
-  height: 652px;
-  width: 100%;
   background-color: var(--bgdGrey);
   position: relative;
-}
-
-#emptySVGcontainer {
-  position: absolute;
-  top: 249px;
-  left: 144px;
-}
-#emptyMyTemplatesTxt {
-  height: 62px;
-  width: 220px;
-  position: relative;
-  top: 346px;
-  left: 70px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   align-items: center;
+  top: 120px;
+}
+
+#emptyMyTemplatesTxt {
+  margin: 16px 0;
 }
 #emptyMyTemplatesTxt h1 {
   font-weight: 700;
@@ -113,14 +102,15 @@
   text-align: center;
 }
 #emptyMyTemplatesTxt h3 {
-  font-weight: 400;
-  font-size: 12px;
+  font-weight: 300;
+  margin-top: 6px;
+  font-size: 13px;
+  max-width: 250px;
   line-height: 16px;
-  color: var(--mediumLightTranslucenc);
+  color: #ffffff80;
   text-align: center;
 }
+
 #emptyMyTemplatesContainer button {
-  position: relative;
-  top: 432px;
-  left: 114px;
+  width: 120px;
 }

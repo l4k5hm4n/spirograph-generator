@@ -1,7 +1,6 @@
 import React, {
   useState,
   useCallback,
-  useEffect,
   useRef,
   createRef,
 } from "react";
@@ -30,26 +29,26 @@ function MyTemplates(props) {
   const history = useHistory();
   const linesRef = useRef();
   const [currentTemplateID, setcurrentTemplateID] = useState(
-    userDetails.myTemplates ? userDetails.myTemplates[0].id : ""
+    userDetails.myTemplates[0] ? userDetails.myTemplates[0].id : ""
   );
   const [alterMyTemplateFValue, setAlterMyTemplateFValue] = useState(
-    userDetails.myTemplates ? userDetails.myTemplates[0].fValue : ""
+    userDetails.myTemplates[0] ? userDetails.myTemplates[0].fValue : ""
   );
   const [alterMyTemplateMValue, setAlterMyTemplateMValue] = useState(
-    userDetails.myTemplates ? userDetails.myTemplates[0].mValue : ""
+    userDetails.myTemplates[0] ? userDetails.myTemplates[0].mValue : ""
   );
   const [alterMyTemplateNValue, setAlterMyTemplateNValue] = useState(
-    userDetails.myTemplates ? userDetails.myTemplates[0].nValue : ""
+    userDetails.myTemplates[0] ? userDetails.myTemplates[0].nValue : ""
   );
   const [alterMyTemplateScaleValue, setAlterMyTemplateScaleValue] = useState(
-    userDetails.myTemplates ? userDetails.myTemplates[0].scaleValue : ""
+    userDetails.myTemplates[0] ? userDetails.myTemplates[0].scaleValue : ""
   );
   const [alterMyTemplateStrokeWidthValue, setAlterMyTemplateStrokeWidthValue] =
     useState(
-      userDetails.myTemplates ? userDetails.myTemplates[0].strokeWidthValue : ""
+      userDetails.myTemplates[0] ? userDetails.myTemplates[0].strokeWidthValue : ""
     );
   const [alterMyTemplateColorValue, setAlterMyTemplateColorValue] = useState(
-    userDetails.myTemplates ? userDetails.myTemplates[0].colorValue : ""
+    userDetails.myTemplates[0] ? userDetails.myTemplates[0].colorValue : ""
   );
 
   const modalDeleteRef = createRef();
@@ -66,18 +65,15 @@ function MyTemplates(props) {
       setAlterMyTemplateStrokeWidthValue(argStrokeWidth);
       setAlterMyTemplateColorValue(argColor);
       setcurrentTemplateID(id);
-
-      console.log(argF, argM, argN, argScale, argStrokeWidth, argColor, id);
     }
   );
+  
   const clickedDeletePrompt = () => {
     modalDeleteRef.current.openModal();
   };
   const showDeletedSuccessPrompt = () => {
     modalDeleteSuccessRef.current.openModal();
   };
-
-  console.log("yt ");
 
   return (
     <div id="MyTemplates">

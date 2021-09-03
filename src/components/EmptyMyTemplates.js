@@ -1,8 +1,10 @@
 import React from "react";
+import { useHistory, MemoryRouter as Router } from "react-router-dom";
 import "../style/style.css";
 import "../style/myTemplates.css";
 
 function EmptyMyTemplates() {
+  let history = useHistory();
   return (
     <div id="emptyMyTemplatesContainer">
       <div id="emptySVGcontainer">
@@ -17,15 +19,15 @@ function EmptyMyTemplates() {
             opacity="0.2"
             d="M6.39582 28.9023L1.56148 28.8153"
             stroke="white"
-            stroke-width="1.48773"
-            stroke-linecap="round"
+            strokeWidth="1.48773"
+            strokeLinecap="round"
           />
           <path
             opacity="0.2"
             d="M65.425 30.438L61.5613 27.531"
             stroke="white"
-            stroke-width="1.48773"
-            stroke-linecap="round"
+            strokeWidth="1.48773"
+            strokeLinecap="round"
           />
           <rect
             x="9"
@@ -49,7 +51,7 @@ function EmptyMyTemplates() {
             rx="4.5"
             fill="#252525"
             stroke="#FFC700"
-            stroke-width="3"
+            strokeWidth="3"
           />
           <circle
             opacity="0.2"
@@ -57,16 +59,17 @@ function EmptyMyTemplates() {
             cy="3.2316"
             r="2.2316"
             stroke="white"
-            stroke-width="1.48773"
-            stroke-linecap="round"
+            strokeWidth="1.48773"
+            strokeLinecap="round"
           />
         </svg>
       </div>
       <div id="emptyMyTemplatesTxt">
-        <h1>No Templates</h1>
+        <h1>No Saved Templates</h1>
         <h3>You have not saved any templates on your account</h3>
       </div>
-      <button className="btnSecondary">+ Create Now</button>
+      <button 
+      onClick={() => history.push("/customizePage")} className="btnSecondary">+ Create Now</button>
     </div>
   );
 }

@@ -52,27 +52,9 @@ function AlterPage({
       nValue,
       scaleValue,
       strokeWidthValue,
-      // colorValue
-      color
+      color ? color : colorValue,
     );
   }, [fValue, mValue, nValue, scaleValue, strokeWidthValue, colorValue, color]);
-
-  useEffect(() => {
-    setFValue(alterFValue);
-    setMValue(alterMValue);
-    setNValue(alterNValue);
-    setScaleValue(alterScaleValue);
-    setStrokeWidthValue(alterStrokeWidthValue);
-    // setColor(alterColorValue);
-    setColorValue(alterColorValue);
-  }, [
-    alterFValue,
-    alterMValue,
-    alterNValue,
-    alterScaleValue,
-    alterStrokeWidthValue,
-    alterColorValue,
-  ]);
 
   useEffect(() => {
     if (visible) {
@@ -438,20 +420,10 @@ function AlterPage({
         {activeParameter === "color" && (
           <div id="colorPaletteTab">
             <div id="colorPicker">
-              {/* <input
-                id="colorValueInput"
-                type="color"
-                name="color"
-                value={colorValue}
-                onChange={(e) => {
-                  setColorValue(e.target.value);
-                }}
-              ></input>
-              {colorValue} */}
-              <HexColorPicker color={color} onChange={setColor} />;
+              <HexColorPicker color={color} onChange={setColor} />
             </div>
             <div className="colorPickerInput">
-              <HexColorInput color={color} onChange={setColor} />
+              <HexColorInput color={color} onChange={setColor} prefixed alpha/>
             </div>
           </div>
         )}
@@ -517,7 +489,6 @@ function AlterPage({
                 </div> */}
                 </div>
                 <div className="sliderInfoValue">
-                  {/* <span>{Math.floor((strokeWidthValue / 5) * 100)} %</span> */}
                   <input
                     type="number"
                     value={Math.floor((strokeWidthValue / 5) * 100)}

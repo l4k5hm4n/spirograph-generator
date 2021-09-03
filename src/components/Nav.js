@@ -12,8 +12,7 @@ function Nav() {
           homeProps: { 
             activeSection: "home"
           },
-        } 
-        }
+        }}
         >
         <svg
             width="71"

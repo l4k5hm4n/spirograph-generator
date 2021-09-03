@@ -241,7 +241,7 @@ function LoginPage() {
                       </svg>
                     </div>
                     <div className="loginTabTxt">
-                      <div className="boldTxtWhite">My Templates!</div>
+                      <div className="boldTxtWhite">My Templates</div>
                       <div className="lightTxtGrey">
                         Manage your saved templates
                       </div>

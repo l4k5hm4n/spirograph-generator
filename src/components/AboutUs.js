@@ -7,7 +7,7 @@ function AboutUs() {
     <div id="AboutUsPage">
       <div id="aboutUsContainer">
         <div id="aboutUsDetails" className="greyBgd">
-          <div class="shapeBgd">
+          <div className="shapeBgd">
             <svg
               width="19"
               height="20"

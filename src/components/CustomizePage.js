@@ -1,7 +1,6 @@
 import React, {
   useCallback,
   useState,
-  useEffect,
   useRef,
   createRef,
 } from "react";
@@ -15,6 +14,8 @@ import "../style/style.css";
 import "../style/customizePage.css";
 
 function CustomizePage(props) {
+
+  let userDetails = useSelector((state) => state.userDetails);
   const history = useHistory();
   const modalSaveTemplateRef = createRef();
   const modalSaveButtonRef = createRef();
@@ -104,6 +105,7 @@ function CustomizePage(props) {
       </div>
       <div className="customizeContainer">
         <div id="customizeDisplayContainer">
+        { userDetails.loggedIn &&
           <div
             id="customizeHoverCheck"
             className="hoverBtn hoverBtnPrimary"
@@ -132,6 +134,7 @@ function CustomizePage(props) {
               </defs>
             </svg>
           </div>
+        }   
           <div id="hoverInsert" className="hoverBtn hoverBtnInsert">
             <div>
               <svg

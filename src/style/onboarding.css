@@ -18,15 +18,12 @@
   color: var(--white);
   text-align: center;
 }
-
 .onBoardingScreen {
   height: 100%;
   width: 100%;
   position: relative;
 }
 .onBoardingScreen > img {
-  width: 360px;
-  height: 520px;
   position: absolute;
   top: 0;
   left: 0;
@@ -48,7 +45,6 @@
   left: 152px;
   z-index: 99999;
   cursor: pointer;
-  width: 56px;
   height: 8px;
   display: flex;
   flex-direction: row;
@@ -56,7 +52,7 @@
 .onBoardingRadioBtn {
   width: 8px;
   height: 8px;
-  margin: 0 4px;
+  margin-right: 6px;
   background-color: var(--radioBtnColor);
   border-radius: 32px;
 }
@@ -78,19 +74,33 @@
   font-size: 14px;
   font-weight: 600;
   background-color: transparent;
-  border: 1px solid var(--mediumLightTranslucency);
+  border: 1px solid #ffffff24;
   border-radius: 8px;
   text-align: center;
   padding: 10px 16px;
   margin: 0 6px;
   outline: none;
 }
+
+.onBoardingBtnSection button, .onBoardingBtnHollow {
+  cursor: pointer;
+}
+
+button#onBoardingGoogleBtn {
+  font-weight: 500;
+  cursor: pointer;
+}
+
+button#onBoardingGoogleBtn span{
+  margin-left: 12px;
+}
+
 .onBoardingBtnSecondary {
   color: var(--yellow);
   font-size: 14px;
   font-weight: 600;
   background-color: transparent;
-  border: 1px solid var(--mediumYellowTranslucency);
+  border: 1px solid #ffc70024;
   border-radius: 8px;
   text-align: center;
   padding: 10px 16px;
@@ -100,7 +110,7 @@
 .onBoardingBtnHollow {
   color: var(--white);
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 500;
   background-color: transparent;
   border: none;
   text-align: center;
@@ -122,5 +132,4 @@
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  width: 192px;
 }

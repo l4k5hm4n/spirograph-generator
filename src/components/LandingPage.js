@@ -12,6 +12,8 @@ import "../style/landingPage.css";
 import "../style/templates.css";
 
 function LandingPage(props) {
+
+  let userDetails = useSelector((state) => state.userDetails);
   let dispatch = useDispatch();
   const history = useHistory();
   const modalSaveTemplateRef = createRef();
@@ -38,7 +40,7 @@ function LandingPage(props) {
       setAlterScaleValue(argScale);
       setAlterStrokeWidthValue(argStrokeWidth);
       setAlterColorValue(argColor);
-    }
+    }, []
   );
 
   const addTemplateListener = () => {
@@ -94,6 +96,7 @@ function LandingPage(props) {
             </div>
           </Link>
 
+          { userDetails.loggedIn &&
           <div
             onClick={() => {
               clickedSaveTemplatePrompt();
@@ -119,6 +122,7 @@ function LandingPage(props) {
               />
             </svg>
           </div>
+          }
           <div id="hoverInsert" className="hoverBtn hoverBtnInsert">
             <div>
               <svg

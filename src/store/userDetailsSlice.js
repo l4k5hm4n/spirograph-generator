@@ -31,7 +31,6 @@ export const fetchUserDetails = createAsyncThunk(
             .then((user) => {
               if (user.exists) {
                 myTemplates = user.data().myTemplates;
-                console.log("dfd");
               }
 
               return resolve({ loggedIn, name, email, photo, myTemplates });
@@ -158,35 +157,56 @@ const userDetailsSlice = createSlice({
 
       try {
         const existingPost = state.myTemplates.find((template) => template.id === id);
-        if (existingPost) {
-          existingPost.date = new Date().toISOString();
-          existingPost.fValue = config.f;
-          existingPost.mValue = config.m;
-          existingPost.nValue = config.n;
-          existingPost.scaleValue = config.scale;
-          existingPost.strokeWidthValue = config.strokeWidth;
-          existingPost.colorValue = config.color;
-        }
 
-        let { email, myTemplates } = state;
+        const updatedTemplates = state.myTemplates.filter((template, index) => {
+          if (template.id === id) {
+            return {
+              ...template,
+              ...config,
+            };
+          } else {
+            return template;
+          }
+        })
+
+        state.myTemplates = updatedTemplates;
+
+        console.log(state.myTemplates, updatedTemplates)
+
+        // if (existingPost) {
+        //   existingPost.date = new Date().toISOString();
+        //   existingPost.fValue = config.f;
+        //   existingPost.mValue = config.m;
+        //   existingPost.nValue = config.n;
+        //   existingPost.scaleValue = config.scale;
+        //   existingPost.strokeWidthValue = config.strokeWidth;
+        //   existingPost.colorValue = config.color;
+        // }
+
+        let { email } = state;
         let tempUser = db.collection("users").doc(email);
 
         tempUser.update({
-          myTemplates: myTemplates,
+          myTemplates: updatedTemplates,
         });
 
-        parent.postMessage(
-          {
-            pluginMessage: {
-              type: "sync_myTemplates",
-              template: myTemplates,
-            },
-          },
-          "*"
-        );
+        // parent.postMessage(
+        //   {
+        //     pluginMessage: {
+        //       type: "sync_myTemplates",
+        //       template: [...myTemplates],
+        //     },
+        //   },
+        //   "*"
+        // );
 
         parent.postMessage(
-          { pluginMessage: { type: "notify", text: "Spirograph has been edited successfully." } },
+          { 
+            pluginMessage: { 
+            type: "notify", 
+            text: "Spirograph has been edited successfully." 
+          }, 
+        },
           "*"
         );
 
