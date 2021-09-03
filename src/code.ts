@@ -45,7 +45,10 @@ figma.ui.onmessage = async (msg) => {
     node.y = 500;
     nodes.push(node);
     figma.flatten(nodes, figma.currentPage);
-  } else if (msg.type === "logout") {
+  } else if (msg.type === 'notify') {
+    figma.notify(msg.text, { timeout : 1000 } );
+  } 
+  else if (msg.type === "logout") {
     await figma.clientStorage.setAsync("UserLoggedIn", false);
     await figma.clientStorage.setAsync("UserDetails", "");
     figma.ui.postMessage({

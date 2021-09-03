@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import InfoHover from "./InfoHover";
+import { HexColorPicker, HexColorInput } from "react-colorful";
 import "../style/style.css";
 import "../style/alterPage.css";
 function AlterPage({
@@ -10,21 +11,40 @@ function AlterPage({
   alterScaleValue,
   alterStrokeWidthValue,
   alterColorValue,
-  visible
+  visible,
 }) {
-
-  const [activeParameter, setActiveParameter] = useState('config');
+  const fValueSelectorRef = useRef();
+  const fValueProgressBar = useRef();
+  const mValueSelectorRef = useRef();
+  const mValueProgressBar = useRef();
+  const nValueSelectorRef = useRef();
+  const nValueProgressBar = useRef();
+  const scaleValueSelectorRef = useRef();
+  const scaleValueProgressBar = useRef();
+  const strokeWidthValueSelectorRef = useRef();
+  const strokeWidthValueProgressBar = useRef();
+  const [activeParameter, setActiveParameter] = useState("config");
   const [fValue, setFValue] = useState(alterFValue);
   const [mValue, setMValue] = useState(alterMValue);
   const [nValue, setNValue] = useState(alterNValue);
   const [scaleValue, setScaleValue] = useState(alterScaleValue);
-  const [strokeWidthValue, setStrokeWidthValue] = useState(alterStrokeWidthValue);
+  const [strokeWidthValue, setStrokeWidthValue] = useState(
+    alterStrokeWidthValue
+  );
   const [colorValue, setColorValue] = useState(alterColorValue);
 
-  const toggleParameters = (parameter) => { 
-    setActiveParameter(parameter)
-  }
+  const [color, setColor] = useState(alterColorValue);
 
+  const toggleParameters = (parameter) => {
+    setActiveParameter(parameter);
+  };
+  var validate = function (e) {
+    var t = e.value;
+    e.value =
+      t.indexOf(".") >= 0
+        ? t.substr(0, t.indexOf(".")) + t.substr(t.indexOf("."), 3)
+        : t;
+  };
   useEffect(() => {
     callChangeDisplay(
       fValue,
@@ -32,9 +52,10 @@ function AlterPage({
       nValue,
       scaleValue,
       strokeWidthValue,
-      colorValue
+      // colorValue
+      color
     );
-  }, [fValue, mValue, nValue, scaleValue, strokeWidthValue, colorValue]);
+  }, [fValue, mValue, nValue, scaleValue, strokeWidthValue, colorValue, color]);
 
   useEffect(() => {
     setFValue(alterFValue);
@@ -42,14 +63,22 @@ function AlterPage({
     setNValue(alterNValue);
     setScaleValue(alterScaleValue);
     setStrokeWidthValue(alterStrokeWidthValue);
+    // setColor(alterColorValue);
     setColorValue(alterColorValue);
-  }, [alterFValue, alterMValue, alterNValue, alterScaleValue, alterStrokeWidthValue, alterColorValue]);
+  }, [
+    alterFValue,
+    alterMValue,
+    alterNValue,
+    alterScaleValue,
+    alterStrokeWidthValue,
+    alterColorValue,
+  ]);
 
-  useEffect(() => { 
-    if(visible) {
-      setActiveParameter('config')
+  useEffect(() => {
+    if (visible) {
+      setActiveParameter("config");
     }
-  }, [visible])
+  }, [visible]);
 
   return (
     <div className="alterPage">
@@ -93,7 +122,7 @@ function AlterPage({
         <div
           id="strokeWidthSelector"
           className={`tab ${activeParameter === "stroke" ? "activeTab" : null}`}
-          onClick={ () => toggleParameters("stroke")}
+          onClick={() => toggleParameters("stroke")}
         >
           <svg
             width="20"
@@ -109,145 +138,307 @@ function AlterPage({
         </div>
       </div>
       <div id="alterTab">
-        { activeParameter === "config" && (
+        {activeParameter === "config" && (
           <div id="parametsTab">
             <div>
-              <input
-                id="fValueInput"
-                className="range"
-                type="range"
-                min="-2"
-                max="2"
-                step="0.1"
-                value={fValue}
-                onChange={(e) => {
-                  setFValue(e.target.value);
-                }}
-              ></input>
+              <div className="inputContainer">
+                <input
+                  id="fValueInput"
+                  className="range"
+                  type="range"
+                  min="-2"
+                  max="2"
+                  step="0.1"
+                  value={fValue}
+                  onChange={(e) => {
+                    fValueSelectorRef.current.style.left =
+                      ((parseFloat(e.target.value) + 2) / 4) * 100 + "%";
+                    fValueProgressBar.current.style.width =
+                      ((parseFloat(e.target.value) + 2) / 4) * 100 + "%";
+                    setFValue(e.target.value);
+                  }}
+                ></input>
+                <div
+                  className="selector"
+                  ref={fValueSelectorRef}
+                  style={{ left: ((parseFloat(fValue) + 2) / 4) * 100 + "%" }}
+                >
+                  <div className="selectBtn"></div>
+                </div>
+                <div
+                  className="progressBar"
+                  ref={fValueProgressBar}
+                  style={{ width: ((parseFloat(fValue) + 2) / 4) * 100 + "%" }}
+                ></div>
+              </div>
               <div className="sliderInfo">
                 <div className="sliderName">
                   <p>Ratio</p>
                   {/* <div
-                    onMouseOver={() => {
-                      infoHoverEnter();
-                    }}
-                    onMouseLeave={() => {
-                      infoHoverLeave();
-                    }}
-                  >
-                    <span>?</span>
-                  </div> */}
+                 onMouseOver={() => {
+                   infoHoverEnter();
+                 }}
+                 onMouseLeave={() => {
+                   infoHoverLeave();
+                 }}
+               >
+                 <span>?</span>
+               </div> */}
                 </div>
                 <div className="sliderInfoValue">
-                  <span>{fValue}</span>
+                  {/* <span>{fValue}</span> */}
+                  <input
+                    type="number"
+                    min="-2"
+                    max="2"
+                    value={fValue}
+                    onChange={(e) => {
+                      if (e.target.value > 2) {
+                        setFValue(2);
+                      } else if (e.target.value < -2) {
+                        setFValue(-2);
+                      } else {
+                        setFValue(e.target.value);
+                      }
+                      // validate(e.target);
+                    }}
+                  ></input>
                 </div>
               </div>
             </div>
             <div>
-              <input
-                id="mValueInput"
-                className="range"
-                type="range"
-                min="15"
-                max="100"
-                step="1"
-                value={mValue}
-                onChange={(e) => {
-                  setMValue(e.target.value);
-                }}
-              ></input>
+              <div className="inputContainer">
+                <input
+                  id="mValueInput"
+                  className="range"
+                  type="range"
+                  min="15"
+                  max="100"
+                  step="1"
+                  value={mValue}
+                  onChange={(e) => {
+                    mValueSelectorRef.current.style.left =
+                      Math.floor(
+                        ((parseFloat(e.target.value) - 15) / 85) * 100
+                      ) + "%";
+                    mValueProgressBar.current.style.width =
+                      Math.floor(
+                        ((parseFloat(e.target.value) - 15) / 85) * 100
+                      ) + "%";
+                    setMValue(e.target.value);
+                  }}
+                ></input>
+                <div
+                  className="selector"
+                  ref={mValueSelectorRef}
+                  style={{
+                    left:
+                      Math.floor(((parseFloat(mValue) - 15) / 85) * 100) + "%",
+                  }}
+                >
+                  <div className="selectBtn"></div>
+                </div>
+                <div
+                  className="progressBar"
+                  ref={mValueProgressBar}
+                  style={{
+                    width:
+                      Math.floor(((parseFloat(mValue) - 15) / 85) * 100) + "%",
+                  }}
+                ></div>
+              </div>
               <div className="sliderInfo">
                 <div className="sliderName">
                   <p>Outer Diameter</p>
                   {/* <div
-                    onMouseOver={() => {
-                      infoHoverEnter();
-                    }}
-                    onMouseLeave={() => {
-                      infoHoverLeave();
-                    }}
-                  >
-                    <span>?</span>
-                  </div> */}
+                 onMouseOver={() => {
+                   infoHoverEnter();
+                 }}
+                 onMouseLeave={() => {
+                   infoHoverLeave();
+                 }}
+               >
+                 <span>?</span>
+               </div> */}
                 </div>
                 <div className="sliderInfoValue">
-                  {" "}
-                  <span>{mValue}</span>
+                  {/* <span>{mValue}</span> */}
+                  <input
+                    type="number"
+                    min="15"
+                    max="100"
+                    value={mValue}
+                    onChange={(e) => {
+                      if (e.target.value > 100) {
+                        setMValue(100);
+                      } else if (e.target.value < 15) {
+                        setMValue(15);
+                      } else {
+                        setMValue(e.target.value);
+                      }
+                    }}
+                  ></input>
                 </div>
               </div>
             </div>
             <div>
-              <input
-                id="nValueInput"
-                className="range"
-                type="range"
-                min="1"
-                max="50"
-                step="1"
-                value={nValue}
-                onChange={(e) => {
-                  setNValue(e.target.value);
-                }}
-              ></input>
+              <div className="inputContainer">
+                <input
+                  id="nValueInput"
+                  className="range"
+                  type="range"
+                  min="1"
+                  max="50"
+                  step="1"
+                  value={nValue}
+                  onChange={(e) => {
+                    nValueSelectorRef.current.style.left =
+                      Math.floor(
+                        ((parseFloat(e.target.value) - 1) / 49) * 100
+                      ) + "%";
+                    nValueProgressBar.current.style.width =
+                      Math.floor(
+                        ((parseFloat(e.target.value) - 1) / 49) * 100
+                      ) + "%";
+                    setNValue(e.target.value);
+                  }}
+                ></input>
+                <div
+                  className="selector"
+                  ref={nValueSelectorRef}
+                  style={{
+                    left:
+                      Math.floor(((parseFloat(nValue) - 1) / 49) * 100) + "%",
+                  }}
+                >
+                  <div className="selectBtn"></div>
+                </div>
+                <div
+                  className="progressBar"
+                  ref={nValueProgressBar}
+                  style={{
+                    width:
+                      Math.floor(((parseFloat(nValue) - 1) / 49) * 100) + "%",
+                  }}
+                ></div>
+              </div>
               <div className="sliderInfo">
                 <div className="sliderName">
                   <p>Inner Diameter</p>
                   {/* <div
-                    onMouseOver={() => {
-                      infoHoverEnter();
-                    }}
-                    onMouseLeave={() => {
-                      infoHoverLeave();
-                    }}
-                  >
-                    <span>?</span>
-                  </div> */}
+                 onMouseOver={() => {
+                   infoHoverEnter();
+                 }}
+                 onMouseLeave={() => {
+                   infoHoverLeave();
+                 }}
+               >
+                 <span>?</span>
+               </div> */}
                 </div>
                 <div className="sliderInfoValue">
-                  {" "}
-                  <span>{nValue}</span>
+                  {/* <span>{nValue}</span> */}
+                  <input
+                    type="number"
+                    min="1"
+                    max="50"
+                    value={nValue}
+                    onChange={(e) => {
+                      if (e.target.value > 50) {
+                        setNValue(50);
+                      } else if (e.target.value < 1) {
+                        setNValue(1);
+                      } else {
+                        setNValue(e.target.value);
+                      }
+                    }}
+                  ></input>
                 </div>
               </div>
             </div>
             <div>
-              <input
-                id="scaleValueInput"
-                className="range"
-                type="range"
-                min="10"
-                max="130"
-                step="5"
-                value={scaleValue}
-                onChange={(e) => {
-                  setScaleValue(e.target.value);
-                }}
-              ></input>
+              <div className="inputContainer">
+                <input
+                  id="scaleValueInput"
+                  className="range"
+                  type="range"
+                  min="10"
+                  max="130"
+                  step="5"
+                  value={scaleValue}
+                  onChange={(e) => {
+                    scaleValueSelectorRef.current.style.left =
+                      Math.floor(
+                        ((parseFloat(e.target.value) - 10) / 120) * 100
+                      ) + "%";
+                    scaleValueProgressBar.current.style.width =
+                      Math.floor(
+                        ((parseFloat(e.target.value) - 10) / 120) * 100
+                      ) + "%";
+                    setScaleValue(e.target.value);
+                  }}
+                ></input>
+                <div
+                  className="selector"
+                  ref={scaleValueSelectorRef}
+                  style={{
+                    left:
+                      Math.floor(((parseFloat(scaleValue) - 10) / 120) * 100) +
+                      "%",
+                  }}
+                >
+                  <div className="selectBtn"></div>
+                </div>
+                <div
+                  className="progressBar"
+                  ref={scaleValueProgressBar}
+                  style={{
+                    width:
+                      Math.floor(((parseFloat(scaleValue) - 10) / 120) * 100) +
+                      "%",
+                  }}
+                ></div>
+              </div>
               <div className="sliderInfo">
                 <div className="sliderName">
                   <p>Scale</p>
                   {/* <div
-                    onMouseOver={() => {
-                      infoHoverEnter();
-                    }}
-                    onMouseLeave={() => {
-                      infoHoverLeave();
-                    }}
-                  >
-                    <span>?</span>
-                  </div> */}
+                 onMouseOver={() => {
+                   infoHoverEnter();
+                 }}
+                 onMouseLeave={() => {
+                   infoHoverLeave();
+                 }}
+               >
+                 <span>?</span>
+               </div> */}
                 </div>
                 <div className="sliderInfoValue">
-                  {" "}
-                  <span>{scaleValue}</span>
+                  {/* <span>{scaleValue}</span> */}
+                  <input
+                    type="number"
+                    min="10"
+                    max="130"
+                    value={scaleValue}
+                    onChange={(e) => {
+                      if (e.target.value > 130) {
+                        setScaleValue(130);
+                      } else if (e.target.value < 10) {
+                        setScaleValue(10);
+                      } else {
+                        setScaleValue(e.target.value);
+                      }
+                    }}
+                  ></input>
                 </div>
               </div>
             </div>
           </div>
         )}
-        { activeParameter === "color" && (
+        {activeParameter === "color" && (
           <div id="colorPaletteTab">
-            <div>
-              <input
+            <div id="colorPicker">
+              {/* <input
                 id="colorValueInput"
                 type="color"
                 name="color"
@@ -256,41 +447,90 @@ function AlterPage({
                   setColorValue(e.target.value);
                 }}
               ></input>
-              {colorValue}
+              {colorValue} */}
+              <HexColorPicker color={color} onChange={setColor} />;
+            </div>
+            <div className="colorPickerInput">
+              <HexColorInput color={color} onChange={setColor} />
             </div>
           </div>
         )}
         {activeParameter === "stroke" && (
           <div>
             <div>
-              <input
-                id="strokeWidthValueInput"
-                className="range"
-                type="range"
-                min="0.1"
-                max="5"
-                step="0.1"
-                value={strokeWidthValue}
-                onChange={(e) => {
-                  setStrokeWidthValue(e.target.value);
-                }}
-              ></input>
+              <div className="inputContainer">
+                <input
+                  id="strokeWidthValueInput"
+                  className="range"
+                  type="range"
+                  min="0.1"
+                  max="5"
+                  step="0.1"
+                  value={strokeWidthValue}
+                  onChange={(e) => {
+                    strokeWidthValueSelectorRef.current.style.left =
+                      Math.floor(
+                        ((parseFloat(e.target.value) - 0.1) / 4.9) * 100
+                      ) + "%";
+                    strokeWidthValueProgressBar.current.style.width =
+                      Math.floor(
+                        ((parseFloat(e.target.value) - 0.1) / 4.9) * 100
+                      ) + "%";
+                    setStrokeWidthValue(e.target.value);
+                  }}
+                ></input>
+                <div
+                  className="selector"
+                  ref={strokeWidthValueSelectorRef}
+                  style={{
+                    left:
+                      Math.floor(
+                        ((parseFloat(strokeWidthValue) - 0.1) / 4.9) * 100
+                      ) + "%",
+                  }}
+                >
+                  <div className="selectBtn"></div>
+                </div>
+                <div
+                  className="progressBar"
+                  ref={strokeWidthValueProgressBar}
+                  style={{
+                    width:
+                      Math.floor(
+                        ((parseFloat(strokeWidthValue) - 0.1) / 4.9) * 100
+                      ) + "%",
+                  }}
+                ></div>
+              </div>
               <div className="sliderInfo">
                 <div className="sliderName">
                   <p>Stroke Width</p>
                   {/* <div
-                    onMouseOver={() => {
-                      infoHoverEnter();
-                    }}
-                    onMouseLeave={() => {
-                      infoHoverLeave();
-                    }}
-                  >
-                    <span>?</span>
-                  </div> */}
+                  onMouseOver={() => {
+                    infoHoverEnter();
+                  }}
+                  onMouseLeave={() => {
+                    infoHoverLeave();
+                  }}
+                >
+                  <span>?</span>
+                </div> */}
                 </div>
                 <div className="sliderInfoValue">
-                  <span>{Math.floor((strokeWidthValue / 5) * 100)} %</span>
+                  {/* <span>{Math.floor((strokeWidthValue / 5) * 100)} %</span> */}
+                  <input
+                    type="number"
+                    value={Math.floor((strokeWidthValue / 5) * 100)}
+                    onChange={(e) => {
+                      if (e.target.value > 100) {
+                        setStrokeWidthValue(5);
+                      } else if (e.target.value < 1) {
+                        setStrokeWidthValue(0.1);
+                      } else {
+                        setStrokeWidthValue((e.target.value / 100) * 5);
+                      }
+                    }}
+                  ></input>
                 </div>
               </div>
             </div>

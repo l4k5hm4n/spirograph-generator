@@ -57,7 +57,7 @@ function App() {
               <Route
                 exact
                 path="/loginPage/myTemplates"
-                component={() => <MyTemplates />}
+                render={(props) => <MyTemplates {...props} />}
               />
               <Route
                 exact

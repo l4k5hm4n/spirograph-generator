@@ -9,28 +9,30 @@ import DisplaySpirograph from "./DisplaySpirograph";
 import AlterPage from "./AlterPage";
 import Spirograph from "./Spirograph";
 import Modal from "./Modal";
+import { Route, useHistory, Link, MemoryRouter as Router } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import {
   deleteUserTemplate,
   editUserTemplate,
 } from "../store/userDetailsSlice";
 import "../style/myTemplates.css";
+import "../style/style.css";
+
 function MyTemplates(props) {
   let userDetails = useSelector((state) => state.userDetails);
   let dispatch = useDispatch();
-
+  const history = useHistory();
   const linesRef = useRef();
-  const [showAlterMyTemplatesPage, setShowAlterMyTemplatePage] =
-    useState(false);
-  const [alterMyTemplateFValue, setAlterMyTemplateFValue] = useState("");
-  const [alterMyTemplateMValue, setAlterMyTemplateMValue] = useState("");
-  const [alterMyTemplateNValue, setAlterMyTemplateNValue] = useState("");
+  const [currentTemplateID, setcurrentTemplateID] = useState(userDetails.myTemplates ? userDetails.myTemplates[0].id : '');
+  const [alterMyTemplateFValue, setAlterMyTemplateFValue] = useState(userDetails.myTemplates ? userDetails.myTemplates[0].fValue : '');
+  const [alterMyTemplateMValue, setAlterMyTemplateMValue] = useState(userDetails.myTemplates ? userDetails.myTemplates[0].mValue : '');
+  const [alterMyTemplateNValue, setAlterMyTemplateNValue] = useState(userDetails.myTemplates ? userDetails.myTemplates[0].nValue : '');
   const [alterMyTemplateScaleValue, setAlterMyTemplateScaleValue] =
-    useState("");
+    useState(userDetails.myTemplates ? userDetails.myTemplates[0].scaleValue : '');
   const [alterMyTemplateStrokeWidthValue, setAlterMyTemplateStrokeWidthValue] =
-    useState("");
+    useState(userDetails.myTemplates ? userDetails.myTemplates[0].strokeWidthValue : '');
   const [alterMyTemplateColorValue, setAlterMyTemplateColorValue] =
-    useState("");
+    useState(userDetails.myTemplates ? userDetails.myTemplates[0].colorValue : '');
 
   const modalDeleteRef = createRef();
   const modalDeleteSuccessRef = createRef();
@@ -38,13 +40,16 @@ function MyTemplates(props) {
   let svg;
 
   const callChangeMyTemplateDisplay = useCallback(
-    (argF, argM, argN, argScale, argStrokeWidth, argColor) => {
+    (argF, argM, argN, argScale, argStrokeWidth, argColor, id) => {
       setAlterMyTemplateFValue(argF);
       setAlterMyTemplateMValue(argM);
       setAlterMyTemplateNValue(argN);
       setAlterMyTemplateScaleValue(argScale);
       setAlterMyTemplateStrokeWidthValue(argStrokeWidth);
       setAlterMyTemplateColorValue(argColor);
+      setcurrentTemplateID(id)
+
+      console.log(argF, argM, argN, argScale, argStrokeWidth, argColor, id);
     }
   );
   const clickedDeletePrompt = () => {
@@ -53,38 +58,81 @@ function MyTemplates(props) {
   const showDeletedSuccessPrompt = () => {
     modalDeleteSuccessRef.current.openModal();
   };
+
+  
+  console.log('yt ');
+
   return (
     <div id="MyTemplates">
       {userDetails.myTemplates && userDetails.myTemplates.length > 0 ? (
         <div className="myTemplatesContainer">
           <div id="myTemplatesDisplayContainer">
-            <div
-              id="myTemplatesHoverPen"
-              className="myTemplatesHoverButton"
-              onClick={(event) => {
-                setShowAlterMyTemplatePage(true);
-              }}
-            >
+          <Link
+            to={{
+              pathname: "/loginPage/myTemplates",
+              myTemplatesProps: {
+                activeSection: "alter",
+              },
+            }}
+            className={`${
+              props.location.myTemplatesProps
+                ? props.location.myTemplatesProps.activeSection == "alter"
+                  ? "disable"
+                  : ""
+                : ""
+            }`}
+          >
+            <div id="hoverPen" className="hoverBtn hoverBtnPrimary">
               <svg
-                width="18"
-                height="14"
-                viewBox="0 0 18 14"
+                width="13"
+                height="13"
+                viewBox="0 0 13 13"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
               >
-                <g clip-path="url(#clip0)">
-                  <path
-                    d="M6.00002 11.2001L1.80002 7.0001L0.400024 8.4001L6.00002 14.0001L18 2.0001L16.6 0.600098L6.00002 11.2001Z"
-                    fill="black"
-                  />
-                </g>
-                <defs>
-                  <clipPath id="clip0">
-                    <rect width="18" height="14" fill="white" />
-                  </clipPath>
-                </defs>
+                <path
+                  d="M0 10.4999V12.9999H2.5L9.87333 5.62659L7.37333 3.12659L0 10.4999ZM11.8067 3.69325C11.8685 3.63158 11.9175 3.55832 11.951 3.47767C11.9844 3.39702 12.0016 3.31057 12.0016 3.22325C12.0016 3.13594 11.9844 3.04949 11.951 2.96884C11.9175 2.88819 11.8685 2.81493 11.8067 2.75325L10.2467 1.19325C10.185 1.13145 10.1117 1.08242 10.0311 1.04897C9.95044 1.01551 9.86398 0.998291 9.77667 0.998291C9.68936 0.998291 9.6029 1.01551 9.52225 1.04897C9.4416 1.08242 9.36834 1.13145 9.30667 1.19325L8.08667 2.41325L10.5867 4.91325L11.8067 3.69325Z"
+                  fill="black"
+                />
               </svg>
             </div>
+          </Link>
+          <div
+            onClick={() => {
+              dispatch(editUserTemplate({id :currentTemplateID, 
+                config : {
+                f: alterMyTemplateFValue,
+                m: alterMyTemplateMValue,
+                n: alterMyTemplateNValue,
+                scale: alterMyTemplateScaleValue,
+                strokeWidth: alterMyTemplateStrokeWidthValue,
+                color: alterMyTemplateColorValue
+                }
+              }
+              ))  
+              history.push("/loginPage/myTemplates");
+            }}
+            className={`hoverBtn insertTemplate hoverBtnPrimary ${
+              props.location.myTemplatesProps
+                ? props.location.myTemplatesProps.activeSection == "alter"
+                  ? "enable"
+                  : ""
+                : ""
+            }`}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="32"
+              height="32"
+              viewBox="0 0 32 32"
+              fill="none"
+            >
+              <path
+                d="M13 20.2001L8.79999 16.0001L7.39999 17.4001L13 23.0001L25 11.0001L23.6 9.6001L13 20.2001Z"
+                fill="black"
+              />
+            </svg>
+          </div>
 
             <div id="myTemplatesHoverInsert" className="myTemplatesHoverButton">
               <div>
@@ -118,43 +166,27 @@ function MyTemplates(props) {
                   id="myTemplatesDisplaySpirograph"
                   linesID="myTemplateLines"
                   ref={linesRef}
-                  f={
-                    alterMyTemplateFValue == ""
-                      ? userDetails.myTemplates[0].fValue
-                      : alterMyTemplateFValue
-                  }
-                  m={
-                    alterMyTemplateMValue == ""
-                      ? userDetails.myTemplates[0].mValue
-                      : alterMyTemplateMValue
-                  }
-                  n={
-                    alterMyTemplateNValue == ""
-                      ? userDetails.myTemplates[0].nValue
-                      : alterMyTemplateNValue
-                  }
-                  scale={
-                    alterMyTemplateScaleValue == ""
-                      ? userDetails.myTemplates[0].scaleValue
-                      : alterMyTemplateScaleValue
-                  }
-                  strokeWidth={
-                    alterMyTemplateStrokeWidthValue == ""
-                      ? userDetails.myTemplates[0].strokeWidthValue
-                      : alterMyTemplateStrokeWidthValue
-                  }
-                  color={
-                    alterMyTemplateColorValue == ""
-                      ? userDetails.myTemplates[0].colorValue
-                      : alterMyTemplateColorValue
-                  }
+                  f={alterMyTemplateFValue}
+                  m={alterMyTemplateMValue}
+                  n={alterMyTemplateNValue}
+                  scale={alterMyTemplateScaleValue}
+                  strokeWidth={alterMyTemplateStrokeWidthValue}
+                  color={alterMyTemplateColorValue}
                 />
               </div>
             </div>
           </div>
 
-          {showAlterMyTemplatesPage ? (
-            <AlterPage
+          <div
+          className={`alterSection ${
+            props.location.myTemplatesProps
+              ? props.location.myTemplatesProps.activeSection == "alter"
+                ? "active"
+                : ""
+              : ""
+          }`}
+        >
+        <AlterPage
               callChangeDisplay={callChangeMyTemplateDisplay}
               alterFValue={alterMyTemplateFValue}
               alterMValue={alterMyTemplateMValue}
@@ -163,16 +195,25 @@ function MyTemplates(props) {
               alterStrokeWidthValue={alterMyTemplateStrokeWidthValue}
               alterColorValue={alterMyTemplateColorValue}
             />
-          ) : (
+          </div>
+          <div
+          className={`ETSection ${
+            props.location.myTemplatesProps
+              ? props.location.myTemplatesProps.activeSection == "myTemplates"
+                ? "active"
+                : ""
+              : "active"
+          }`}
+        >
             <div>
-              <h3>Manage your templates</h3>
+              <h4 className="myTemplates-title">Manage your templates</h4>
 
               <div className="templatesContainer">
                 <div className="gridContainer">
                   {userDetails.myTemplates.map((userTemplate, index) => (
                     <div
                       key={userTemplate.id}
-                      className="templateDisplay"
+                      className={`templateContainer`}
                       onClick={() => {
                         callChangeMyTemplateDisplay(
                           userTemplate.fValue,
@@ -180,10 +221,12 @@ function MyTemplates(props) {
                           userTemplate.nValue,
                           userTemplate.scaleValue,
                           userTemplate.strokeWidthValue,
-                          userTemplate.colorValue
+                          userTemplate.colorValue,
+                          userTemplate.id
                         );
                       }}
                     >
+                      <div className={`templateDisplay ${userTemplate.id == currentTemplateID ? 'active' : ''}`}>
                       <Spirograph
                         f={userTemplate.fValue}
                         m={userTemplate.mValue}
@@ -213,12 +256,14 @@ function MyTemplates(props) {
                           />
                         </svg>
                       </div>
+                      </div>
+                      <h4 className="template-title">{userTemplate.templateName}</h4>
                     </div>
                   ))}
                 </div>
               </div>
             </div>
-          )}
+          </div>
         </div>
       ) : (
         " no templates "
@@ -244,7 +289,7 @@ function MyTemplates(props) {
           <button
             className="btnPrimary"
             onClick={() => {
-              dispatch(deleteUserTemplate(userTemplate.id));
+              dispatch(deleteUserTemplate(currentTemplateID));
               modalDeleteRef.current.closeModal();
               showDeletedSuccessPrompt();
             }}

@@ -23,6 +23,7 @@ function CustomizePage(props) {
   const modalInputRef = useRef();
   const dispatch = useDispatch();
   const linesRef = useRef();
+  const [ templateName, setTemplateName ] = useState("")
   const [customizeFValue, setCustomizeFValue] = useState(0.6);
   const [customizeMValue, setCustomizeMValue] = useState(70);
   const [customizeNValue, setCustomizeNValue] = useState(50);
@@ -35,6 +36,7 @@ function CustomizePage(props) {
   const addTemplateListener = () => {
     dispatch(
       addUserTemplate({
+        templateName: modalInputRef.current.value,
         fValue: customizeFValue,
         mValue: customizeMValue,
         nValue: customizeNValue,
@@ -43,8 +45,6 @@ function CustomizePage(props) {
         colorValue: customizeColorValue,
       })
     );
-
-    history.push("/");
   };
 
   const getRandomColor = () => {
@@ -116,7 +116,7 @@ function CustomizePage(props) {
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <g clip-path="url(#clip0)">
+              <g clipPath="url(#clip0)">
                 <path
                   d="M6.00002 11.2001L1.80002 7.0001L0.400024 8.4001L6.00002 14.0001L18 2.0001L16.6 0.600098L6.00002 11.2001Z"
                   fill="black"
@@ -190,13 +190,14 @@ function CustomizePage(props) {
             ref={modalInputRef}
             type="text"
             className="modalInput"
-            placeholder="🔥Fireball"
+            placeholder="Fireball 🔥"
             maxLength="31"
             onChange={(e) => {
               {
                 if (e.target.value.length === 0 || e.target.value === null) {
                   modalSaveButtonRef.current.style.pointerEvents = "none";
                   modalSaveButtonRef.current.style.background = "#676767";
+                  modalSaveButtonRef.current.style.color = "#B1B1B1";
                 } else if (e.target.value.length > 30) {
                   modalSaveButtonRef.current.style.pointerEvents = "none";
                   modalSaveButtonRef.current.style.background = "#676767";
@@ -206,6 +207,7 @@ function CustomizePage(props) {
                 } else {
                   modalSaveButtonRef.current.style.pointerEvents = "all";
                   modalSaveButtonRef.current.style.background = "var(--white)";
+                  modalSaveButtonRef.current.style.color = "#000";
                   modalInputRef.current.style.border = "none";
                   modalWarningRef.current.innerHTML = "";
                 }
@@ -220,9 +222,10 @@ function CustomizePage(props) {
             ref={modalSaveButtonRef}
             className="btnPrimary  btnDisabled"
             onClick={() => {
-              addTemplateListener;
+              addTemplateListener();
               modalSaveTemplateRef.current.closeModal();
               modalSaveTemplateSuccessRef.current.openModal();
+              setTemplateName(modalInputRef.current.value)
             }}
           >
             Save
@@ -252,12 +255,13 @@ function CustomizePage(props) {
         </svg>
 
         <span className="modalText">
-          Your template has been saved successfully
+          Your template "{templateName}" has been saved successfully
         </span>
         <button
           className="btnPrimary"
           onClick={() => {
             modalSaveTemplateSuccessRef.current.closeModal();
+            history.push("/loginPage/myTemplates");
           }}
         >
           Okay

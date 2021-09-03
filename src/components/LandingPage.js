@@ -4,7 +4,7 @@ import AlterPage from "./AlterPage";
 import Modal from "./Modal";
 import ExistingTemplates from "./ExistingTemplates";
 import predefinedTemplates from "../config/predefinedTemplates";
-import { Route, Link, MemoryRouter as Router } from "react-router-dom";
+import { Link, useHistory, MemoryRouter as Router } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { addUserTemplate } from "../store/userDetailsSlice";
 import "../style/style.css";
@@ -13,6 +13,7 @@ import "../style/templates.css";
 
 function LandingPage(props) {
   let dispatch = useDispatch();
+  const history = useHistory();
   const modalSaveTemplateRef = createRef();
   const modalSaveButtonRef = createRef();
   const modalWarningRef = createRef();
@@ -20,6 +21,7 @@ function LandingPage(props) {
   const modalInputRef = useRef();
   const linesRef = useRef();
   const shadowLinesRef = useRef();
+  const [ templateName, setTemplateName ] = useState("")
   const [alterFValue, setAlterFValue] = useState(0.6);
   const [alterMValue, setAlterMValue] = useState(70);
   const [alterNValue, setAlterNValue] = useState(50);
@@ -42,6 +44,7 @@ function LandingPage(props) {
   const addTemplateListener = () => {
     dispatch(
       addUserTemplate({
+        templateName: modalInputRef.current.value,
         fValue: alterFValue,
         mValue: alterMValue,
         nValue: alterNValue,
@@ -110,7 +113,6 @@ function LandingPage(props) {
               viewBox="0 0 32 32"
               fill="none"
             >
-              <circle cx="16" cy="16" r="16" fill="#FFC700" />
               <path
                 d="M13 20.2001L8.79999 16.0001L7.39999 17.4001L13 23.0001L25 11.0001L23.6 9.6001L13 20.2001Z"
                 fill="black"
@@ -208,13 +210,14 @@ function LandingPage(props) {
             ref={modalInputRef}
             type="text"
             className="modalInput"
-            placeholder="🔥Fireball"
+            placeholder="Fireball 🔥"
             maxLength="31"
             onChange={(e) => {
               {
                 if (e.target.value.length === 0 || e.target.value === null) {
                   modalSaveButtonRef.current.style.pointerEvents = "none";
                   modalSaveButtonRef.current.style.background = "#676767";
+                  modalSaveButtonRef.current.style.color = "#B1B1B1";
                 } else if (e.target.value.length > 30) {
                   modalSaveButtonRef.current.style.pointerEvents = "none";
                   modalSaveButtonRef.current.style.background = "#676767";
@@ -224,6 +227,7 @@ function LandingPage(props) {
                 } else {
                   modalSaveButtonRef.current.style.pointerEvents = "all";
                   modalSaveButtonRef.current.style.background = "var(--white)";
+                  modalSaveButtonRef.current.style.color = "#000";
                   modalInputRef.current.style.border = "none";
                   modalWarningRef.current.innerHTML = "";
                 }
@@ -238,9 +242,10 @@ function LandingPage(props) {
             ref={modalSaveButtonRef}
             className="btnPrimary  btnDisabled"
             onClick={() => {
-              addTemplateListener;
+              addTemplateListener();
               modalSaveTemplateRef.current.closeModal();
               modalSaveTemplateSuccessRef.current.openModal();
+              setTemplateName(modalInputRef.current.value)
             }}
           >
             Save
@@ -268,14 +273,14 @@ function LandingPage(props) {
             fill="#05CB19"
           />
         </svg>
-
         <span className="modalText">
-          Your template has been saved successfully
+        Your template "{templateName}" has been saved sucessfully
         </span>
         <button
           className="btnPrimary"
           onClick={() => {
             modalSaveTemplateSuccessRef.current.closeModal();
+            history.push("/loginPage/myTemplates");
           }}
         >
           Okay

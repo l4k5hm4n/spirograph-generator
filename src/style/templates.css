@@ -45,22 +45,55 @@
 .gridContainer {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  grid-gap: 21px;
+  grid-gap: 11px 21px;
   z-index: 2;
   padding-bottom: 21px;
+}
+
+.templateContainer .templateDisplay {
+  height: auto;
+  width: auto;
 }
 
 .templateDisplay {
   height: 90px;
   width: 90px;
-  background: rgb(60, 60, 60);
+  background: linear-gradient(151.68deg, #3C3C3C 17.51%, #5B5555 57.62%, #343232 95.31%);
   border-radius: 8px;
   position: relative;
   cursor: pointer;
+  border: 1px solid #252525;
 }
+
+.templateDisplay .templateSpirograph {
+  height: 90px;
+  width: 90px;
+}
+
+.templateContainer {
+  width: 90px;
+}
+
 .templateDisplay:hover {
-  background: rgb(70, 70, 70);
+  border: 1px solid white;
 }
+
+.templateDisplay.active {
+  border: 1px solid white;
+}
+
+.templateDisplay .hoverBtnSecondary svg {
+  margin-left: 7px !important;
+}
+
 .templateDisplay:hover > .hoverBtnSecondary {
   display: block;
+}
+
+h4.template-title {
+  text-align: center;
+  color: white;
+  font-weight: 400;
+  font-size: 14px;
+  margin-top: 4px;
 }

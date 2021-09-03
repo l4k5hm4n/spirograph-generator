@@ -31,7 +31,7 @@ function LoginPage() {
       })
       .then(() => {
         // Open Signin link to browser
-        window.open(`http://localhost:3000/?ref=${uniqueString}`);
+        window.open(`https://spirous-figma-plugin.web.app/?ref=${uniqueString}`);
         let loginEventListener = db__loginAttempt
           .doc(uniqueString)
           .onSnapshot((doc) => {
@@ -117,7 +117,7 @@ function LoginPage() {
   };
   const clickedLogout = () => {
     parent.postMessage({ pluginMessage: { type: "logout" } }, "*");
-    dispatch(updateUserDetails({ status: logout }));
+    dispatch(updateUserDetails({ status: 'logout' }));
     document.getElementById("UserAvatar").classList.add("removeClass");
     document.getElementById("accountInfo").classList.add("removeClass");
   };
@@ -215,7 +215,13 @@ function LoginPage() {
           <div id="loginTabs">
             {userDetails.loggedIn ? (
               <React.Fragment>
-                <Link to="/loginPage/myTemplates">
+                <Link 
+                to={{
+                pathname: "/loginPage/myTemplates",
+                myTemplatesProps: {
+                  activeSection: "myTemplates",
+                  },
+                }}>
                   <div className="greyBgd loginTab">
                     <div className="shapeBgd">
                       <svg
@@ -232,7 +238,7 @@ function LoginPage() {
                       </svg>
                     </div>
                     <div className="loginTabTxt">
-                      <div className="boldTxtWhite">My Templates</div>
+                      <div className="boldTxtWhite">My Templates!</div>
                       <div className="lightTxtGrey">
                         Manage your saved templates
                       </div>

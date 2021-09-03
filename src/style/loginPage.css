@@ -3,18 +3,25 @@
   height: 652px;
   width: 360px;
   background: rgb(37, 37, 37);
+  z-index: 0;
+}
+#loginPage a {
+  text-decoration: none;
 }
 #loginContainer {
   height: 100%;
-  width: 100%;
-  padding: 0 12px;
+  width: 312px;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  z-index: 9999;
 }
 #loginDisplay {
   margin-top: 8px;
   padding-bottom: 24px;
-  height: 186px;
+  height: 212px;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -22,22 +29,17 @@
   align-items: center;
 }
 #loginAvatar {
-  width: 116px;
-  height: 116px;
+  width: 100px;
+  height: 100px;
   object-fit: contain;
   border-radius: 50%;
 }
 #loginAvatar > * {
-  width: 116px;
-  height: 116px;
+  width: 100px;
+  height: 100px;
   border-radius: 50%;
 }
-#loginLinks {
-  position: absolute;
-  height: 500px;
-  width: 360px;
-  bottom: 0;
-}
+
 #googleAccountInfo {
   width: 100%;
   display: flex;
@@ -69,22 +71,72 @@
   margin-right: 14px;
 }
 #accountInfo {
-  height: 44px;
-  width: 187px;
+  padding: 12px 32px;
+  text-align: center;
   border-radius: 65px;
   background: rgba(45, 45, 45, 0.7);
 }
 #accountInfo > h4 {
-  font-size: 12px;
+  font-size: 14px;
+  margin-bottom: 2px;
   font-weight: 600;
   color: #fff;
 }
 
 #accountInfo > h6 {
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 300;
   color: rgba(255, 255, 255, 0.6);
   display: flex;
   align-items: center;
   justify-content: space-around;
+}
+#loginLinks {
+  width: 312px;
+}
+.loginTab {
+  width: 100%;
+  padding: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  border-radius: 8px;
+  margin-bottom: 16px;
+}
+.loginTabTxt {
+  width: 232px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: flex-start;
+}
+#bgdGlass {
+  position: absolute;
+  height: 585px;
+  width: 100%;
+  z-index: 1;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+#logoutContainer {
+  position: absolute;
+  bottom: 24px;
+  width: 100px;
+  margin: 0 auto;
+}
+#logoutContainer > button {
+  height: 30px;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px;
+  background-color: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+}
+#logoutContainer > button > span {
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 600;
 }

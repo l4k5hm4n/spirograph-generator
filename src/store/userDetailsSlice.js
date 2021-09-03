@@ -2,11 +2,10 @@ import { createSlice, nanoid, createAsyncThunk } from "@reduxjs/toolkit";
 import { db } from "../config/firebase-config";
 
 let initialState = {
-  loggedIn: true,
-  name: "Neel Pandit",
-  email: "neelp@zeta.tech",
-  photo:
-    "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+  loggedIn: false,
+  name: "",
+  email: "",
+  photo: "",
   myTemplates: [],
 };
 
@@ -154,12 +153,47 @@ const userDetailsSlice = createSlice({
       }
     },
     editUserTemplate(state, action) {
+
       const { id, config } = action.payload;
-      const existingPost = state.find((template) => template.id === id);
-      if (existingPost) {
-        existingPost.date = new Date().toISOString();
-        existingPost.config = config;
+
+      try {
+        const existingPost = state.myTemplates.find((template) => template.id === id);
+        if (existingPost) {
+          existingPost.date = new Date().toISOString();
+          existingPost.fValue = config.f;
+          existingPost.mValue = config.m;
+          existingPost.nValue = config.n;
+          existingPost.scaleValue = config.scale;
+          existingPost.strokeWidthValue = config.strokeWidth;
+          existingPost.colorValue = config.color;
+        }
+
+        let { email, myTemplates } = state;
+        let tempUser = db.collection("users").doc(email);
+
+        tempUser.update({
+          myTemplates: myTemplates,
+        });
+
+        parent.postMessage(
+          {
+            pluginMessage: {
+              type: "sync_myTemplates",
+              template: myTemplates,
+            },
+          },
+          "*"
+        );
+
+        parent.postMessage(
+          { pluginMessage: { type: "notify", text: "Spirograph has been edited successfully." } },
+          "*"
+        );
+
+      } catch (error) {
+        console.log("error while deleting template", error);
       }
+
     },
   },
   extraReducers: {
