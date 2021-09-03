@@ -12,7 +12,6 @@ const Modal = forwardRef((props, ref) => {
     };
   });
   const open = () => {
-    console.log("Clicking open Modal");
     setDisplay(true);
   };
 

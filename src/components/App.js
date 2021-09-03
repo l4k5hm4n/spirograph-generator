@@ -19,11 +19,8 @@ function App() {
   useEffect(() => {
     dispatch(fetchUserDetails());
     setOnboarding(!loginStatus);
-  }, [loginStatus, dispatch]);
-
-  useEffect(() => {
     setSplash(false);
-  }, []);
+  }, [loginStatus]);
 
   const splashScreen = <div>splash screen</div>;
 
@@ -31,7 +28,16 @@ function App() {
     <div>
       <Router>
         {onboarding ? (
-          <p>Onboarding Screens</p>
+          <div>
+            <p>Onboarding Screens</p>
+            <button
+              onClick={() => {
+                setOnboarding(false);
+              }}
+            >
+              Click Me
+            </button>
+          </div>
         ) : (
           <React.Fragment>
             <Nav />
@@ -51,7 +57,7 @@ function App() {
               <Route
                 exact
                 path="/loginPage/myTemplates"
-                component={() => <MyTemplates />}
+                render={(props) => <MyTemplates {...props} />}
               />
               <Route
                 exact
@@ -68,13 +74,10 @@ function App() {
   );
 
   if (splash) {
-    return splashScreen
-  }
-
-  else {
+    return splashScreen;
+  } else {
     return App;
   }
-
 }
 
 export default App;

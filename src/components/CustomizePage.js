@@ -1,17 +1,29 @@
-import React, { useCallback, useState, useEffect, useRef } from "react";
+import React, {
+  useCallback,
+  useState,
+  useEffect,
+  useRef,
+  createRef,
+} from "react";
 import DisplaySpirograph from "./DisplaySpirograph";
 import { useHistory, MemoryRouter as Router } from "react-router-dom";
-import { db } from "../config/firebase-config";
+import Modal from "./Modal";
+import { useSelector, useDispatch } from "react-redux";
+import { addUserTemplate } from "../store/userDetailsSlice";
 import AlterPage from "./AlterPage";
 import "../style/style.css";
 import "../style/customizePage.css";
 
 function CustomizePage(props) {
-
   const history = useHistory();
-
+  const modalSaveTemplateRef = createRef();
+  const modalSaveButtonRef = createRef();
+  const modalWarningRef = createRef();
+  const modalSaveTemplateSuccessRef = createRef();
+  const modalInputRef = useRef();
+  const dispatch = useDispatch();
   const linesRef = useRef();
-  const [userEmail, setuserEmail] = useState();
+  const [ templateName, setTemplateName ] = useState("")
   const [customizeFValue, setCustomizeFValue] = useState(0.6);
   const [customizeMValue, setCustomizeMValue] = useState(70);
   const [customizeNValue, setCustomizeNValue] = useState(50);
@@ -20,44 +32,19 @@ function CustomizePage(props) {
   const [customizeColorValue, setCustomizeColorValue] = useState("#ffc700");
 
   let svg;
-  let db__users = db.collection("users");
 
-  useEffect(() => {
-    parent.postMessage({ pluginMessage: { type: "checkUserLogin" } }, "*");
-    window.addEventListener("message", async (event) => { 
-    if (event.data.pluginMessage.type === "checkUserLogin") { 
-      setuserEmail(event.data.pluginMessage.UserDetails.email)
-    }
-    })
-
-  }, []);
-
-  const handleCustomizeHoverClick = (event) => {
-    let tempUser = db__users.doc(userEmail);
-    let template = {
+  const addTemplateListener = () => {
+    dispatch(
+      addUserTemplate({
+        templateName: modalInputRef.current.value,
         fValue: customizeFValue,
-        mValue: customizeMValue,    
+        mValue: customizeMValue,
         nValue: customizeNValue,
         scaleValue: customizeScaleValue,
         strokeWidthValue: customizeStrokeWidthValue,
         colorValue: customizeColorValue,
-      }
-
-    tempUser.get().then( (user) => {
-      // if user already exists update profile details with latest data
-
-      tempUser.update({
-        'myTemplates': [...user.data().myTemplates, template] 
       })
-
-      // sync favorites & mycopies to localstorage for quick access in the plugin, favorites are shown as bookmarks in UI
-      parent.postMessage({ pluginMessage: { type: 'sync_myTemplates', myTemplates : user.data().myTemplates} }, '*')
-          
-      }).catch(error => {
-        console.log('error while getting user fields', error)
-      })
-
-      history.push("/");
+    );
   };
 
   const getRandomColor = () => {
@@ -74,12 +61,8 @@ function CustomizePage(props) {
     setCustomizeMValue(Math.floor(Math.random() * 64 + 15));
     setCustomizeNValue(Math.floor(Math.random() * 40) + 1);
     setCustomizeScaleValue((Math.floor(Math.random() * 16) + 4) * 5);
-    setCustomizeStrokeWidthValue(
-      (Math.floor(Math.random() * 35) + 1) / 10
-    );
-    setCustomizeColorValue(
-      getRandomColor
-    );
+    setCustomizeStrokeWidthValue((Math.floor(Math.random() * 35) + 1) / 10);
+    setCustomizeColorValue(getRandomColor);
   };
 
   const callChangeDisplay = useCallback(
@@ -90,10 +73,11 @@ function CustomizePage(props) {
       setCustomizeScaleValue(argScale);
       setCustomizeStrokeWidthValue(argStrokeWidth);
       setCustomizeColorValue(argColor);
-
     }
   );
-
+  const clickedSaveTemplatePrompt = () => {
+    modalSaveTemplateRef.current.openModal();
+  };
   return (
     <div id="CustomizePage">
       <div
@@ -116,14 +100,13 @@ function CustomizePage(props) {
         </svg>
       </div>
       <div className="customizeContainer">
-        <div
-          id="customizeDisplayContainer"
-        >
+        <div id="customizeDisplayContainer">
           <div
             id="customizeHoverCheck"
             className="hoverBtn hoverBtnPrimary"
-            onClick={(event) => {
-              handleCustomizeHoverClick(event);
+            onClick={() => {
+              // addTemplateListener();
+              clickedSaveTemplatePrompt();
             }}
           >
             <svg
@@ -133,7 +116,7 @@ function CustomizePage(props) {
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <g clip-path="url(#clip0)">
+              <g clipPath="url(#clip0)">
                 <path
                   d="M6.00002 11.2001L1.80002 7.0001L0.400024 8.4001L6.00002 14.0001L18 2.0001L16.6 0.600098L6.00002 11.2001Z"
                   fill="black"
@@ -163,14 +146,16 @@ function CustomizePage(props) {
               <span>CLICK TO INSERT</span>
             </div>
           </div>
-          <div id="customizeLinesContainer"
-                    onClick={(e) => {
-                      svg = linesRef.current.innerHTML.toString();
-                      parent.postMessage(
-                        { pluginMessage: { type: "create-spirograph", svg } },
-                        "*"
-                      );
-                    }}>
+          <div
+            id="customizeLinesContainer"
+            onClick={(e) => {
+              svg = linesRef.current.innerHTML.toString();
+              parent.postMessage(
+                { pluginMessage: { type: "create-spirograph", svg } },
+                "*"
+              );
+            }}
+          >
             <div id="customizeLines">
               <DisplaySpirograph
                 id="displaySpirograph"
@@ -197,6 +182,91 @@ function CustomizePage(props) {
           alterColorValue={customizeColorValue}
         />
       </div>
+      <Modal ref={modalSaveTemplateRef}>
+        <div className="modalHeading">✅ Save the template</div>
+        <div className="modalInputContainer">
+          <div className="modalSubtxt">Template Name</div>
+          <input
+            ref={modalInputRef}
+            type="text"
+            className="modalInput"
+            placeholder="Fireball 🔥"
+            maxLength="31"
+            onChange={(e) => {
+              {
+                if (e.target.value.length === 0 || e.target.value === null) {
+                  modalSaveButtonRef.current.style.pointerEvents = "none";
+                  modalSaveButtonRef.current.style.background = "#676767";
+                  modalSaveButtonRef.current.style.color = "#B1B1B1";
+                } else if (e.target.value.length > 30) {
+                  modalSaveButtonRef.current.style.pointerEvents = "none";
+                  modalSaveButtonRef.current.style.background = "#676767";
+                  modalInputRef.current.style.border = "1px solid red";
+                  modalWarningRef.current.innerHTML =
+                    "Please enter a template name within 30 characters";
+                } else {
+                  modalSaveButtonRef.current.style.pointerEvents = "all";
+                  modalSaveButtonRef.current.style.background = "var(--white)";
+                  modalSaveButtonRef.current.style.color = "#000";
+                  modalInputRef.current.style.border = "none";
+                  modalWarningRef.current.innerHTML = "";
+                }
+              }
+            }}
+          ></input>
+          <div className="modalWarning" ref={modalWarningRef}></div>
+        </div>
+
+        <div className="btnPair">
+          <button
+            ref={modalSaveButtonRef}
+            className="btnPrimary  btnDisabled"
+            onClick={() => {
+              addTemplateListener();
+              modalSaveTemplateRef.current.closeModal();
+              modalSaveTemplateSuccessRef.current.openModal();
+              setTemplateName(modalInputRef.current.value)
+            }}
+          >
+            Save
+          </button>
+          <button
+            className="btnSecondary"
+            onClick={() => {
+              modalSaveTemplateRef.current.closeModal();
+            }}
+          >
+            Cancel
+          </button>
+        </div>
+      </Modal>
+      <Modal ref={modalSaveTemplateSuccessRef}>
+        <svg
+          width="34"
+          height="34"
+          viewBox="0 0 34 34"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M17.0002 0.333252C7.80016 0.333252 0.333496 7.79992 0.333496 16.9999C0.333496 26.1999 7.80016 33.6666 17.0002 33.6666C26.2002 33.6666 33.6668 26.1999 33.6668 16.9999C33.6668 7.79992 26.2002 0.333252 17.0002 0.333252ZM13.6668 25.3333L5.3335 16.9999L7.6835 14.6499L13.6668 20.6166L26.3168 7.96659L28.6668 10.3333L13.6668 25.3333Z"
+            fill="#05CB19"
+          />
+        </svg>
+
+        <span className="modalText">
+          Your template "{templateName}" has been saved successfully
+        </span>
+        <button
+          className="btnPrimary"
+          onClick={() => {
+            modalSaveTemplateSuccessRef.current.closeModal();
+            history.push("/loginPage/myTemplates");
+          }}
+        >
+          Okay
+        </button>
+      </Modal>
     </div>
   );
 }

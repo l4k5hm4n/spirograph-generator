@@ -7,6 +7,7 @@
   --black: #000;
   --mediumDarkTranslucency: rgba(0, 0, 0, 0.6);
   --mediumLightTranslucency: rgba(255, 255, 255, 0.6);
+  --red: #f00;
 }
 
 * {
@@ -43,6 +44,9 @@ body {
   background-color: var(--white);
   width: 132px;
   height: 40px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
 }
 .btnSecondary {
   color: var(--white);
@@ -50,7 +54,17 @@ body {
   border: 1px solid var(--white);
   width: 132px;
   height: 40px;
+  border-radius: 8px;
   outline: none;
+  cursor: pointer;
+  font-weight: 500;
+}
+.btnDisabled {
+  background-color: #676767;
+  pointer-events: none;
+  color: #B1B1B1;
+  font-size: 14px;
+  font-weight: 500;
 }
 
 /* Hover Classes */
@@ -62,12 +76,17 @@ body {
 .hoverBtnPrimary {
   height: 32px;
   width: 32px;
-  background-color: #ffc700;
+  background-color: white;
   border-radius: 50%;
   bottom: 28px;
   right: 28px;
   z-index: 2;
 }
+
+.hoverBtnPrimary:hover { 
+  background-color: #ffc700;
+}
+
 .hoverBtnPrimary > svg {
   position: absolute;
   top: 50%;
@@ -79,7 +98,7 @@ body {
   height: 20px;
   bottom: 0px;
   left: 83px;
-  background-color: rgba(255, 199, 0, 0.1);
+  background-color: #332d19;
   color: #ffc700;
   font-size: 10px;
   font-weight: 500;

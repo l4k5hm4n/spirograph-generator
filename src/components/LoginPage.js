@@ -1,32 +1,23 @@
 import React, { useState, createRef, useEffect } from "react";
 import { db } from "../config/firebase-config";
 import { Link, MemoryRouter as Router } from "react-router-dom";
+import { nanoid } from "@reduxjs/toolkit";
+import { useSelector, useDispatch } from "react-redux";
+import { fetchUserDetails, updateUserDetails } from "../store/userDetailsSlice";
 import Modal from "./Modal";
 import "../style/style.css";
 import "../style/loginPage.css";
 function LoginPage() {
-  // var userTemplates = useSelector((state) => state.userDefinedTemplates);
+  let userDetails = useSelector((state) => state.userDetails);
+  let dispatch = useDispatch();
 
-  let [loggedIn, setLoggedIn] = useState(false);
   const modalRef = createRef();
-  let [UserDetails, setUserDetails] = useState('');
 
   const clickedLogin = async () => {
-    let uniqueString = "";
-    let characters =
-      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    let charactersLength = characters.length;
-    for (let i = 0; i < 16; i++) {
-      uniqueString += characters.charAt(
-        Math.floor(Math.random() * charactersLength)
-      );
-    }
-
-    let date = new Date();
-    var timeStamp = date.toLocaleString();
+    let uniqueString = nanoid();
+    let timeStamp = new Date().toLocaleString();
     let db__loginAttempt = db.collection("login_attempts");
     let db__users = db.collection("users");
-    // console.log(timeStamp);
 
     // Send Sign In request to firestore
     db__loginAttempt
@@ -40,15 +31,16 @@ function LoginPage() {
       })
       .then(() => {
         // Open Signin link to browser
-        window.open(`http://localhost:3000/?ref=${uniqueString}`);
-        let loginEventListener = db__loginAttempt.doc(uniqueString).onSnapshot((doc) => {
+        window.open(`https://spirous-figma-plugin.web.app/?ref=${uniqueString}`);
+        let loginEventListener = db__loginAttempt
+          .doc(uniqueString)
+          .onSnapshot((doc) => {
             let tempData = doc.data();
 
             //Continue only if authStatus is true
             if (tempData.authStatus) {
               // Post User details to figma for local storage
-              setLoggedIn(true);
-              console.log(tempData.userInfo, 'user info ')
+              console.log(tempData.userInfo, "user info ");
               parent.postMessage(
                 {
                   pluginMessage: {
@@ -82,6 +74,7 @@ function LoginPage() {
                       "*"
                     );
 
+                    dispatch(fetchUserDetails());
                   } else {
                     // create new user profile if email doesn't exist already
                     tempUser.set({
@@ -103,8 +96,8 @@ function LoginPage() {
                       "*"
                     );
 
+                    dispatch(fetchUserDetails());
                   }
-           
                 })
                 .catch((error) => {
                   console.log("error while getting user fields", error);
@@ -124,31 +117,18 @@ function LoginPage() {
   };
   const clickedLogout = () => {
     parent.postMessage({ pluginMessage: { type: "logout" } }, "*");
+    dispatch(updateUserDetails({ status: 'logout' }));
     document.getElementById("UserAvatar").classList.add("removeClass");
     document.getElementById("accountInfo").classList.add("removeClass");
-    setLoggedIn(false);
   };
-
-  useEffect(() => {
-
-    parent.postMessage({ pluginMessage: { type: "checkUserLogin" } }, "*");
-
-    window.addEventListener("message", async (event) => {
-      if (event.data.pluginMessage.type === "checkUserLogin") { 
-        setLoggedIn(event.data.pluginMessage.UserLoggedIn)
-        setUserDetails(event.data.pluginMessage.UserDetails)
-      }
-    });
-
-  }, []);
 
   return (
     <div id="loginPage">
       <div id="loginContainer">
         <div id="loginDisplay">
           <div id="loginAvatar">
-            {!loggedIn ?
-             ( <svg
+            {!userDetails.loggedIn ? (
+              <svg
                 width="116"
                 height="117"
                 viewBox="0 0 116 117"
@@ -176,13 +156,16 @@ function LoginPage() {
                   fill="black"
                 />
               </svg>
-            ) : 
-            <img src={UserDetails.photo ? UserDetails.photo : ''} id="UserAvatar" /> 
-            }
+            ) : (
+              <img
+                src={userDetails.photo ? userDetails.photo : ""}
+                id="UserAvatar"
+              />
+            )}
           </div>
           <div id="googleAccountInfo">
             <div id="signInContainer">
-              {!loggedIn && (
+              {!userDetails.loggedIn && (
                 <button
                   onClick={() => {
                     clickedLogin();
@@ -218,11 +201,11 @@ function LoginPage() {
               )}
             </div>
             <div>
-              {loggedIn && (
+              {userDetails.loggedIn && (
                 <div id="accountInfo">
                   {/* <div id="accountInfo" className="removeClass"> */}
-                  <h4>{UserDetails.name}</h4>
-                  <h6>{UserDetails.email}</h6>
+                  <h4>{userDetails.name}</h4>
+                  <h6>{userDetails.email}</h6>
                 </div>
               )}
             </div>
@@ -230,106 +213,116 @@ function LoginPage() {
         </div>
         <div id="loginLinks">
           <div id="loginTabs">
-          {loggedIn ? (
-            <React.Fragment>
-            <Link to="/loginPage/myTemplates">
-              <div className="greyBgd loginTab">
-                <div className="shapeBgd">
-                  <svg
-                    width="19"
-                    height="20"
-                    viewBox="0 0 19 20"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M8 11.5V19.5H0V11.5H8ZM9 0L14.5 9H3.5L9 0ZM14.5 11C17 11 19 13 19 15.5C19 18 17 20 14.5 20C12 20 10 18 10 15.5C10 13 12 11 14.5 11Z"
-                      fill="#EDB92E"
-                    />
-                  </svg>
-                </div>
-                <div className="loginTabTxt">
-                  <div className="boldTxtWhite">My Templates</div>
-                  <div className="lightTxtGrey">
-                    Manage your saved templates
+            {userDetails.loggedIn ? (
+              <React.Fragment>
+                <Link 
+                to={{
+                pathname: "/loginPage/myTemplates",
+                myTemplatesProps: {
+                  activeSection: "myTemplates",
+                  },
+                }}>
+                  <div className="greyBgd loginTab">
+                    <div className="shapeBgd">
+                      <svg
+                        width="19"
+                        height="20"
+                        viewBox="0 0 19 20"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M8 11.5V19.5H0V11.5H8ZM9 0L14.5 9H3.5L9 0ZM14.5 11C17 11 19 13 19 15.5C19 18 17 20 14.5 20C12 20 10 18 10 15.5C10 13 12 11 14.5 11Z"
+                          fill="#EDB92E"
+                        />
+                      </svg>
+                    </div>
+                    <div className="loginTabTxt">
+                      <div className="boldTxtWhite">My Templates!</div>
+                      <div className="lightTxtGrey">
+                        Manage your saved templates
+                      </div>
+                    </div>
+                  </div>
+                </Link>
+                <Link to="/loginPage/AboutUs" id="aboutUsLink">
+                  <div className="greyBgd loginTab">
+                    <div className="shapeBgd">
+                      <svg
+                        width="20"
+                        height="20"
+                        viewBox="0 0 20 20"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M11 7H9V5H11V7ZM11 15H9V9H11V15ZM10 0C8.68678 0 7.38642 0.258658 6.17317 0.761205C4.95991 1.26375 3.85752 2.00035 2.92893 2.92893C1.05357 4.8043 0 7.34784 0 10C0 12.6522 1.05357 15.1957 2.92893 17.0711C3.85752 17.9997 4.95991 18.7362 6.17317 19.2388C7.38642 19.7413 8.68678 20 10 20C12.6522 20 15.1957 18.9464 17.0711 17.0711C18.9464 15.1957 20 12.6522 20 10C20 8.68678 19.7413 7.38642 19.2388 6.17317C18.7362 4.95991 17.9997 3.85752 17.0711 2.92893C16.1425 2.00035 15.0401 1.26375 13.8268 0.761205C12.6136 0.258658 11.3132 0 10 0Z"
+                          fill="#EDB92E"
+                        />
+                      </svg>
+                    </div>
+                    <div className="loginTabTxt">
+                      <div className="boldTxtWhite">About Us</div>
+                      <div className="lightTxtGrey">
+                        Learn about our journey!
+                      </div>
+                    </div>
+                  </div>
+                </Link>
+              </React.Fragment>
+            ) : (
+              <React.Fragment>
+                <div className="greyBgd loginTab">
+                  <div className="shapeBgd">
+                    <svg
+                      width="19"
+                      height="20"
+                      viewBox="0 0 19 20"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M8 11.5V19.5H0V11.5H8ZM9 0L14.5 9H3.5L9 0ZM14.5 11C17 11 19 13 19 15.5C19 18 17 20 14.5 20C12 20 10 18 10 15.5C10 13 12 11 14.5 11Z"
+                        fill="#EDB92E"
+                      />
+                    </svg>
+                  </div>
+                  <div className="loginTabTxt">
+                    <div className="boldTxtWhite">My Templates</div>
+                    <div className="lightTxtGrey">
+                      Login to manage your saved templates
+                    </div>
                   </div>
                 </div>
-              </div>
-            </Link>
-            <Link to="/loginPage/AboutUs" id="aboutUsLink">
-              <div className="greyBgd loginTab">
-                <div className="shapeBgd">
-                  <svg
-                    width="20"
-                    height="20"
-                    viewBox="0 0 20 20"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M11 7H9V5H11V7ZM11 15H9V9H11V15ZM10 0C8.68678 0 7.38642 0.258658 6.17317 0.761205C4.95991 1.26375 3.85752 2.00035 2.92893 2.92893C1.05357 4.8043 0 7.34784 0 10C0 12.6522 1.05357 15.1957 2.92893 17.0711C3.85752 17.9997 4.95991 18.7362 6.17317 19.2388C7.38642 19.7413 8.68678 20 10 20C12.6522 20 15.1957 18.9464 17.0711 17.0711C18.9464 15.1957 20 12.6522 20 10C20 8.68678 19.7413 7.38642 19.2388 6.17317C18.7362 4.95991 17.9997 3.85752 17.0711 2.92893C16.1425 2.00035 15.0401 1.26375 13.8268 0.761205C12.6136 0.258658 11.3132 0 10 0Z"
-                      fill="#EDB92E"
-                    />
-                  </svg>
-                </div>
-                <div className="loginTabTxt">
-                  <div className="boldTxtWhite">About Us</div>
-                  <div className="lightTxtGrey">Learn about our journey!</div>
-                </div>
-              </div>
-            </Link>
-            </React.Fragment>
-          ) : (
-            <React.Fragment>
-              <div className="greyBgd loginTab">
-                <div className="shapeBgd">
-                  <svg
-                    width="19"
-                    height="20"
-                    viewBox="0 0 19 20"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M8 11.5V19.5H0V11.5H8ZM9 0L14.5 9H3.5L9 0ZM14.5 11C17 11 19 13 19 15.5C19 18 17 20 14.5 20C12 20 10 18 10 15.5C10 13 12 11 14.5 11Z"
-                      fill="#EDB92E"
-                    />
-                  </svg>
-                </div>
-                <div className="loginTabTxt">
-                  <div className="boldTxtWhite">My Templates</div>
-                  <div className="lightTxtGrey">
-                    Login to manage your saved templates
+                <Link to="/loginPage/AboutUs" id="aboutUsLink">
+                  <div className="greyBgd loginTab">
+                    <div className="shapeBgd">
+                      <svg
+                        width="20"
+                        height="20"
+                        viewBox="0 0 20 20"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M11 7H9V5H11V7ZM11 15H9V9H11V15ZM10 0C8.68678 0 7.38642 0.258658 6.17317 0.761205C4.95991 1.26375 3.85752 2.00035 2.92893 2.92893C1.05357 4.8043 0 7.34784 0 10C0 12.6522 1.05357 15.1957 2.92893 17.0711C3.85752 17.9997 4.95991 18.7362 6.17317 19.2388C7.38642 19.7413 8.68678 20 10 20C12.6522 20 15.1957 18.9464 17.0711 17.0711C18.9464 15.1957 20 12.6522 20 10C20 8.68678 19.7413 7.38642 19.2388 6.17317C18.7362 4.95991 17.9997 3.85752 17.0711 2.92893C16.1425 2.00035 15.0401 1.26375 13.8268 0.761205C12.6136 0.258658 11.3132 0 10 0Z"
+                          fill="#EDB92E"
+                        />
+                      </svg>
+                    </div>
+                    <div className="loginTabTxt">
+                      <div className="boldTxtWhite">About Us</div>
+                      <div className="lightTxtGrey">
+                        Learn about our journey!
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
-              <Link to="/loginPage/AboutUs" id="aboutUsLink">
-              <div className="greyBgd loginTab">
-                <div className="shapeBgd">
-                  <svg
-                    width="20"
-                    height="20"
-                    viewBox="0 0 20 20"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M11 7H9V5H11V7ZM11 15H9V9H11V15ZM10 0C8.68678 0 7.38642 0.258658 6.17317 0.761205C4.95991 1.26375 3.85752 2.00035 2.92893 2.92893C1.05357 4.8043 0 7.34784 0 10C0 12.6522 1.05357 15.1957 2.92893 17.0711C3.85752 17.9997 4.95991 18.7362 6.17317 19.2388C7.38642 19.7413 8.68678 20 10 20C12.6522 20 15.1957 18.9464 17.0711 17.0711C18.9464 15.1957 20 12.6522 20 10C20 8.68678 19.7413 7.38642 19.2388 6.17317C18.7362 4.95991 17.9997 3.85752 17.0711 2.92893C16.1425 2.00035 15.0401 1.26375 13.8268 0.761205C12.6136 0.258658 11.3132 0 10 0Z"
-                      fill="#EDB92E"
-                    />
-                  </svg>
-                </div>
-                <div className="loginTabTxt">
-                  <div className="boldTxtWhite">About Us</div>
-                  <div className="lightTxtGrey">Learn about our journey!</div>
-                </div>
-              </div>
-              </Link>
-            </React.Fragment>
-          )}
+                </Link>
+              </React.Fragment>
+            )}
           </div>
           <div id="logoutContainer">
-            {loggedIn && (
+            {userDetails.loggedIn && (
               <button
                 id="logout"
                 onClick={() => {
@@ -365,7 +358,7 @@ function LoginPage() {
         <span className="modalText">
           Are you sure you want to logout your profile from this plugin?
         </span>
-        <div className="buttonPair">
+        <div className="btnPair">
           <button
             className="btnPrimary"
             onClick={() => {

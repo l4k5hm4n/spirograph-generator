@@ -7,7 +7,9 @@ const Spirograph = React.lazy(() => import('./Spirograph'));
 
 export default function ExistingTemplates(props){
       
-  const arrLength = props.predefinedTemplates.length;
+  const [ currentTemplateID, setcurrentTemplateID ] = React.useState(0)
+
+  let refs = []
 
   return (
     <div>
@@ -15,12 +17,15 @@ export default function ExistingTemplates(props){
     <div className="templatesContainer">
       <div className="templateTransition"></div>
       <div className="gridContainer">
-        {props.predefinedTemplates.map((predefinedTemplate, i) => (
-         
+        {props.predefinedTemplates.map((predefinedTemplate, i) => {
+         const newRef = createRef();
+         refs.push(newRef);
+         return(
           <div
             key={predefinedTemplate.id}
-            className="templateDisplay"
+            className={`templateDisplay ${currentTemplateID == predefinedTemplate.id ? 'active' : ''}`}
             onClick={() => {
+              setcurrentTemplateID(predefinedTemplate.id)
               props.callChangeDisplay(
                 predefinedTemplate.f,
                 predefinedTemplate.m,
@@ -31,7 +36,7 @@ export default function ExistingTemplates(props){
               );
             }}
           >
-          <Suspense fallback={<div>Loading...</div>}>
+          <Suspense fallback={<div></div>}>
             <Spirograph
               templateId={predefinedTemplate.predefinedTemplateNumber}
               f={predefinedTemplate.f}
@@ -39,14 +44,14 @@ export default function ExistingTemplates(props){
               n={predefinedTemplate.n}
               scale="30"
               strokeWidth="1"
-              color="#ffc700"
-              ref={React.createRef()}
+              color="white"
+              ref={newRef}
             />
           </Suspense>
             <div
               className="hoverBtnSecondary hideClass"
               onClick={(event) => {
-                let svg = elRefs.current[i].current.innerHTML.toString();
+                let svg = refs[i].current.innerHTML.toString();
                 parent.postMessage(
                   { pluginMessage: { type: "create-spirograph", svg } },
                   "*"
@@ -67,8 +72,8 @@ export default function ExistingTemplates(props){
               </svg>
             </div>
           </div>
-          // </Suspense>
-        ))}
+         )
+        })}
       </div>
     </div>
   </div>

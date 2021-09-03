@@ -1,9 +1,10 @@
-import React, { useState, useRef, useCallback } from "react";
+import React, { useState, useRef, useCallback, createRef } from "react";
 import DisplaySpirograph from "./DisplaySpirograph";
 import AlterPage from "./AlterPage";
+import Modal from "./Modal";
 import ExistingTemplates from "./ExistingTemplates";
 import predefinedTemplates from "../config/predefinedTemplates";
-import { Route, Link, MemoryRouter as Router } from "react-router-dom";
+import { Link, useHistory, MemoryRouter as Router } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { addUserTemplate } from "../store/userDetailsSlice";
 import "../style/style.css";
@@ -11,16 +12,16 @@ import "../style/landingPage.css";
 import "../style/templates.css";
 
 function LandingPage(props) {
-  let templates = useSelector((state) => state.userDetails.myTemplates);
-
-  React.useEffect(() => {
-    console.log(templates);
-  }, [templates]);
-
   let dispatch = useDispatch();
-
+  const history = useHistory();
+  const modalSaveTemplateRef = createRef();
+  const modalSaveButtonRef = createRef();
+  const modalWarningRef = createRef();
+  const modalSaveTemplateSuccessRef = createRef();
+  const modalInputRef = useRef();
   const linesRef = useRef();
   const shadowLinesRef = useRef();
+  const [ templateName, setTemplateName ] = useState("")
   const [alterFValue, setAlterFValue] = useState(0.6);
   const [alterMValue, setAlterMValue] = useState(70);
   const [alterNValue, setAlterNValue] = useState(50);
@@ -39,6 +40,24 @@ function LandingPage(props) {
       setAlterColorValue(argColor);
     }
   );
+
+  const addTemplateListener = () => {
+    dispatch(
+      addUserTemplate({
+        templateName: modalInputRef.current.value,
+        fValue: alterFValue,
+        mValue: alterMValue,
+        nValue: alterNValue,
+        scaleValue: alterScaleValue,
+        strokeWidthValue: alterStrokeWidthValue,
+        colorValue: alterColorValue,
+      })
+    );
+  };
+
+  const clickedSaveTemplatePrompt = () => {
+    modalSaveTemplateRef.current.openModal();
+  };
 
   return (
     <div id="landingPage">
@@ -77,16 +96,7 @@ function LandingPage(props) {
 
           <div
             onClick={() => {
-              dispatch(
-                addUserTemplate({
-                  fValue: alterFValue,
-                  mValue: alterMValue,
-                  nValue: alterNValue,
-                  scaleValue: alterScaleValue,
-                  strokeWidthValue: alterStrokeWidthValue,
-                  colorValue: alterColorValue,
-                })
-              );
+              clickedSaveTemplatePrompt();
             }}
             className={`hoverBtn insertTemplate hoverBtnPrimary ${
               props.location.homeProps
@@ -103,7 +113,6 @@ function LandingPage(props) {
               viewBox="0 0 32 32"
               fill="none"
             >
-              <circle cx="16" cy="16" r="16" fill="#FFC700" />
               <path
                 d="M13 20.2001L8.79999 16.0001L7.39999 17.4001L13 23.0001L25 11.0001L23.6 9.6001L13 20.2001Z"
                 fill="black"
@@ -193,6 +202,90 @@ function LandingPage(props) {
           />
         </div>
       </div>
+      <Modal ref={modalSaveTemplateRef}>
+        <div className="modalHeading">✅ Save the template</div>
+        <div className="modalInputContainer">
+          <div className="modalSubtxt">Template Name</div>
+          <input
+            ref={modalInputRef}
+            type="text"
+            className="modalInput"
+            placeholder="Fireball 🔥"
+            maxLength="31"
+            onChange={(e) => {
+              {
+                if (e.target.value.length === 0 || e.target.value === null) {
+                  modalSaveButtonRef.current.style.pointerEvents = "none";
+                  modalSaveButtonRef.current.style.background = "#676767";
+                  modalSaveButtonRef.current.style.color = "#B1B1B1";
+                } else if (e.target.value.length > 30) {
+                  modalSaveButtonRef.current.style.pointerEvents = "none";
+                  modalSaveButtonRef.current.style.background = "#676767";
+                  modalInputRef.current.style.border = "1px solid red";
+                  modalWarningRef.current.innerHTML =
+                    "Please enter a template name within 30 characters";
+                } else {
+                  modalSaveButtonRef.current.style.pointerEvents = "all";
+                  modalSaveButtonRef.current.style.background = "var(--white)";
+                  modalSaveButtonRef.current.style.color = "#000";
+                  modalInputRef.current.style.border = "none";
+                  modalWarningRef.current.innerHTML = "";
+                }
+              }
+            }}
+          ></input>
+          <div className="modalWarning" ref={modalWarningRef}></div>
+        </div>
+
+        <div className="btnPair">
+          <button
+            ref={modalSaveButtonRef}
+            className="btnPrimary  btnDisabled"
+            onClick={() => {
+              addTemplateListener();
+              modalSaveTemplateRef.current.closeModal();
+              modalSaveTemplateSuccessRef.current.openModal();
+              setTemplateName(modalInputRef.current.value)
+            }}
+          >
+            Save
+          </button>
+          <button
+            className="btnSecondary"
+            onClick={() => {
+              modalSaveTemplateRef.current.closeModal();
+            }}
+          >
+            Cancel
+          </button>
+        </div>
+      </Modal>
+      <Modal ref={modalSaveTemplateSuccessRef}>
+        <svg
+          width="34"
+          height="34"
+          viewBox="0 0 34 34"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M17.0002 0.333252C7.80016 0.333252 0.333496 7.79992 0.333496 16.9999C0.333496 26.1999 7.80016 33.6666 17.0002 33.6666C26.2002 33.6666 33.6668 26.1999 33.6668 16.9999C33.6668 7.79992 26.2002 0.333252 17.0002 0.333252ZM13.6668 25.3333L5.3335 16.9999L7.6835 14.6499L13.6668 20.6166L26.3168 7.96659L28.6668 10.3333L13.6668 25.3333Z"
+            fill="#05CB19"
+          />
+        </svg>
+        <span className="modalText">
+        Your template "{templateName}" has been saved sucessfully
+        </span>
+        <button
+          className="btnPrimary"
+          onClick={() => {
+            modalSaveTemplateSuccessRef.current.closeModal();
+            history.push("/loginPage/myTemplates");
+          }}
+        >
+          Okay
+        </button>
+      </Modal>
     </div>
   );
 }
