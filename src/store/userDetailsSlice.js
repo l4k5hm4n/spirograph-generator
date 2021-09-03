@@ -19,14 +19,16 @@ export const fetchUserDetails = createAsyncThunk(
     let userDetails = await new Promise((resolve, reject) => {
       window.addEventListener("message", async (event) => {
         if (event.data.pluginMessage.type === "checkUserLogin") {
-          loggedIn = event.data.pluginMessage.UserLoggedIn;
-          name = event.data.pluginMessage.UserDetails.name;
-          email = event.data.pluginMessage.UserDetails.email;
-          photo = event.data.pluginMessage.UserDetails.photo;
 
-          let tempUser = db.collection("users").doc(email);
+          if(event.data.pluginMessage.UserLoggedIn) {
+            loggedIn = event.data.pluginMessage.UserLoggedIn ;
+            name = event.data.pluginMessage.UserDetails.name;
+            email = event.data.pluginMessage.UserDetails.email;
+            photo = event.data.pluginMessage.UserDetails.photo;
 
-          tempUser
+            let tempUser = db.collection("users").doc(email);
+
+            tempUser
             .get()
             .then((user) => {
               if (user.exists) {
@@ -38,6 +40,13 @@ export const fetchUserDetails = createAsyncThunk(
             .catch((error) => {
               console.log("error while fetching user details", error);
             });
+
+          }
+
+          else {
+            return resolve(initialState);
+          }
+
         }
       });
     });
