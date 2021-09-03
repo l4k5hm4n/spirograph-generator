@@ -56,11 +56,11 @@
   display: block;
 }
 
-#myTemplatesDisplayContainer a div#hoverPen{
-    display: block;
+#myTemplatesDisplayContainer a div#hoverPen {
+  display: block;
 }
-#myTemplatesDisplayContainer a div#hoverPen:hover{
-    background-color: #ffc700;
+#myTemplatesDisplayContainer a div#hoverPen:hover {
+  background-color: #ffc700;
 }
 
 .myTemplates-title {
@@ -79,4 +79,48 @@
   width: 36px;
   bottom: -6px;
   left: 0;
+}
+
+/* Empty MyTemplates Page */
+#emptyMyTemplatesContainer {
+  height: 652px;
+  width: 100%;
+  background-color: var(--bgdGrey);
+  position: relative;
+}
+
+#emptySVGcontainer {
+  position: absolute;
+  top: 249px;
+  left: 144px;
+}
+#emptyMyTemplatesTxt {
+  height: 62px;
+  width: 220px;
+  position: relative;
+  top: 346px;
+  left: 70px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+#emptyMyTemplatesTxt h1 {
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 26px;
+  color: var(--white);
+  text-align: center;
+}
+#emptyMyTemplatesTxt h3 {
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--mediumLightTranslucenc);
+  text-align: center;
+}
+#emptyMyTemplatesContainer button {
+  position: relative;
+  top: 432px;
+  left: 114px;
 }

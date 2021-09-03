@@ -7,6 +7,9 @@
   --black: #000;
   --mediumDarkTranslucency: rgba(0, 0, 0, 0.6);
   --mediumLightTranslucency: rgba(255, 255, 255, 0.6);
+  --mediumGreyTranslucency: rgba(69, 66, 66, 0.6);
+  --mediumYellowTranslucency: rgba(255, 199, 0, 0.4);
+  --radioBtnColor: rgba(136, 130, 130, 0.2);
   --red: #f00;
 }
 
@@ -62,7 +65,7 @@ body {
 .btnDisabled {
   background-color: #676767;
   pointer-events: none;
-  color: #B1B1B1;
+  color: #b1b1b1;
   font-size: 14px;
   font-weight: 500;
 }
@@ -83,7 +86,7 @@ body {
   z-index: 2;
 }
 
-.hoverBtnPrimary:hover { 
+.hoverBtnPrimary:hover {
   background-color: #ffc700;
 }
 
@@ -138,6 +141,12 @@ body {
 }
 
 /* Text Classes */
+.txtPrimary {
+  color: var(--white);
+}
+.txtSecondary {
+  color: var(--yellow);
+}
 .boldTxtWhite {
   font-weight: 600;
   font-size: 14px;

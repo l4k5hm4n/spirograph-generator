@@ -64,7 +64,6 @@
   background: var(--mediumGreyTranslucency);
   outline: none;
   border-radius: 4px;
-  background: #ffffff;
 }
 .range::-webkit-slider-thumb {
   -webkit-appearance: none;

@@ -23,7 +23,7 @@ function CustomizePage(props) {
   const modalInputRef = useRef();
   const dispatch = useDispatch();
   const linesRef = useRef();
-  const [ templateName, setTemplateName ] = useState("")
+  const [templateName, setTemplateName] = useState("");
   const [customizeFValue, setCustomizeFValue] = useState(0.6);
   const [customizeMValue, setCustomizeMValue] = useState(70);
   const [customizeNValue, setCustomizeNValue] = useState(50);
@@ -57,11 +57,14 @@ function CustomizePage(props) {
   };
 
   const randomizeParams = () => {
-    setCustomizeFValue(Math.floor(Math.random() * 40 - 20) / 10);
-    setCustomizeMValue(Math.floor(Math.random() * 64 + 15));
-    setCustomizeNValue(Math.floor(Math.random() * 40) + 1);
-    setCustomizeScaleValue((Math.floor(Math.random() * 16) + 4) * 5);
-    setCustomizeStrokeWidthValue((Math.floor(Math.random() * 35) + 1) / 10);
+    setCustomizeFValue(
+      (Math.floor(Math.random() * 12 + 8) / 10) *
+        (Math.floor(Math.random() * 2) ? 1 : -1)
+    );
+    setCustomizeMValue(Math.floor(Math.random() * 70 + 30));
+    setCustomizeNValue(Math.floor(Math.random() * 29 + 1));
+    setCustomizeScaleValue(Math.floor(Math.random() * 12 + 12) * 5);
+    setCustomizeStrokeWidthValue(Math.floor(Math.random() * 19 + 1) / 10);
     setCustomizeColorValue(getRandomColor);
   };
 
@@ -225,7 +228,7 @@ function CustomizePage(props) {
               addTemplateListener();
               modalSaveTemplateRef.current.closeModal();
               modalSaveTemplateSuccessRef.current.openModal();
-              setTemplateName(modalInputRef.current.value)
+              setTemplateName(modalInputRef.current.value);
             }}
           >
             Save
