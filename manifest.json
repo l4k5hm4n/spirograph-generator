@@ -1,7 +1,8 @@
 {
   "name": "Spirous",
-  "id": "1002146619544693230",
+  "id": "1015617512305153227",
   "api": "1.0.0",
   "main": "dist/code.js",
-  "ui": "dist/ui.html"
+  "ui": "dist/ui.html",
+  "editorType": ["figma"]
 }
