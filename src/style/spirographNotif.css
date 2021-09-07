@@ -1,0 +1,20 @@
+.insertedSpirograph {
+  height: 48px;
+  width: 328px;
+  margin-left: 16px;
+  border-radius: 6px;
+  background: var(--notifGrey);
+  color: var(--white);
+  font-size: 14px;
+  font-weight: 400;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  margin-bottom: 24px;
+}
+.insertedSpirograph > svg {
+  position: absolute;
+  left: 14px;
+  top: 14px;
+}
