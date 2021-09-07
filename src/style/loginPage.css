@@ -18,6 +18,17 @@
   align-items: flex-start;
   z-index: 9999;
 }
+#loginPage::before {
+  content: "";
+  position: absolute;
+  height: 600px;
+  width: 100%;
+  z-index: 1;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  border-radius: 18px 18px 0 0;
+}
 #loginDisplay {
   margin-top: 8px;
   padding-bottom: 24px;
@@ -27,6 +38,7 @@
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
+  z-index: 9999;
 }
 #loginAvatar {
   width: 100px;
@@ -57,15 +69,14 @@
 }
 
 #signInContainer > button {
-  width: 179px;
   height: 32px;
-  background: rgba(0, 0, 0, 0.4);
+  background: rgba(45, 45, 45, 0.7);
   outline: none;
-  color: #fff;
+  color: var(--white);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border: none;
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 10px;
   cursor: pointer;
 }
@@ -74,7 +85,10 @@
   margin-left: 14px;
 }
 #signInContainer > button > span {
-  margin-right: 14px;
+  margin: 0 12px 0 16px;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 16px;
 }
 #accountInfo {
   padding: 12px 32px;
@@ -99,6 +113,7 @@
 }
 #loginLinks {
   width: 312px;
+  z-index: 9999;
 }
 .loginTab {
   width: 100%;
@@ -113,17 +128,16 @@
   width: 232px;
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  justify-content: center;
   align-items: flex-start;
 }
-#bgdGlass {
-  position: absolute;
-  height: 585px;
-  width: 100%;
-  z-index: 1;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.4);
+.loginTabTxt > .lightTxtGrey {
+  font-weight: 300;
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--mediumLightTranslucency);
 }
+
 #logoutContainer {
   position: absolute;
   bottom: 24px;
@@ -140,7 +154,7 @@
   align-items: center;
   padding: 12px;
   background-color: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 8px;
   cursor: pointer;
 }

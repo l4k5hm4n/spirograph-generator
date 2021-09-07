@@ -1,8 +1,10 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
 :root {
   --yellow: #ffc700;
   --white: #fff;
   --bgdGrey: rgba(37, 37, 37, 1);
   --mediumGrey: rgba(45, 45, 45, 1);
+  --notifGrey: rgba(47, 47, 47, 1);
   --darkGrey: rgba(29, 29, 29, 1);
   --black: #000;
   --mediumDarkTranslucency: rgba(0, 0, 0, 0.6);
@@ -17,7 +19,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Inter", sans-serif;
   /* background-color: var(--bgdGrey); */
 }
 
@@ -81,8 +83,8 @@ body {
   width: 32px;
   background-color: white;
   border-radius: 50%;
-  bottom: 28px;
-  right: 28px;
+  bottom: 12px;
+  right: 12px;
   z-index: 2;
 }
 
