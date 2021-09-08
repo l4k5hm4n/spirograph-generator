@@ -1,8 +1,12 @@
 import React from "react";
 import { NavLink, MemoryRouter as Router } from "react-router-dom";
+import { useSelector } from "react-redux";
 import "../style/nav.css";
 
 function Nav() {
+
+  let userPhoto = useSelector((state) => state.userDetails.photo);
+
   return (
     <div>
       <div className="navbar">
@@ -45,7 +49,8 @@ function Nav() {
               <span>Create</span>
             </div>
           </NavLink>
-          <NavLink to="/loginPage" id="navLoginPageLink">
+          <NavLink to="/loginPage" id="navLoginPageLink" className={ userPhoto ? 'userPhoto' : '' }>
+            { userPhoto ? <img src={userPhoto} alt="userPhoto" /> :   
             <svg
               width="12"
               height="12"
@@ -58,6 +63,7 @@ function Nav() {
                 fill="white"
               />
             </svg>
+            }
           </NavLink>
         </div>
       </div>

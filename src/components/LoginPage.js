@@ -1,6 +1,7 @@
 import React, { useState, createRef, useEffect } from "react";
 import { db } from "../config/firebase-config";
-import { Link, MemoryRouter as Router } from "react-router-dom";
+import { Link, useHistory, MemoryRouter as Router } from "react-router-dom";
+import SectionNav from "./SectionNav";
 import { nanoid } from "@reduxjs/toolkit";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchUserDetails, updateUserDetails } from "../store/userDetailsSlice";
@@ -9,11 +10,13 @@ import ReactNotification, { store } from "react-notifications-component";
 import LoggedOutSuccessNotif from "./LoggedOutSuccessNotif";
 import LoginToViewTemplatesNotif from "./LoginToViewTemplatesNotif";
 import "react-notifications-component/dist/theme.css";
-import ExistingTemplates from "./ExistingTemplates";
 import "animate.css";
 import "../style/style.css";
 import "../style/loginPage.css";
+
 function LoginPage() {
+
+  const history = useHistory();
   let userDetails = useSelector((state) => state.userDetails);
   let dispatch = useDispatch();
 
@@ -110,6 +113,7 @@ function LoginPage() {
                 .catch((error) => {
                   console.log("error while getting user fields", error);
                 });
+              history.push("/")
               loginEventListener();
             }
           });
@@ -131,7 +135,9 @@ function LoginPage() {
   };
 
   return (
-    <div id="loginPage">
+    <React.Fragment>
+      <SectionNav route="/" title="Manage Account" hideCreate={true} hideProfile={true} />
+      <div id="loginPage">
       <div id="loginContainer">
         <div id="loginDisplay">
           <div id="loginAvatar">
@@ -431,7 +437,7 @@ function LoginPage() {
       </Modal>
       <ReactNotification />
     </div>
-  );
+    </React.Fragment>);
 }
 
 export default LoginPage;

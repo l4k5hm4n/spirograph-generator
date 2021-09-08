@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import Nav from "./Nav";
 import LandingPage from "./LandingPage";
 import CustomizePage from "./CustomizePage";
 import LoginPage from "./LoginPage";
@@ -57,7 +56,6 @@ function App() {
       <Router>
         {onboarding ? <Onboarding setOnboarding={setOnboarding}/> : 
           <React.Fragment>
-            <Nav />
             <Switch>
               <Route
                 exact

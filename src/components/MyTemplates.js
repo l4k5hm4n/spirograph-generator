@@ -4,6 +4,8 @@ import AlterPage from "./AlterPage";
 import Spirograph from "./Spirograph";
 import Modal from "./Modal";
 import EmptyMyTemplates from "./EmptyMyTemplates";
+import SectionNav from "./SectionNav";
+
 import {
   Route,
   useHistory,
@@ -73,6 +75,8 @@ function MyTemplates(props) {
   };
 
   return (
+    <React.Fragment>
+    <SectionNav route="/loginPage" title="My Templates" hideCreate={true} hideProfile={true} />
     <div id="MyTemplates">
       {userDetails.myTemplates && userDetails.myTemplates.length > 0 ? (
         <div className="myTemplatesContainer">
@@ -354,6 +358,7 @@ function MyTemplates(props) {
         </button>
       </Modal>
     </div>
+    </React.Fragment>
   );
 }
 

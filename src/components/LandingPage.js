@@ -2,9 +2,11 @@ import React, { useState, useRef, useCallback, createRef } from "react";
 import DisplaySpirograph from "./DisplaySpirograph";
 import AlterPage from "./AlterPage";
 import Modal from "./Modal";
+import Nav from "./Nav";
 import ReactNotification, { store } from "react-notifications-component";
 import InsertedSpirographNotif from "./InsertedSpirographNotif";
-import "react-notifications-component/dist/theme.css";
+import SectionNav from "./SectionNav";
+// import "../style/theme.css";
 import ExistingTemplates from "./ExistingTemplates";
 import "animate.css";
 import predefinedTemplates from "../config/predefinedTemplates";
@@ -66,6 +68,13 @@ function LandingPage(props) {
   };
 
   return (
+    <React.Fragment>
+    { props.location.homeProps ? 
+      props.location.homeProps.activeSection == "alter" ? 
+        <SectionNav route="/" title="Edit Spirograph" hideCreate={true} hideProfile={false} />
+      : <Nav />
+      : <Nav />
+    }
     <div id="landingPage">
       <div className="displayContainer">
         <div id="linesContainer">
@@ -308,6 +317,7 @@ function LandingPage(props) {
       </Modal>
       <ReactNotification />
     </div>
+    </React.Fragment>
   );
 }
 

@@ -145,17 +145,17 @@ const userDetailsSlice = createSlice({
           myTemplates: updatedTemplates,
         });
 
-        state.myTemplates = updatedTemplates;
+        state.myTemplates = [...updatedTemplates];
 
-        parent.postMessage(
-          {
-            pluginMessage: {
-              type: "sync_myTemplates",
-              template: updatedTemplates,
-            },
-          },
-          "*"
-        );
+        // parent.postMessage(
+        //   {
+        //     pluginMessage: {
+        //       type: "sync_myTemplates",
+        //       template: updatedTemplates,
+        //     },
+        //   },
+        //   "*"
+        // );
       } catch (error) {
         console.log("error while deleting template", error);
       }

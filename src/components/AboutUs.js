@@ -1,9 +1,12 @@
 import React from "react";
+import SectionNav from "./SectionNav";
 import "../style/style.css";
 import "../style/aboutUs.css";
 
 function AboutUs() {
   return (
+    <React.Fragment>
+    <SectionNav route="/loginPage" title="About Us" hideCreate={true} hideProfile={true} />
     <div id="AboutUsPage">
       <div id="aboutUsContainer">
         <div id="aboutUsDetails" className="greyBgd">
@@ -63,6 +66,7 @@ function AboutUs() {
         </div>
       </div>
     </div>
+    </React.Fragment>
   );
 }
 

@@ -5,6 +5,7 @@ import React, {
   createRef,
 } from "react";
 import DisplaySpirograph from "./DisplaySpirograph";
+import SectionNav from "./SectionNav";
 import { useHistory, MemoryRouter as Router } from "react-router-dom";
 import Modal from "./Modal";
 import { useSelector, useDispatch } from "react-redux";
@@ -83,7 +84,9 @@ function CustomizePage(props) {
     modalSaveTemplateRef.current.openModal();
   };
   return (
-    <div id="CustomizePage">
+    <React.Fragment>
+    <SectionNav route="/" title="Create your Spirograph" hideCreate={true} hideProfile={true} />
+      <div id="CustomizePage">
       <div
         id="randomizeBtn"
         onClick={() => {
@@ -274,6 +277,7 @@ function CustomizePage(props) {
         </button>
       </Modal>
     </div>
+    </React.Fragment>
   );
 }
 
