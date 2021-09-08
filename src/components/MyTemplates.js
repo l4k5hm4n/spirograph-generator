@@ -1,9 +1,4 @@
-import React, {
-  useState,
-  useCallback,
-  useRef,
-  createRef,
-} from "react";
+import React, { useState, useCallback, useRef, createRef } from "react";
 import DisplaySpirograph from "./DisplaySpirograph";
 import AlterPage from "./AlterPage";
 import Spirograph from "./Spirograph";
@@ -45,7 +40,9 @@ function MyTemplates(props) {
   );
   const [alterMyTemplateStrokeWidthValue, setAlterMyTemplateStrokeWidthValue] =
     useState(
-      userDetails.myTemplates[0] ? userDetails.myTemplates[0].strokeWidthValue : ""
+      userDetails.myTemplates[0]
+        ? userDetails.myTemplates[0].strokeWidthValue
+        : ""
     );
   const [alterMyTemplateColorValue, setAlterMyTemplateColorValue] = useState(
     userDetails.myTemplates[0] ? userDetails.myTemplates[0].colorValue : ""
@@ -67,7 +64,7 @@ function MyTemplates(props) {
       setcurrentTemplateID(id);
     }
   );
-  
+
   const clickedDeletePrompt = () => {
     modalDeleteRef.current.openModal();
   };
@@ -224,6 +221,7 @@ function MyTemplates(props) {
               <h4 className="myTemplates-title">Manage your templates</h4>
 
               <div className="templatesContainer">
+                <div className="templateTransition"></div>
                 <div className="gridContainer">
                   {userDetails.myTemplates.map((userTemplate, index) => (
                     <div
@@ -282,6 +280,7 @@ function MyTemplates(props) {
                     </div>
                   ))}
                 </div>
+                <div className="templateTransitionBottom"></div>
               </div>
             </div>
           </div>

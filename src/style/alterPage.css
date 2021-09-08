@@ -121,7 +121,7 @@
   font-size: 12px;
   font-weight: 400;
 }
-.sliderName > div {
+/* .sliderName > div {
   margin-left: 8px;
   height: 18px;
   width: 18px;
@@ -132,27 +132,31 @@
   display: flex;
   justify-content: center;
   align-items: center;
-}
+} */
 .sliderInfoValue {
   height: 100%;
   width: 40px;
   font-size: 12px;
   font-weight: 500;
-  border: 1px solid var(--white);
-  border-radius: 6px;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 .sliderInfoValue > input {
+  height: 100%;
   width: 100%;
   text-align: center;
   background: transparent;
   color: var(--white);
   font-size: 12px;
   outline: none;
-  border: none;
+  border: 1px solid var(--white);
+  border-radius: 6px;
+
   cursor: pointer;
+}
+.sliderInfoValue > input:focus {
+  border: 1px solid var(--yellow);
 }
 .sliderInfoValue > input::-webkit-outer-spin-button,
 .sliderInfoValue > input::-webkit-inner-spin-button {

@@ -151,12 +151,12 @@ function LandingPage(props) {
               store.addNotification({
                 content: InsertedSpirographNotif,
                 container: "bottom-center",
-                // insert: "top",
                 animationIn: ["animate__animated animate__fadeInUp"],
                 animationOut: ["animate__animated animate__fadeOut"],
                 dismiss: {
-                  duration: 2000,
+                  duration: 4000,
                   showIcon: true,
+                  pauseOnHover: true,
                 },
                 width: 328,
               });

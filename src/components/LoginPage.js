@@ -7,6 +7,7 @@ import { fetchUserDetails, updateUserDetails } from "../store/userDetailsSlice";
 import Modal from "./Modal";
 import ReactNotification, { store } from "react-notifications-component";
 import LoggedOutSuccessNotif from "./LoggedOutSuccessNotif";
+import LoginToViewTemplatesNotif from "./LoginToViewTemplatesNotif";
 import "react-notifications-component/dist/theme.css";
 import ExistingTemplates from "./ExistingTemplates";
 import "animate.css";
@@ -280,7 +281,23 @@ function LoginPage() {
               </React.Fragment>
             ) : (
               <React.Fragment>
-                <div className="greyBgd loginTab">
+                <div
+                  className="greyBgd loginTab"
+                  onClick={() => {
+                    store.addNotification({
+                      content: LoginToViewTemplatesNotif,
+                      container: "bottom-center",
+                      animationIn: ["animate__animated animate__fadeInUp"],
+                      animationOut: ["animate__animated animate__fadeOut"],
+                      dismiss: {
+                        duration: 4000,
+                        showIcon: true,
+                        pauseOnHover: true,
+                      },
+                      width: 328,
+                    });
+                  }}
+                >
                   <div className="shapeBgd">
                     <svg
                       width="19"
@@ -394,6 +411,7 @@ function LoginPage() {
                 dismiss: {
                   duration: 2000,
                   showIcon: true,
+                  pauseOnHover: true,
                 },
                 width: 328,
               });
