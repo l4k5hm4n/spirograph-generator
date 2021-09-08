@@ -486,34 +486,34 @@ function AlterPage({
                 <div className="sliderInfoValue">
                   <input
                     type="number"
-                    value={Math.floor((strokeWidthValue / 2) * 100)}
-                    onChange={(e) => {
-                      if (e.target.value > 100) {
-                        setStrokeWidthValue(2);
-                      } else if (e.target.value < 1) {
-                        setStrokeWidthValue(0.1);
-                      } else {
-                        setStrokeWidthValue((e.target.value / 100) * 2);
-                      }
-                    }}
+                    value={sliderInputStrokeWidthValue}
                     // onChange={(e) => {
-                    //   setSliderInputNValue(e.target.value);
-                    // }}
-                    // onKeyDown={(e) => {
-                    //   if (e.key === "Enter") {
-                    //     if (e.target.value > 50) {
-                    //       setSliderInputNValue(50);
-                    //       setNValue(50);
-                    //     } else if (e.target.value < 1) {
-                    //       setSliderInputNValue(1);
-                    //       setNValue(1);
-                    //     } else {
-                    //       var temp = Math.round(e.target.value);
-                    //       setSliderInputNValue(temp);
-                    //       setNValue(temp);
-                    //     }
+                    //   if (e.target.value > 100) {
+                    //     setStrokeWidthValue(2);
+                    //   } else if (e.target.value < 1) {
+                    //     setStrokeWidthValue(0.1);
+                    //   } else {
+                    //     setStrokeWidthValue((e.target.value / 100) * 2);
                     //   }
                     // }}
+                    onChange={(e) => {
+                      setSliderInputStrokeWidthValue(e.target.value);
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        if (e.target.value > 2) {
+                          setSliderInputStrokeWidthValue(2);
+                          setStrokeWidthValue(2);
+                        } else if (e.target.value < 0.02) {
+                          setSliderInputStrokeWidthValue(0.02);
+                          setStrokeWidthValue(0.02);
+                        } else {
+                          var temp = Math.round(e.target.value * 50) / 50;
+                          setSliderInputStrokeWidthValue(temp);
+                          setStrokeWidthValue(temp);
+                        }
+                      }
+                    }}
                   ></input>
                 </div>
               </div>
