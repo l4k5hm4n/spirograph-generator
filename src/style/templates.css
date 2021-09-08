@@ -20,7 +20,7 @@
   position: absolute;
   height: 4px;
   width: 29px;
-  bottom: -6px;
+  bottom: -4px;
   left: 0;
 }
 
@@ -38,7 +38,21 @@
   );
   z-index: 3;
 }
-
+.templateTransitionBottom {
+  height: 40px;
+  width: 100%;
+  position: sticky;
+  bottom: -1px;
+  left: 0;
+  background: rgb(37, 37, 37);
+  background: linear-gradient(
+    180deg,
+    rgba(37, 37, 37, 0) 0%,
+    rgba(37, 37, 37, 0.43) 44%,
+    rgba(37, 37, 37, 1) 100%
+  );
+  z-index: 99999;
+}
 .templatesContainer::-webkit-scrollbar {
   display: none;
 }
@@ -58,7 +72,12 @@
 .templateDisplay {
   height: 90px;
   width: 90px;
-  background: linear-gradient(151.68deg, #3C3C3C 17.51%, #5B5555 57.62%, #343232 95.31%);
+  background: linear-gradient(
+    151.68deg,
+    #3c3c3c 17.51%,
+    #5b5555 57.62%,
+    #343232 95.31%
+  );
   border-radius: 8px;
   position: relative;
   cursor: pointer;
@@ -72,10 +91,26 @@
 
 .templateContainer {
   width: 90px;
+  overflow-x: hidden;
+  position: relative;
 }
-
+.templateContainer::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 10px;
+  height: 16.8px;
+  background: rgb(37, 37, 37);
+  background: linear-gradient(
+    90deg,
+    rgba(37, 37, 37, 0) 0%,
+    rgba(37, 37, 37, 0.43) 44%,
+    rgba(37, 37, 37, 1) 100%
+  );
+}
 .templateDisplay:hover {
-  border: 1px solid white;
+  border: 0.5px solid rgba(255, 255, 255, 0.6);
 }
 
 .templateDisplay.active {

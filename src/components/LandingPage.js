@@ -2,7 +2,11 @@ import React, { useState, useRef, useCallback, createRef } from "react";
 import DisplaySpirograph from "./DisplaySpirograph";
 import AlterPage from "./AlterPage";
 import Modal from "./Modal";
+import ReactNotification, { store } from "react-notifications-component";
+import InsertedSpirographNotif from "./InsertedSpirographNotif";
+import "react-notifications-component/dist/theme.css";
 import ExistingTemplates from "./ExistingTemplates";
+import "animate.css";
 import predefinedTemplates from "../config/predefinedTemplates";
 import { Link, useHistory, MemoryRouter as Router } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
@@ -12,7 +16,6 @@ import "../style/landingPage.css";
 import "../style/templates.css";
 
 function LandingPage(props) {
-
   let userDetails = useSelector((state) => state.userDetails);
   let dispatch = useDispatch();
   const history = useHistory();
@@ -23,7 +26,7 @@ function LandingPage(props) {
   const modalInputRef = useRef();
   const linesRef = useRef();
   const shadowLinesRef = useRef();
-  const [ templateName, setTemplateName ] = useState("")
+  const [templateName, setTemplateName] = useState("");
   const [alterFValue, setAlterFValue] = useState(0.6);
   const [alterMValue, setAlterMValue] = useState(70);
   const [alterNValue, setAlterNValue] = useState(50);
@@ -40,7 +43,8 @@ function LandingPage(props) {
       setAlterScaleValue(argScale);
       setAlterStrokeWidthValue(argStrokeWidth);
       setAlterColorValue(argColor);
-    }, []
+    },
+    []
   );
 
   const addTemplateListener = () => {
@@ -96,33 +100,33 @@ function LandingPage(props) {
             </div>
           </Link>
 
-          { userDetails.loggedIn &&
-          <div
-            onClick={() => {
-              clickedSaveTemplatePrompt();
-            }}
-            className={`hoverBtn insertTemplate hoverBtnPrimary ${
-              props.location.homeProps
-                ? props.location.homeProps.activeSection == "alter"
-                  ? "enable"
+          {userDetails.loggedIn && (
+            <div
+              onClick={() => {
+                clickedSaveTemplatePrompt();
+              }}
+              className={`hoverBtn insertTemplate hoverBtnPrimary ${
+                props.location.homeProps
+                  ? props.location.homeProps.activeSection == "alter"
+                    ? "enable"
+                    : ""
                   : ""
-                : ""
-            }`}
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="32"
-              height="32"
-              viewBox="0 0 32 32"
-              fill="none"
+              }`}
             >
-              <path
-                d="M13 20.2001L8.79999 16.0001L7.39999 17.4001L13 23.0001L25 11.0001L23.6 9.6001L13 20.2001Z"
-                fill="black"
-              />
-            </svg>
-          </div>
-          }
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="32"
+                height="32"
+                viewBox="0 0 32 32"
+                fill="none"
+              >
+                <path
+                  d="M13 20.2001L8.79999 16.0001L7.39999 17.4001L13 23.0001L25 11.0001L23.6 9.6001L13 20.2001Z"
+                  fill="black"
+                />
+              </svg>
+            </div>
+          )}
           <div id="hoverInsert" className="hoverBtn hoverBtnInsert">
             <div>
               <svg
@@ -144,6 +148,18 @@ function LandingPage(props) {
             id="lines"
             onClick={(event) => {
               svg = linesRef.current.innerHTML.toString();
+              store.addNotification({
+                content: InsertedSpirographNotif,
+                container: "bottom-center",
+                animationIn: ["animate__animated animate__fadeInUp"],
+                animationOut: ["animate__animated animate__fadeOut"],
+                dismiss: {
+                  duration: 4000,
+                  showIcon: true,
+                  pauseOnHover: true,
+                },
+                width: 328,
+              });
               parent.postMessage(
                 { pluginMessage: { type: "create-spirograph", svg } },
                 "*"
@@ -249,7 +265,7 @@ function LandingPage(props) {
               addTemplateListener();
               modalSaveTemplateRef.current.closeModal();
               modalSaveTemplateSuccessRef.current.openModal();
-              setTemplateName(modalInputRef.current.value)
+              setTemplateName(modalInputRef.current.value);
             }}
           >
             Save
@@ -278,7 +294,7 @@ function LandingPage(props) {
           />
         </svg>
         <span className="modalText">
-        Your template "{templateName}" has been saved sucessfully
+          Your template "{templateName}" has been saved sucessfully
         </span>
         <button
           className="btnPrimary"
@@ -290,6 +306,7 @@ function LandingPage(props) {
           Okay
         </button>
       </Modal>
+      <ReactNotification />
     </div>
   );
 }

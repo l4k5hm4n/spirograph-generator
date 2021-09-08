@@ -20,7 +20,6 @@ const InfoHover = forwardRef((props, ref) => {
   if (display) {
     return ReactDOM.createPortal(
       <div className="infoHoverWrapper">
-        <div className="infoHoverBackdrop"></div>
         <div className="infoHoverBox">{props.children}</div>
       </div>,
       document.getElementById("infoHoverRoot")

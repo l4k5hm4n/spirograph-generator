@@ -20,6 +20,9 @@
   z-index: 100;
   cursor: pointer;
 }
+#customizeContainer {
+  position: relative;
+}
 #customizeDisplayContainer {
   height: 312px;
   width: 312px;

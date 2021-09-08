@@ -1,8 +1,10 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
 :root {
   --yellow: #ffc700;
   --white: #fff;
   --bgdGrey: rgba(37, 37, 37, 1);
   --mediumGrey: rgba(45, 45, 45, 1);
+  --notifGrey: rgba(47, 47, 47, 1);
   --darkGrey: rgba(29, 29, 29, 1);
   --black: #000;
   --mediumDarkTranslucency: rgba(0, 0, 0, 0.6);
@@ -17,7 +19,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Inter", sans-serif;
   /* background-color: var(--bgdGrey); */
 }
 
@@ -81,8 +83,8 @@ body {
   width: 32px;
   background-color: white;
   border-radius: 50%;
-  bottom: 28px;
-  right: 28px;
+  bottom: 12px;
+  right: 12px;
   z-index: 2;
 }
 
@@ -131,6 +133,40 @@ body {
 }
 .hoverBtnSecondary > svg {
   margin: 6px;
+}
+
+.infoHover {
+  height: 14px;
+  width: 14px;
+  margin-left: 6px;
+  cursor: pointer;
+  border: 2px solid var(--white);
+  border-radius: 50%;
+  color: var(--white);
+  font-size: 10px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* position: relative; */
+}
+.infoHover:hover::before,
+.infoHover:hover::after {
+  position: absolute;
+  left: 0;
+  transform: translateY(-80%);
+}
+.infoHover:hover::before {
+  content: attr(data-tooltip);
+  color: var(--white);
+  font-size: 12px;
+  font-weight: 400;
+  padding: 10px;
+  width: max-content;
+  max-height: 60px;
+  max-width: 292px;
+  background-color: var(--black);
+  border-radius: 6px;
 }
 /* Modal Classes */
 .modalText {
