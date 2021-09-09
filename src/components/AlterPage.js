@@ -24,7 +24,7 @@ function AlterPage({
   const [fValue, setFValue] = useState(alterFValue);
   const [mValue, setMValue] = useState(alterMValue);
   const [nValue, setNValue] = useState(alterNValue);
-  const [scaleValue, setScaleValue] = useState(alterScaleValue);
+  const [scaleValue, setScaleValue] = useState(alterScaleValue - 20);
   const [strokeWidthValue, setStrokeWidthValue] = useState(
     alterStrokeWidthValue
   );
@@ -33,7 +33,8 @@ function AlterPage({
   const [color, setColor] = useState(alterColorValue);
 
   const [sliderInputFValue, setSliderInputFValue] = useState(fValue);
-  const [sliderInputMValue, setSliderInputMValue] = useState(mValue);
+  const [sliderInputMValue, setSliderInputMValue] = useState(alterMValue);
+  const [tempMValue, setTempMValue] = useState(alterMValue);
   const [sliderInputNValue, setSliderInputNValue] = useState(nValue);
   const [sliderInputScaleValue, setSliderInputScaleValue] =
     useState(scaleValue);
@@ -42,22 +43,30 @@ function AlterPage({
   const toggleParameters = (parameter) => {
     setActiveParameter(parameter);
   };
+  function slope(inputStart, inputEnd, outputStart, outputEnd) {
+    return (outputEnd - outputStart) / (inputEnd - inputStart);
+  }
+  function round(p1) {
+    return Math.floor(p1 + 0.5);
+  }
+
   useEffect(() => {
     callChangeDisplay(
       fValue,
       mValue,
       nValue,
-      scaleValue,
+      scaleValue + 20,
       strokeWidthValue,
       color ? color : colorValue
     );
     setSliderInputFValue(fValue);
-    setSliderInputMValue(mValue);
     setSliderInputNValue(nValue);
     setSliderInputScaleValue(scaleValue);
     setSliderInputStrokeWidthValue(strokeWidthValue);
   }, [fValue, mValue, nValue, scaleValue, strokeWidthValue, colorValue, color]);
-
+  useEffect(() => {
+    setTempMValue(sliderInputMValue);
+  }, [sliderInputMValue]);
   useEffect(() => {
     if (visible) {
       setActiveParameter("config");
@@ -87,8 +96,11 @@ function AlterPage({
   useEffect(() => {
     setFValue(alterFValue);
     setMValue(alterMValue);
+    setSliderInputMValue(
+      round(((alterMValue - 15) * (100 - 1)) / (100 - 15) + 1)
+    );
     setNValue(alterNValue);
-    setScaleValue(alterScaleValue);
+    setScaleValue(alterScaleValue - 20);
     setStrokeWidthValue(alterStrokeWidthValue);
     // setColor(alterColorValue);
     setColorValue(color ? color : colorValue);
@@ -195,7 +207,7 @@ function AlterPage({
                   <p>Ratio</p>
                   <div
                     className="infoHover"
-                    data-tooltip="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+                    data-tooltip="Ratio defines how far each loop, of the spirograph, reaches out."
                   >
                     <p>i</p>
                   </div>
@@ -238,13 +250,17 @@ function AlterPage({
                     min="1"
                     max="100"
                     step="1"
-                    value={mValue}
+                    value={sliderInputMValue}
                     onChange={(e) => {
                       mValueProgressBar.current.style.width =
                         Math.floor(
                           ((parseFloat(e.target.value) - 1) / 99) * 100
                         ) + "%";
-                      setMValue(e.target.value);
+                      setSliderInputMValue(e.target.value);
+                      setMValue(
+                        15 +
+                          round(slope(1, 100, 15, 100) * (e.target.value - 1))
+                      );
                     }}
                   ></input>
                 </div>
@@ -254,7 +270,9 @@ function AlterPage({
                   ref={mValueProgressBar}
                   style={{
                     width:
-                      Math.floor(((parseFloat(mValue) - 1) / 99) * 100) + "%",
+                      Math.floor(
+                        ((parseFloat(sliderInputMValue) - 1) / 99) * 100
+                      ) + "%",
                   }}
                 ></div>
               </div>
@@ -263,7 +281,7 @@ function AlterPage({
                   <p>Outer Diameter</p>
                   <div
                     className="infoHover"
-                    data-tooltip="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+                    data-tooltip="The ratio between the Inner and Outer Diameters defines how many loops will be created."
                   >
                     <p>i</p>
                   </div>
@@ -273,26 +291,34 @@ function AlterPage({
                     type="number"
                     min="1"
                     max="100"
-                    value={sliderInputMValue}
+                    value={tempMValue}
                     onChange={(e) => {
-                      setSliderInputMValue(e.target.value);
+                      setTempMValue(e.target.value);
                     }}
                     onKeyDown={(e) => {
                       if (e.key === "Enter") {
                         if (e.target.value > 100) {
+                          setTempMValue(100);
                           setSliderInputMValue(100);
-                          setMValue(100);
+                          setMValue(
+                            15 + round(slope(1, 100, 15, 100) * (100 - 1))
+                          );
                         } else if (e.target.value < 1) {
+                          setTempMValue(1);
                           setSliderInputMValue(1);
-                          setMValue(1);
+                          setMValue(15);
                         } else {
                           var temp = Math.round(e.target.value);
+                          setTempMValue(temp);
                           setSliderInputMValue(temp);
-                          setMValue(temp);
+                          setMValue(
+                            15 + round(slope(1, 100, 15, 100) * (temp - 1))
+                          );
                         }
                       }
                     }}
                   ></input>
+                  <span>%</span>
                 </div>
               </div>
             </div>
@@ -304,13 +330,13 @@ function AlterPage({
                     className="range"
                     type="range"
                     min="1"
-                    max="50"
+                    max="100"
                     step="1"
                     value={nValue}
                     onChange={(e) => {
                       nValueProgressBar.current.style.width =
                         Math.floor(
-                          ((parseFloat(e.target.value) - 1) / 49) * 100
+                          ((parseFloat(e.target.value) - 1) / 99) * 100
                         ) + "%";
                       setNValue(e.target.value);
                     }}
@@ -321,14 +347,17 @@ function AlterPage({
                   ref={nValueProgressBar}
                   style={{
                     width:
-                      Math.floor(((parseFloat(nValue) - 1) / 49) * 100) + "%",
+                      Math.floor(((parseFloat(nValue) - 1) / 99) * 100) + "%",
                   }}
                 ></div>
               </div>
               <div className="sliderInfo">
                 <div className="sliderName">
                   <p>Inner Diameter</p>
-                  <div className="infoHover" data-tooltip="Lorem ipsum dolor .">
+                  <div
+                    className="infoHover"
+                    data-tooltip="The ratio between the Inner and Outer Diameters defines how many loops will be created."
+                  >
                     <p>i</p>
                   </div>
                 </div>
@@ -343,9 +372,9 @@ function AlterPage({
                     }}
                     onKeyDown={(e) => {
                       if (e.key === "Enter") {
-                        if (e.target.value > 50) {
-                          setSliderInputNValue(50);
-                          setNValue(50);
+                        if (e.target.value > 100) {
+                          setSliderInputNValue(100);
+                          setNValue(100);
                         } else if (e.target.value < 1) {
                           setSliderInputNValue(1);
                           setNValue(1);
@@ -357,6 +386,7 @@ function AlterPage({
                       }
                     }}
                   ></input>
+                  <span>%</span>
                 </div>
               </div>
             </div>
@@ -367,15 +397,14 @@ function AlterPage({
                     id="scaleValueInput"
                     className="range"
                     type="range"
-                    min="10"
-                    max="130"
+                    min="0"
+                    max="100"
                     step="5"
                     value={scaleValue}
                     onChange={(e) => {
                       scaleValueProgressBar.current.style.width =
-                        Math.floor(
-                          ((parseFloat(e.target.value) - 10) / 120) * 100
-                        ) + "%";
+                        Math.floor(((parseFloat(scaleValue) - 0) / 100) * 100) +
+                        "%";
                       setScaleValue(e.target.value);
                     }}
                   ></input>
@@ -385,7 +414,7 @@ function AlterPage({
                   ref={scaleValueProgressBar}
                   style={{
                     width:
-                      Math.floor(((parseFloat(scaleValue) - 10) / 120) * 100) +
+                      Math.floor(((parseFloat(scaleValue) - 0) / 100) * 100) +
                       "%",
                   }}
                 ></div>
@@ -395,7 +424,7 @@ function AlterPage({
                   <p>Scale</p>
                   <div
                     className="infoHover"
-                    data-tooltip="Lorem ipsum dolor sit amet, consectetur adipiscing elit iffnmmd."
+                    data-tooltip="Scale defines how large or small the final spirograph will be."
                   >
                     <p>i</p>
                   </div>
@@ -403,28 +432,29 @@ function AlterPage({
                 <div className="sliderInfoValue">
                   <input
                     type="number"
-                    min="10"
-                    max="130"
+                    min="0"
+                    max="100"
                     value={sliderInputScaleValue}
                     onChange={(e) => {
                       setSliderInputScaleValue(e.target.value);
                     }}
                     onKeyDown={(e) => {
                       if (e.key === "Enter") {
-                        if (e.target.value > 130) {
-                          setSliderInputScaleValue(130);
-                          setScaleValue(130);
-                        } else if (e.target.value < 10) {
-                          setSliderInputScaleValue(10);
-                          setScaleValue(10);
+                        if (e.target.value > 100) {
+                          setSliderInputScaleValue(100);
+                          setScaleValue(100);
+                        } else if (e.target.value < 0) {
+                          setSliderInputScaleValue(0);
+                          setScaleValue(0);
                         } else {
-                          var temp = Math.round(e.target.value / 5) * 5;
+                          var temp = Math.round(e.target.value);
                           setSliderInputScaleValue(temp);
                           setScaleValue(temp);
                         }
                       }
                     }}
                   ></input>
+                  <span>%</span>
                 </div>
               </div>
             </div>
@@ -478,7 +508,7 @@ function AlterPage({
                   <p>Stroke Width</p>
                   <div
                     className="infoHover"
-                    data-tooltip="Lorem ipsum dolor sit amet, consectetur adipiscing elit dsafsdf sdfsdf sdfsd sdfsdfsdhgfh."
+                    data-tooltip="Stroke Width defines the width of the spirograph line."
                   >
                     <p>i</p>
                   </div>
@@ -487,15 +517,6 @@ function AlterPage({
                   <input
                     type="number"
                     value={sliderInputStrokeWidthValue}
-                    // onChange={(e) => {
-                    //   if (e.target.value > 100) {
-                    //     setStrokeWidthValue(2);
-                    //   } else if (e.target.value < 1) {
-                    //     setStrokeWidthValue(0.1);
-                    //   } else {
-                    //     setStrokeWidthValue((e.target.value / 100) * 2);
-                    //   }
-                    // }}
                     onChange={(e) => {
                       setSliderInputStrokeWidthValue(e.target.value);
                     }}
@@ -515,6 +536,7 @@ function AlterPage({
                       }
                     }}
                   ></input>
+                  <span>px</span>
                 </div>
               </div>
             </div>
