@@ -1,9 +1,4 @@
-import React, {
-  useCallback,
-  useState,
-  useRef,
-  createRef,
-} from "react";
+import React, { useCallback, useState, useRef, createRef } from "react";
 import DisplaySpirograph from "./DisplaySpirograph";
 import { useHistory, MemoryRouter as Router } from "react-router-dom";
 import Modal from "./Modal";
@@ -14,7 +9,6 @@ import "../style/style.css";
 import "../style/customizePage.css";
 
 function CustomizePage(props) {
-
   let userDetails = useSelector((state) => state.userDetails);
   const history = useHistory();
   const modalSaveTemplateRef = createRef();
@@ -49,7 +43,7 @@ function CustomizePage(props) {
   };
 
   const getRandomColor = () => {
-    let letters = "0123456789ABCDEF";
+    let letters = "0123456789abcdef";
     var color = "#";
     for (var i = 0; i < 6; i++) {
       color += letters[Math.floor(Math.random() * 16)];
@@ -105,36 +99,36 @@ function CustomizePage(props) {
       </div>
       <div className="customizeContainer">
         <div id="customizeDisplayContainer">
-        { userDetails.loggedIn &&
-          <div
-            id="customizeHoverCheck"
-            className="hoverBtn hoverBtnPrimary"
-            onClick={() => {
-              // addTemplateListener();
-              clickedSaveTemplatePrompt();
-            }}
-          >
-            <svg
-              width="18"
-              height="14"
-              viewBox="0 0 18 14"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
+          {userDetails.loggedIn && (
+            <div
+              id="customizeHoverCheck"
+              className="hoverBtn hoverBtnPrimary"
+              onClick={() => {
+                // addTemplateListener();
+                clickedSaveTemplatePrompt();
+              }}
             >
-              <g clipPath="url(#clip0)">
-                <path
-                  d="M6.00002 11.2001L1.80002 7.0001L0.400024 8.4001L6.00002 14.0001L18 2.0001L16.6 0.600098L6.00002 11.2001Z"
-                  fill="black"
-                />
-              </g>
-              <defs>
-                <clipPath id="clip0">
-                  <rect width="18" height="14" fill="white" />
-                </clipPath>
-              </defs>
-            </svg>
-          </div>
-        }   
+              <svg
+                width="18"
+                height="14"
+                viewBox="0 0 18 14"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <g clipPath="url(#clip0)">
+                  <path
+                    d="M6.00002 11.2001L1.80002 7.0001L0.400024 8.4001L6.00002 14.0001L18 2.0001L16.6 0.600098L6.00002 11.2001Z"
+                    fill="black"
+                  />
+                </g>
+                <defs>
+                  <clipPath id="clip0">
+                    <rect width="18" height="14" fill="white" />
+                  </clipPath>
+                </defs>
+              </svg>
+            </div>
+          )}
           <div id="hoverInsert" className="hoverBtn hoverBtnInsert">
             <div>
               <svg

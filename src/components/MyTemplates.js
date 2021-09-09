@@ -249,7 +249,7 @@ function MyTemplates(props) {
                           m={userTemplate.mValue}
                           n={userTemplate.nValue}
                           scale="30"
-                          strokeWidth={userTemplate.strokeWidthValue}
+                          strokeWidth={userTemplate.strokeWidthValue * 0.33}
                           color={userTemplate.colorValue}
                           ref={React.createRef()}
                         />

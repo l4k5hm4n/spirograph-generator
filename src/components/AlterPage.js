@@ -33,7 +33,8 @@ function AlterPage({
   const [color, setColor] = useState(alterColorValue);
 
   const [sliderInputFValue, setSliderInputFValue] = useState(fValue);
-  const [sliderInputMValue, setSliderInputMValue] = useState(mValue);
+  const [sliderInputMValue, setSliderInputMValue] = useState(alterMValue);
+  const [tempMValue, setTempMValue] = useState(alterMValue);
   const [sliderInputNValue, setSliderInputNValue] = useState(nValue);
   const [sliderInputScaleValue, setSliderInputScaleValue] =
     useState(scaleValue);
@@ -42,6 +43,13 @@ function AlterPage({
   const toggleParameters = (parameter) => {
     setActiveParameter(parameter);
   };
+  function slope(inputStart, inputEnd, outputStart, outputEnd) {
+    return (outputEnd - outputStart) / (inputEnd - inputStart);
+  }
+  function round(p1) {
+    return Math.floor(p1 + 0.5);
+  }
+
   useEffect(() => {
     callChangeDisplay(
       fValue,
@@ -52,12 +60,13 @@ function AlterPage({
       color ? color : colorValue
     );
     setSliderInputFValue(fValue);
-    setSliderInputMValue(mValue);
     setSliderInputNValue(nValue);
     setSliderInputScaleValue(scaleValue);
     setSliderInputStrokeWidthValue(strokeWidthValue);
   }, [fValue, mValue, nValue, scaleValue, strokeWidthValue, colorValue, color]);
-
+  useEffect(() => {
+    setTempMValue(sliderInputMValue);
+  }, [sliderInputMValue]);
   useEffect(() => {
     if (visible) {
       setActiveParameter("config");
@@ -87,10 +96,13 @@ function AlterPage({
   useEffect(() => {
     setFValue(alterFValue);
     setMValue(alterMValue);
+    setSliderInputMValue(
+      round(((alterMValue - 15) * (100 - 1)) / (100 - 15) + 1)
+    );
     setNValue(alterNValue);
     setScaleValue(alterScaleValue);
     setStrokeWidthValue(alterStrokeWidthValue);
-    // setColor(alterColorValue);
+    setColor(alterColorValue);
     setColorValue(color ? color : colorValue);
   }, [
     alterFValue,
@@ -238,13 +250,17 @@ function AlterPage({
                     min="1"
                     max="100"
                     step="1"
-                    value={mValue}
+                    value={sliderInputMValue}
                     onChange={(e) => {
                       mValueProgressBar.current.style.width =
                         Math.floor(
                           ((parseFloat(e.target.value) - 1) / 99) * 100
                         ) + "%";
-                      setMValue(e.target.value);
+                      setSliderInputMValue(e.target.value);
+                      setMValue(
+                        15 +
+                          round(slope(1, 100, 15, 100) * (e.target.value - 1))
+                      );
                     }}
                   ></input>
                 </div>
@@ -254,7 +270,9 @@ function AlterPage({
                   ref={mValueProgressBar}
                   style={{
                     width:
-                      Math.floor(((parseFloat(mValue) - 1) / 99) * 100) + "%",
+                      Math.floor(
+                        ((parseFloat(sliderInputMValue) - 1) / 99) * 100
+                      ) + "%",
                   }}
                 ></div>
               </div>
@@ -273,22 +291,29 @@ function AlterPage({
                     type="number"
                     min="1"
                     max="100"
-                    value={sliderInputMValue}
+                    value={tempMValue}
                     onChange={(e) => {
-                      setSliderInputMValue(e.target.value);
+                      setTempMValue(e.target.value);
                     }}
                     onKeyDown={(e) => {
                       if (e.key === "Enter") {
                         if (e.target.value > 100) {
+                          setTempMValue(100);
                           setSliderInputMValue(100);
-                          setMValue(100);
+                          setMValue(
+                            15 + round(slope(1, 100, 15, 100) * (100 - 1))
+                          );
                         } else if (e.target.value < 1) {
+                          setTempMValue(1);
                           setSliderInputMValue(1);
-                          setMValue(1);
+                          setMValue(15);
                         } else {
                           var temp = Math.round(e.target.value);
+                          setTempMValue(temp);
                           setSliderInputMValue(temp);
-                          setMValue(temp);
+                          setMValue(
+                            15 + round(slope(1, 100, 15, 100) * (temp - 1))
+                          );
                         }
                       }
                     }}
@@ -487,15 +512,6 @@ function AlterPage({
                   <input
                     type="number"
                     value={sliderInputStrokeWidthValue}
-                    // onChange={(e) => {
-                    //   if (e.target.value > 100) {
-                    //     setStrokeWidthValue(2);
-                    //   } else if (e.target.value < 1) {
-                    //     setStrokeWidthValue(0.1);
-                    //   } else {
-                    //     setStrokeWidthValue((e.target.value / 100) * 2);
-                    //   }
-                    // }}
                     onChange={(e) => {
                       setSliderInputStrokeWidthValue(e.target.value);
                     }}
