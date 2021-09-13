@@ -101,8 +101,11 @@
   padding: 10px 16px;
   margin: 0 6px;
   outline: none;
+  transition: border-color 0.3s ease-in-out;
 }
-
+.onBoardingBtnPrimary:hover {
+  border-color: #fff;
+}
 .onBoardingBtnSection button,
 .onBoardingBtnHollow {
   cursor: pointer;
@@ -128,16 +131,25 @@ button#onBoardingGoogleBtn span {
   padding: 10px 16px;
   margin: 0 6px;
   outline: none;
+  transition: border-color 0.3s ease-in-out;
+}
+.onBoardingBtnSecondary:hover {
+  border-color: #ffc700;
 }
 .onBoardingBtnHollow {
   color: var(--white);
   font-size: 14px;
   font-weight: 500;
   background-color: transparent;
-  border: none;
+  border: 1px solid transparent;
+  border-radius: 8px;
   text-align: center;
   padding: 10px 16px;
   outline: none;
+  transition: border-color 0.3s ease-in-out;
+}
+.onBoardingBtnHollow:hover {
+  border: 1px solid #fff;
 }
 #onBoardingGoogleBtnSection {
   position: absolute;
