@@ -123,6 +123,8 @@
   justify-content: space-between;
   border-radius: 8px;
   margin-bottom: 16px;
+  cursor: pointer;
+  z-index: 9999;
 }
 .loginTabTxt {
   width: 232px;
@@ -130,6 +132,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
+  pointer-events: none;
 }
 .loginTabTxt > .lightTxtGrey {
   font-weight: 300;
@@ -157,6 +160,10 @@
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 8px;
   cursor: pointer;
+  transition: border-color 0.3s ease-in-out;
+}
+#logoutContainer > button:hover {
+  border: 1px solid #fff;
 }
 #logoutContainer > button > span {
   font-size: 14px;

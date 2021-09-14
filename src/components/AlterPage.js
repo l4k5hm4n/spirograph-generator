@@ -1,5 +1,8 @@
 import React, { useState, useEffect, useRef, createRef } from "react";
 import { HexColorPicker, HexColorInput } from "react-colorful";
+import parametersIcon from "../assets/ParametersIcon.svg";
+import colorPickerIcon from "../assets/ColorPickerIcon.svg";
+import strokeWidthIcon from "../assets/StrokeWidthIcon.svg";
 import "../style/style.css";
 import "../style/alterPage.css";
 function AlterPage({
@@ -20,7 +23,9 @@ function AlterPage({
   const configTabSvgRef = useRef();
   const colorTabSvgRef = useRef();
   const strokeTabSvgRef = useRef();
+
   const [activeParameter, setActiveParameter] = useState("config");
+
   const [fValue, setFValue] = useState(alterFValue);
   const [mValue, setMValue] = useState(alterMValue);
   const [nValue, setNValue] = useState(alterNValue);
@@ -32,16 +37,29 @@ function AlterPage({
 
   const [color, setColor] = useState(alterColorValue);
 
-  const [sliderInputFValue, setSliderInputFValue] = useState(fValue);
-  const [sliderInputMValue, setSliderInputMValue] = useState(mValue);
-  const [sliderInputNValue, setSliderInputNValue] = useState(nValue);
+  const [sliderInputFValue, setSliderInputFValue] = useState(alterFValue);
+  const [tempFValue, setTempFValue] = useState(alterFValue);
+  const [sliderInputMValue, setSliderInputMValue] = useState(alterMValue);
+  const [tempMValue, setTempMValue] = useState(alterMValue);
+  const [sliderInputNValue, setSliderInputNValue] = useState(alterNValue);
+  const [tempNValue, setTempNValue] = useState(alterNValue);
   const [sliderInputScaleValue, setSliderInputScaleValue] =
-    useState(scaleValue);
+    useState(alterScaleValue);
+  const [tempScaleValue, setTempScaleValue] = useState(alterScaleValue);
   const [sliderInputStrokeWidthValue, setSliderInputStrokeWidthValue] =
-    useState(strokeWidthValue);
+    useState(alterStrokeWidthValue);
+  const [tempStrokeWidthValue, setTempStrokeWidthValue] = useState(
+    alterStrokeWidthValue
+  );
   const toggleParameters = (parameter) => {
     setActiveParameter(parameter);
   };
+  function slope(inputStart, inputEnd, outputStart, outputEnd) {
+    return (outputEnd - outputStart) / (inputEnd - inputStart);
+  }
+  function round(p1) {
+    return Math.floor(p1 + 0.5);
+  }
   useEffect(() => {
     callChangeDisplay(
       fValue,
@@ -52,12 +70,13 @@ function AlterPage({
       color ? color : colorValue
     );
     setSliderInputFValue(fValue);
-    setSliderInputMValue(mValue);
     setSliderInputNValue(nValue);
-    setSliderInputScaleValue(scaleValue);
     setSliderInputStrokeWidthValue(strokeWidthValue);
   }, [fValue, mValue, nValue, scaleValue, strokeWidthValue, colorValue, color]);
-
+  useEffect(() => {
+    setTempMValue(sliderInputMValue);
+    setTempScaleValue(sliderInputScaleValue);
+  }, [sliderInputMValue, sliderInputScaleValue]);
   useEffect(() => {
     if (visible) {
       setActiveParameter("config");
@@ -65,7 +84,10 @@ function AlterPage({
   }, [visible]);
   useEffect(() => {
     if (activeParameter === "config") {
-      configTabSvgRef.current.firstChild.setAttribute("fill", "#ffc700");
+      configTabSvgRef.current.firstChild.firstChild.setAttribute(
+        "fill",
+        "#ffc700"
+      );
       colorTabSvgRef.current.firstChild.setAttribute("fill", "#ffffff");
       for (var i = 0; i < strokeTabSvgRef.current.children.length; i++) {
         strokeTabSvgRef.current.children[i].setAttribute("fill", "#ffffff");
@@ -87,8 +109,13 @@ function AlterPage({
   useEffect(() => {
     setFValue(alterFValue);
     setMValue(alterMValue);
+    setSliderInputMValue(
+      round(((alterMValue - 15) * (100 - 1)) / (100 - 15) + 1)
+    );
     setNValue(alterNValue);
-    setScaleValue(alterScaleValue);
+    setSliderInputScaleValue(
+      round(((alterScaleValue - 20) * (100 - 0)) / (120 - 20) + 0)
+    );
     setStrokeWidthValue(alterStrokeWidthValue);
     // setColor(alterColorValue);
     setColorValue(color ? color : colorValue);
@@ -181,13 +208,22 @@ function AlterPage({
                       fValueProgressBar.current.style.width =
                         ((parseFloat(e.target.value) + 2) / 4) * 100 + "%";
                       setFValue(e.target.value);
+                      if (e.target.value == 2) {
+                        fValueProgressBar.current.style.borderRadius = "4px";
+                      } else {
+                        fValueProgressBar.current.style.borderRadius =
+                          "4px 0 0 4px";
+                      }
                     }}
                   ></input>
                 </div>
                 <div
                   className="progressBar"
                   ref={fValueProgressBar}
-                  style={{ width: ((parseFloat(fValue) + 2) / 4) * 100 + "%" }}
+                  style={{
+                    width: ((parseFloat(fValue) + 2) / 4) * 100 + "%",
+                    borderRadius: fValue < 2 ? "4px 0 0 4px" : "4px",
+                  }}
                 ></div>
               </div>
               <div className="sliderInfo">
@@ -195,7 +231,7 @@ function AlterPage({
                   <p>Ratio</p>
                   <div
                     className="infoHover"
-                    data-tooltip="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+                    data-tooltip="Ratio defines how far each loop, of the spirograph, reaches out."
                   >
                     <p>i</p>
                   </div>
@@ -207,7 +243,9 @@ function AlterPage({
                     max="2"
                     value={sliderInputFValue}
                     onChange={(e) => {
-                      setSliderInputFValue(e.target.value);
+                      if (e.target.value.length <= 4) {
+                        setSliderInputFValue(e.target.value);
+                      }
                     }}
                     onKeyDown={(e) => {
                       if (e.key === "Enter") {
@@ -238,13 +276,23 @@ function AlterPage({
                     min="1"
                     max="100"
                     step="1"
-                    value={mValue}
+                    value={sliderInputMValue}
                     onChange={(e) => {
                       mValueProgressBar.current.style.width =
                         Math.floor(
                           ((parseFloat(e.target.value) - 1) / 99) * 100
                         ) + "%";
-                      setMValue(e.target.value);
+                      setSliderInputMValue(e.target.value);
+                      setMValue(
+                        15 +
+                          round(slope(1, 100, 15, 100) * (e.target.value - 1))
+                      );
+                      if (e.target.value == 100) {
+                        mValueProgressBar.current.style.borderRadius = "4px";
+                      } else {
+                        mValueProgressBar.current.style.borderRadius =
+                          "4px 0 0 4px";
+                      }
                     }}
                   ></input>
                 </div>
@@ -254,7 +302,11 @@ function AlterPage({
                   ref={mValueProgressBar}
                   style={{
                     width:
-                      Math.floor(((parseFloat(mValue) - 1) / 99) * 100) + "%",
+                      Math.floor(
+                        ((parseFloat(sliderInputMValue) - 1) / 99) * 100
+                      ) + "%",
+                    borderRadius:
+                      sliderInputMValue === 100 ? "4px" : "4px 0 0 4px",
                   }}
                 ></div>
               </div>
@@ -263,7 +315,7 @@ function AlterPage({
                   <p>Outer Diameter</p>
                   <div
                     className="infoHover"
-                    data-tooltip="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+                    data-tooltip="The ratio between the Inner and Outer Diameters defines how many loops will be created."
                   >
                     <p>i</p>
                   </div>
@@ -273,26 +325,36 @@ function AlterPage({
                     type="number"
                     min="1"
                     max="100"
-                    value={sliderInputMValue}
+                    value={tempMValue}
                     onChange={(e) => {
-                      setSliderInputMValue(e.target.value);
+                      if (e.target.value.length <= 3) {
+                        setTempMValue(e.target.value);
+                      }
                     }}
                     onKeyDown={(e) => {
                       if (e.key === "Enter") {
                         if (e.target.value > 100) {
+                          setTempMValue(100);
                           setSliderInputMValue(100);
-                          setMValue(100);
+                          setMValue(
+                            15 + round(slope(1, 100, 15, 100) * (100 - 1))
+                          );
                         } else if (e.target.value < 1) {
+                          setTempMValue(1);
                           setSliderInputMValue(1);
-                          setMValue(1);
+                          setMValue(15);
                         } else {
                           var temp = Math.round(e.target.value);
+                          setTempMValue(temp);
                           setSliderInputMValue(temp);
-                          setMValue(temp);
+                          setMValue(
+                            15 + round(slope(1, 100, 15, 100) * (temp - 1))
+                          );
                         }
                       }
                     }}
                   ></input>
+                  <span>%</span>
                 </div>
               </div>
             </div>
@@ -304,15 +366,21 @@ function AlterPage({
                     className="range"
                     type="range"
                     min="1"
-                    max="50"
+                    max="100"
                     step="1"
                     value={nValue}
                     onChange={(e) => {
                       nValueProgressBar.current.style.width =
                         Math.floor(
-                          ((parseFloat(e.target.value) - 1) / 49) * 100
+                          ((parseFloat(e.target.value) - 1) / 99) * 100
                         ) + "%";
                       setNValue(e.target.value);
+                      if (e.target.value == 100) {
+                        nValueProgressBar.current.style.borderRadius = "4px";
+                      } else {
+                        nValueProgressBar.current.style.borderRadius =
+                          "4px 0 0 4px";
+                      }
                     }}
                   ></input>
                 </div>
@@ -321,14 +389,18 @@ function AlterPage({
                   ref={nValueProgressBar}
                   style={{
                     width:
-                      Math.floor(((parseFloat(nValue) - 1) / 49) * 100) + "%",
+                      Math.floor(((parseFloat(nValue) - 1) / 99) * 100) + "%",
+                    borderRadius: nValue < 100 ? "4px 0 0 4px" : "4px",
                   }}
                 ></div>
               </div>
               <div className="sliderInfo">
                 <div className="sliderName">
                   <p>Inner Diameter</p>
-                  <div className="infoHover" data-tooltip="Lorem ipsum dolor .">
+                  <div
+                    className="infoHover"
+                    data-tooltip="The ratio between the Inner and Outer Diameters defines how many loops will be created."
+                  >
                     <p>i</p>
                   </div>
                 </div>
@@ -336,16 +408,18 @@ function AlterPage({
                   <input
                     type="number"
                     min="1"
-                    max="50"
+                    max="100"
                     value={sliderInputNValue}
                     onChange={(e) => {
-                      setSliderInputNValue(e.target.value);
+                      if (e.target.value.length <= 3) {
+                        setSliderInputNValue(e.target.value);
+                      }
                     }}
                     onKeyDown={(e) => {
                       if (e.key === "Enter") {
-                        if (e.target.value > 50) {
-                          setSliderInputNValue(50);
-                          setNValue(50);
+                        if (e.target.value > 100) {
+                          setSliderInputNValue(100);
+                          setNValue(100);
                         } else if (e.target.value < 1) {
                           setSliderInputNValue(1);
                           setNValue(1);
@@ -357,6 +431,7 @@ function AlterPage({
                       }
                     }}
                   ></input>
+                  <span>%</span>
                 </div>
               </div>
             </div>
@@ -367,16 +442,27 @@ function AlterPage({
                     id="scaleValueInput"
                     className="range"
                     type="range"
-                    min="10"
-                    max="130"
+                    min="0"
+                    max="100"
                     step="5"
-                    value={scaleValue}
+                    value={sliderInputScaleValue}
                     onChange={(e) => {
                       scaleValueProgressBar.current.style.width =
                         Math.floor(
-                          ((parseFloat(e.target.value) - 10) / 120) * 100
+                          ((parseFloat(e.target.value) - 0) / 100) * 100
                         ) + "%";
-                      setScaleValue(e.target.value);
+                      setSliderInputScaleValue(e.target.value);
+                      setScaleValue(
+                        20 +
+                          round(slope(0, 100, 20, 120) * (e.target.value - 0))
+                      );
+                      if (e.target.value == 100) {
+                        scaleValueProgressBar.current.style.borderRadius =
+                          "4px";
+                      } else {
+                        scaleValueProgressBar.current.style.borderRadius =
+                          "4px 0 0 4px";
+                      }
                     }}
                   ></input>
                 </div>
@@ -385,8 +471,11 @@ function AlterPage({
                   ref={scaleValueProgressBar}
                   style={{
                     width:
-                      Math.floor(((parseFloat(scaleValue) - 10) / 120) * 100) +
-                      "%",
+                      Math.floor(
+                        ((parseFloat(sliderInputScaleValue) - 0) / 100) * 100
+                      ) + "%",
+                    borderRadius:
+                      sliderInputScaleValue === 100 ? "4px" : "4px 0 0 4px",
                   }}
                 ></div>
               </div>
@@ -395,7 +484,7 @@ function AlterPage({
                   <p>Scale</p>
                   <div
                     className="infoHover"
-                    data-tooltip="Lorem ipsum dolor sit amet, consectetur adipiscing elit iffnmmd."
+                    data-tooltip="Scale defines how large or small the final spirograph will be."
                   >
                     <p>i</p>
                   </div>
@@ -403,28 +492,38 @@ function AlterPage({
                 <div className="sliderInfoValue">
                   <input
                     type="number"
-                    min="10"
-                    max="130"
-                    value={sliderInputScaleValue}
+                    min="0"
+                    max="100"
+                    value={tempScaleValue}
                     onChange={(e) => {
-                      setSliderInputScaleValue(e.target.value);
+                      if (e.target.value.length <= 3) {
+                        setTempScaleValue(e.target.value);
+                      }
                     }}
                     onKeyDown={(e) => {
                       if (e.key === "Enter") {
-                        if (e.target.value > 130) {
-                          setSliderInputScaleValue(130);
-                          setScaleValue(130);
-                        } else if (e.target.value < 10) {
-                          setSliderInputScaleValue(10);
-                          setScaleValue(10);
+                        if (e.target.value > 100) {
+                          setTempScaleValue(100);
+                          setSliderInputScaleValue(100);
+                          setScaleValue(
+                            20 + round(slope(0, 100, 20, 100) * (100 - 0))
+                          );
+                        } else if (e.target.value < 0) {
+                          setTempScaleValue(0);
+                          setSliderInputScaleValue(0);
+                          setScaleValue(20);
                         } else {
-                          var temp = Math.round(e.target.value / 5) * 5;
+                          var temp = Math.round(e.target.value);
+                          setTempScaleValue(temp);
                           setSliderInputScaleValue(temp);
-                          setScaleValue(temp);
+                          setScaleValue(
+                            20 + round(slope(0, 100, 20, 100) * (temp - 0))
+                          );
                         }
                       }
                     }}
                   ></input>
+                  <span>%</span>
                 </div>
               </div>
             </div>
@@ -459,6 +558,13 @@ function AlterPage({
                           ((parseFloat(e.target.value) - 0.02) / 1.98) * 100
                         ) + "%";
                       setStrokeWidthValue(e.target.value);
+                      if (e.target.value == 2) {
+                        strokeWidthValueProgressBar.current.style.borderRadius =
+                          "4px";
+                      } else {
+                        strokeWidthValueProgressBar.current.style.borderRadius =
+                          "4px 0 0 4px";
+                      }
                     }}
                   ></input>
                 </div>
@@ -470,6 +576,7 @@ function AlterPage({
                       Math.floor(
                         ((parseFloat(strokeWidthValue) - 0.02) / 1.98) * 100
                       ) + "%",
+                    borderRadius: strokeWidthValue < 2 ? "4px 0 0 4px" : "4px",
                   }}
                 ></div>
               </div>
@@ -478,7 +585,7 @@ function AlterPage({
                   <p>Stroke Width</p>
                   <div
                     className="infoHover"
-                    data-tooltip="Lorem ipsum dolor sit amet, consectetur adipiscing elit dsafsdf sdfsdf sdfsd sdfsdfsdhgfh."
+                    data-tooltip="Stroke Width defines the width of the spirograph line."
                   >
                     <p>i</p>
                   </div>
@@ -487,17 +594,10 @@ function AlterPage({
                   <input
                     type="number"
                     value={sliderInputStrokeWidthValue}
-                    // onChange={(e) => {
-                    //   if (e.target.value > 100) {
-                    //     setStrokeWidthValue(2);
-                    //   } else if (e.target.value < 1) {
-                    //     setStrokeWidthValue(0.1);
-                    //   } else {
-                    //     setStrokeWidthValue((e.target.value / 100) * 2);
-                    //   }
-                    // }}
                     onChange={(e) => {
-                      setSliderInputStrokeWidthValue(e.target.value);
+                      if (e.target.value.length <= 4) {
+                        setSliderInputStrokeWidthValue(e.target.value);
+                      }
                     }}
                     onKeyDown={(e) => {
                       if (e.key === "Enter") {
@@ -515,6 +615,7 @@ function AlterPage({
                       }
                     }}
                   ></input>
+                  <span>px</span>
                 </div>
               </div>
             </div>

@@ -7,6 +7,7 @@ import { fetchUserDetails } from "../store/userDetailsSlice";
 import onboarding1Img from "../assets/onboarding1.svg";
 import onboarding2Img from "../assets/onboarding2.svg";
 import onboarding3Img from "../assets/onboarding3.svg";
+import onboarding4Img from "../assets/onboarding4.svg";
 // import onboardingGif1 from "../assets/onboardingGif1.gif";
 // import onboardingGif2 from "../assets/onboardingGif2.gif";
 // import onboardingGif3 from "../assets/onboardingGif3.gif";
@@ -213,7 +214,7 @@ export default function Onboarding({ setOnboarding }) {
         <div className="onBoardingScreen">
           <h1 className="onBoardingTxt txtPrimary">
             <span className="txtSecondary">Sign up to save </span> your
-            self-creeated Spirographs on your account
+            self-created Spirographs on your account
           </h1>
           <img src={onboarding3Img} />
           <div className="onBoardingRadioBtnSection">
@@ -236,11 +237,14 @@ export default function Onboarding({ setOnboarding }) {
               }}
             ></div>
           </div>
-          <div id="onBoardingGoogleBtnSection">
+          <div className="onBoardingStackedBtnSection">
             <button
               id="onBoardingGoogleBtn"
               className="onBoardingBtnSecondary"
-              onClick={() => clickedLogin()}
+              onClick={() => {
+                clickedLogin();
+                setCurrentScreen(4);
+              }}
             >
               <svg
                 width="18"
@@ -268,6 +272,34 @@ export default function Onboarding({ setOnboarding }) {
               </svg>
 
               <span>Signup With Google</span>
+            </button>
+            <button
+              className="onBoardingBtnHollow"
+              onClick={() => {
+                setOnboarding(false);
+              }}
+            >
+              Skip
+            </button>
+          </div>
+        </div>
+      )}
+      {currentScreen == 4 && (
+        <div className="onBoardingScreen">
+          <h1 className="onBoardingTxt txtPrimary">
+            Switch to your browser window and login with your{" "}
+            <span className="txtSecondary">Google</span> account
+          </h1>
+          <img src={onboarding4Img} />
+          <h3 className="onBoardingSubTxt">Can't see the options?</h3>
+          <div className="onBoardingStackedBtnSection">
+            <button
+              className="onBoardingBtnSecondary"
+              onClick={() => {
+                clickedLogin();
+              }}
+            >
+              Try again
             </button>
             <button
               className="onBoardingBtnHollow"

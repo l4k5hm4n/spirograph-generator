@@ -72,16 +72,11 @@
 .templateDisplay {
   height: 90px;
   width: 90px;
-  background: linear-gradient(
-    151.68deg,
-    #3c3c3c 17.51%,
-    #5b5555 57.62%,
-    #343232 95.31%
-  );
   border-radius: 8px;
   position: relative;
   cursor: pointer;
-  border: 1px solid #252525;
+  background-color: var(--lightGrey);
+  transition: border-color 0.3s ease-in-out;
 }
 
 .templateDisplay .templateSpirograph {

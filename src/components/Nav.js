@@ -4,21 +4,21 @@ import { useSelector } from "react-redux";
 import "../style/nav.css";
 
 function Nav() {
-
   let userPhoto = useSelector((state) => state.userDetails.photo);
 
   return (
     <div>
       <div className="navbar">
-        <NavLink 
-        to={{
-          pathname:"/",
-          homeProps: { 
-            activeSection: "home"
-          },
-        }}
+        <NavLink
+          to={{
+            pathname: "/",
+            homeProps: {
+              activeSection: "home",
+            },
+          }}
         >
-        <svg
+          <svg
+            id="logo"
             width="71"
             height="21"
             viewBox="0 0 71 21"
@@ -49,21 +49,27 @@ function Nav() {
               <span>Create</span>
             </div>
           </NavLink>
-          <NavLink to="/loginPage" id="navLoginPageLink" className={ userPhoto ? 'userPhoto' : '' }>
-            { userPhoto ? <img src={userPhoto} alt="userPhoto" /> :   
-            <svg
-              width="12"
-              height="12"
-              viewBox="0 0 12 12"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M6 6C7.6575 6 9 4.6575 9 3C9 1.3425 7.6575 0 6 0C4.3425 0 3 1.3425 3 3C3 4.6575 4.3425 6 6 6ZM6 7.5C3.9975 7.5 0 8.505 0 10.5V12H12V10.5C12 8.505 8.0025 7.5 6 7.5Z"
-                fill="white"
-              />
-            </svg>
-            }
+          <NavLink
+            to="/loginPage"
+            id="navLoginPageLink"
+            className={userPhoto ? "userPhoto" : ""}
+          >
+            {userPhoto ? (
+              <img src={userPhoto} alt="userPhoto" />
+            ) : (
+              <svg
+                width="12"
+                height="12"
+                viewBox="0 0 12 12"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M6 6C7.6575 6 9 4.6575 9 3C9 1.3425 7.6575 0 6 0C4.3425 0 3 1.3425 3 3C3 4.6575 4.3425 6 6 6ZM6 7.5C3.9975 7.5 0 8.505 0 10.5V12H12V10.5C12 8.505 8.0025 7.5 6 7.5Z"
+                  fill="white"
+                />
+              </svg>
+            )}
           </NavLink>
         </div>
       </div>

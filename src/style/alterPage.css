@@ -26,6 +26,10 @@
   border-radius: 50%;
   position: relative;
   cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+.tab:hover {
+  border: 1px solid #ffc700;
 }
 .tab > svg {
   position: absolute;
@@ -64,6 +68,10 @@
   border-radius: 4px;
   cursor: pointer;
   z-index: 9999;
+  transition: box-shadow 0.3s ease-in-out;
+}
+#alterTab input[type="range"]:hover {
+  box-shadow: 0 5px 5px 5px rgba(0, 0, 0, 0.05);
 }
 .range::-webkit-slider-thumb {
   -webkit-appearance: none;
@@ -74,28 +82,10 @@
   background: var(--yellow);
   border-radius: 50%;
 }
-
-.selector {
-  height: 16px;
-  width: 16px;
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  pointer-events: none;
-}
-.selectBtn {
-  height: 16px;
-  width: 16px;
-  border-radius: 50%;
-  background: var(--yellow);
-  position: absolute;
-  bottom: 0;
-  left: 0;
-}
 .progressBar {
   width: 50%;
   height: 8px;
-  border-radius: 4px 0 0 4px;
+  border-radius: 4px 0px 0px 4px;
   background: var(--yellow);
   top: 50%;
   transform: translateY(-50%);
@@ -111,6 +101,7 @@
   justify-content: space-between;
   align-items: center;
   color: var(--white);
+  position: relative;
 }
 .sliderName {
   display: flex;
@@ -121,42 +112,33 @@
   font-size: 12px;
   font-weight: 400;
 }
-/* .sliderName > div {
-  margin-left: 8px;
-  height: 18px;
-  width: 18px;
-  border-radius: 50%;
-  background-color: var(--mediumDarkTranslucency);
-  text-align: center;
-  font-size: 12px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-} */
 .sliderInfoValue {
   height: 100%;
-  width: 40px;
+  width: 50px;
   font-size: 12px;
   font-weight: 500;
   display: flex;
   justify-content: center;
   align-items: center;
+  border: 1px solid var(--white);
+  border-radius: 6px;
+  background-color: transparent;
+  cursor: pointer;
+}
+.sliderInfoValue:focus-within {
+  border: 1px solid var(--yellow);
 }
 .sliderInfoValue > input {
-  height: 100%;
-  width: 100%;
+  width: 60%;
   text-align: center;
   background: transparent;
   color: var(--white);
-  font-size: 12px;
-  outline: none;
-  border: 1px solid var(--white);
-  border-radius: 6px;
-
   cursor: pointer;
+  outline: none;
+  border: none;
 }
-.sliderInfoValue > input:focus {
-  border: 1px solid var(--yellow);
+.sliderInfoValue > input :hover {
+  box-shadow: 0 5px 5px 5px rgba(0, 0, 0, 0.05);
 }
 .sliderInfoValue > input::-webkit-outer-spin-button,
 .sliderInfoValue > input::-webkit-inner-spin-button {
@@ -165,6 +147,11 @@
 }
 .sliderInfoValue > input[type="number"] {
   -moz-appearance: textfield;
+}
+.sliderInfoValue > span {
+  text-align: center;
+  color: rgba(255, 255, 255, 0.4);
+  cursor: pointer;
 }
 .slider #parametersTab {
   height: 200px;
