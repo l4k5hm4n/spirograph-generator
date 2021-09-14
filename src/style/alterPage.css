@@ -26,6 +26,10 @@
   border-radius: 50%;
   position: relative;
   cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+.tab:hover {
+  border: 1px solid #ffc700;
 }
 .tab > svg {
   position: absolute;
@@ -64,6 +68,10 @@
   border-radius: 4px;
   cursor: pointer;
   z-index: 9999;
+  transition: box-shadow 0.3s ease-in-out;
+}
+#alterTab input[type="range"]:hover {
+  box-shadow: 0 5px 5px 5px rgba(0, 0, 0, 0.05);
 }
 .range::-webkit-slider-thumb {
   -webkit-appearance: none;
@@ -128,6 +136,9 @@
   cursor: pointer;
   outline: none;
   border: none;
+}
+.sliderInfoValue > input :hover {
+  box-shadow: 0 5px 5px 5px rgba(0, 0, 0, 0.05);
 }
 .sliderInfoValue > input::-webkit-outer-spin-button,
 .sliderInfoValue > input::-webkit-inner-spin-button {

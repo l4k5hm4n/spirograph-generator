@@ -88,7 +88,8 @@ function CustomizePage(props) {
       <div id="CustomizePage">
         <div
           id="randomizeBtn"
-          onClick={() => {
+          onClick={(e) => {
+            e.stopPropagation();
             randomizeParams();
           }}
         >

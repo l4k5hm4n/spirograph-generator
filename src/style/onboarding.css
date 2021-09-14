@@ -76,6 +76,10 @@
   margin-right: 6px;
   background-color: var(--radioBtnColor);
   border-radius: 32px;
+  transition: border-color 0.3s ease-in-out;
+}
+.onBoardingRadioBtn:hover {
+  border: 1px solid #fff;
 }
 .activeRadioBtn {
   width: 24px;

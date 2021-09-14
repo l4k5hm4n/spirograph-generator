@@ -1,4 +1,5 @@
 import React, { createRef, Suspense } from "react";
+import importIcon from "../assets/ImportIcon.svg";
 import "../style/style.css";
 import "../style/landingPage.css";
 import "../style/templates.css";

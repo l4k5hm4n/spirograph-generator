@@ -1,5 +1,8 @@
 import React, { useState, useEffect, useRef, createRef } from "react";
 import { HexColorPicker, HexColorInput } from "react-colorful";
+import parametersIcon from "../assets/ParametersIcon.svg";
+import colorPickerIcon from "../assets/ColorPickerIcon.svg";
+import strokeWidthIcon from "../assets/StrokeWidthIcon.svg";
 import "../style/style.css";
 import "../style/alterPage.css";
 function AlterPage({
@@ -22,6 +25,7 @@ function AlterPage({
   const strokeTabSvgRef = useRef();
 
   const [activeParameter, setActiveParameter] = useState("config");
+
   const [fValue, setFValue] = useState(alterFValue);
   const [mValue, setMValue] = useState(alterMValue);
   const [nValue, setNValue] = useState(alterNValue);
@@ -33,15 +37,20 @@ function AlterPage({
 
   const [color, setColor] = useState(alterColorValue);
 
-  const [sliderInputFValue, setSliderInputFValue] = useState(fValue);
+  const [sliderInputFValue, setSliderInputFValue] = useState(alterFValue);
+  const [tempFValue, setTempFValue] = useState(alterFValue);
   const [sliderInputMValue, setSliderInputMValue] = useState(alterMValue);
   const [tempMValue, setTempMValue] = useState(alterMValue);
-  const [sliderInputNValue, setSliderInputNValue] = useState(nValue);
+  const [sliderInputNValue, setSliderInputNValue] = useState(alterNValue);
+  const [tempNValue, setTempNValue] = useState(alterNValue);
   const [sliderInputScaleValue, setSliderInputScaleValue] =
     useState(alterScaleValue);
   const [tempScaleValue, setTempScaleValue] = useState(alterScaleValue);
   const [sliderInputStrokeWidthValue, setSliderInputStrokeWidthValue] =
-    useState(strokeWidthValue);
+    useState(alterStrokeWidthValue);
+  const [tempStrokeWidthValue, setTempStrokeWidthValue] = useState(
+    alterStrokeWidthValue
+  );
   const toggleParameters = (parameter) => {
     setActiveParameter(parameter);
   };
@@ -62,7 +71,6 @@ function AlterPage({
     );
     setSliderInputFValue(fValue);
     setSliderInputNValue(nValue);
-    // setSliderInputScaleValue(scaleValue);
     setSliderInputStrokeWidthValue(strokeWidthValue);
   }, [fValue, mValue, nValue, scaleValue, strokeWidthValue, colorValue, color]);
   useEffect(() => {
@@ -76,7 +84,10 @@ function AlterPage({
   }, [visible]);
   useEffect(() => {
     if (activeParameter === "config") {
-      configTabSvgRef.current.firstChild.setAttribute("fill", "#ffc700");
+      configTabSvgRef.current.firstChild.firstChild.setAttribute(
+        "fill",
+        "#ffc700"
+      );
       colorTabSvgRef.current.firstChild.setAttribute("fill", "#ffffff");
       for (var i = 0; i < strokeTabSvgRef.current.children.length; i++) {
         strokeTabSvgRef.current.children[i].setAttribute("fill", "#ffffff");
@@ -209,7 +220,10 @@ function AlterPage({
                 <div
                   className="progressBar"
                   ref={fValueProgressBar}
-                  style={{ width: ((parseFloat(fValue) + 2) / 4) * 100 + "%" }}
+                  style={{
+                    width: ((parseFloat(fValue) + 2) / 4) * 100 + "%",
+                    borderRadius: fValue < 2 ? "4px 0 0 4px" : "4px",
+                  }}
                 ></div>
               </div>
               <div className="sliderInfo">
@@ -291,6 +305,8 @@ function AlterPage({
                       Math.floor(
                         ((parseFloat(sliderInputMValue) - 1) / 99) * 100
                       ) + "%",
+                    borderRadius:
+                      sliderInputMValue === 100 ? "4px" : "4px 0 0 4px",
                   }}
                 ></div>
               </div>
@@ -374,6 +390,7 @@ function AlterPage({
                   style={{
                     width:
                       Math.floor(((parseFloat(nValue) - 1) / 99) * 100) + "%",
+                    borderRadius: nValue < 100 ? "4px 0 0 4px" : "4px",
                   }}
                 ></div>
               </div>
@@ -457,6 +474,8 @@ function AlterPage({
                       Math.floor(
                         ((parseFloat(sliderInputScaleValue) - 0) / 100) * 100
                       ) + "%",
+                    borderRadius:
+                      sliderInputScaleValue === 100 ? "4px" : "4px 0 0 4px",
                   }}
                 ></div>
               </div>
@@ -557,6 +576,7 @@ function AlterPage({
                       Math.floor(
                         ((parseFloat(strokeWidthValue) - 0.02) / 1.98) * 100
                       ) + "%",
+                    borderRadius: strokeWidthValue < 2 ? "4px 0 0 4px" : "4px",
                   }}
                 ></div>
               </div>
