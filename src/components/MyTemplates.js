@@ -50,6 +50,8 @@ function MyTemplates(props) {
     userDetails.myTemplates[0] ? userDetails.myTemplates[0].colorValue : ""
   );
 
+  const [tempColor, setTempColor] = useState(alterMyTemplateColorValue);
+
   const modalDeleteRef = createRef();
   const modalDeleteSuccessRef = createRef();
 
@@ -62,8 +64,8 @@ function MyTemplates(props) {
       setAlterMyTemplateNValue(argN);
       setAlterMyTemplateScaleValue(argScale);
       setAlterMyTemplateStrokeWidthValue(argStrokeWidth);
-      setAlterMyTemplateColorValue(argColor);
-      setcurrentTemplateID(id);
+      setAlterMyTemplateColorValue(argColor == '' ? tempColor : argColor);
+      setcurrentTemplateID(id !== undefined ? id : currentTemplateID);
     }
   );
 
@@ -122,12 +124,12 @@ function MyTemplates(props) {
                     editUserTemplate({
                       id: currentTemplateID,
                       config: {
-                        f: alterMyTemplateFValue,
-                        m: alterMyTemplateMValue,
-                        n: alterMyTemplateNValue,
-                        scale: alterMyTemplateScaleValue,
-                        strokeWidth: alterMyTemplateStrokeWidthValue,
-                        color: alterMyTemplateColorValue,
+                        fValue: alterMyTemplateFValue,
+                        mValue: alterMyTemplateMValue,
+                        nValue: alterMyTemplateNValue,
+                        scaleValue: alterMyTemplateScaleValue,
+                        strokeWidthValue: alterMyTemplateStrokeWidthValue,
+                        colorValue: alterMyTemplateColorValue,
                       },
                     })
                   );
@@ -241,6 +243,7 @@ function MyTemplates(props) {
                         key={userTemplate.id}
                         className={`templateContainer`}
                         onClick={() => {
+                          setTempColor(userTemplate.colorValue)
                           callChangeMyTemplateDisplay(
                             userTemplate.fValue,
                             userTemplate.mValue,
@@ -250,6 +253,7 @@ function MyTemplates(props) {
                             userTemplate.colorValue,
                             userTemplate.id
                           );
+                         
                         }}
                       >
                         <div

@@ -4,13 +4,7 @@ import { useHistory, MemoryRouter as Router } from "react-router-dom";
 import { nanoid } from "@reduxjs/toolkit";
 import { useDispatch } from "react-redux";
 import { fetchUserDetails } from "../store/userDetailsSlice";
-import onboarding1Img from "../assets/onboarding1.svg";
-import onboarding2Img from "../assets/onboarding2.svg";
-import onboarding3Img from "../assets/onboarding3.svg";
 import onboarding4Img from "../assets/onboarding4.svg";
-// import onboardingGif1 from "../assets/onboardingGif1.gif";
-// import onboardingGif2 from "../assets/onboardingGif2.gif";
-// import onboardingGif3 from "../assets/onboardingGif3.gif";
 import "../style/app.css";
 import "../style/onboarding.css";
 
@@ -130,7 +124,7 @@ export default function Onboarding({ setOnboarding }) {
             Choose from a <span className="txtSecondary">hand picked</span>{" "}
             library of Spirographs
           </h1>
-          <img src={onboarding1Img} />
+          <img src="https://firebasestorage.googleapis.com/v0/b/spirous-figma-plugin.appspot.com/o/OB1.gif?alt=media&token=73cb2cef-2ba0-4484-8234-2b8fe828e808" />
           <div className="onBoardingRadioBtnSection">
             <div
               className="onBoardingRadioBtn activeRadioBtn"
@@ -169,7 +163,7 @@ export default function Onboarding({ setOnboarding }) {
             Get your creative juice running by creating spirographs that are{" "}
             <span className="txtSecondary">unique</span> to you
           </h1>
-          <img src={onboarding2Img} />
+          <img src="https://firebasestorage.googleapis.com/v0/b/spirous-figma-plugin.appspot.com/o/OB2.gif?alt=media&token=16ffdde7-9208-408d-8a14-3d62d5e55ebb" />
           <div className="onBoardingRadioBtnSection">
             <div
               className="onBoardingRadioBtn"
@@ -216,7 +210,7 @@ export default function Onboarding({ setOnboarding }) {
             <span className="txtSecondary">Sign up to save </span> your
             self-created Spirographs on your account
           </h1>
-          <img src={onboarding3Img} />
+          <img src="https://firebasestorage.googleapis.com/v0/b/spirous-figma-plugin.appspot.com/o/OB3.gif?alt=media&token=a600f83b-75c4-4696-b46e-2e14b365aac6" />
           <div className="onBoardingRadioBtnSection">
             <div
               className="onBoardingRadioBtn"

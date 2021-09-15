@@ -32,9 +32,9 @@ export default function ExistingTemplates(props) {
                     predefinedTemplate.f,
                     predefinedTemplate.m,
                     predefinedTemplate.n,
-                    110,
+                    100,
                     2,
-                    "#ffc700"
+                    ""
                   );
                 }}
               >

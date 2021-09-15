@@ -23,7 +23,7 @@ function CustomizePage(props) {
   const [customizeFValue, setCustomizeFValue] = useState(0.6);
   const [customizeMValue, setCustomizeMValue] = useState(70);
   const [customizeNValue, setCustomizeNValue] = useState(50);
-  const [customizeScaleValue, setCustomizeScaleValue] = useState(110);
+  const [customizeScaleValue, setCustomizeScaleValue] = useState(100);
   const [customizeStrokeWidthValue, setCustomizeStrokeWidthValue] = useState(2);
   const [customizeColorValue, setCustomizeColorValue] = useState("#ffc700");
 
@@ -59,7 +59,7 @@ function CustomizePage(props) {
     );
     setCustomizeMValue(Math.floor(Math.random() * 70 + 30));
     setCustomizeNValue(Math.floor(Math.random() * 29 + 1));
-    setCustomizeScaleValue(Math.floor(Math.random() * 12 + 12) * 5);
+    setCustomizeScaleValue(Math.max(Math.floor(Math.random() * 12 + 12) * 5), 100);
     setCustomizeStrokeWidthValue(Math.floor(Math.random() * 19 + 1) / 10);
     setCustomizeColorValue(getRandomColor);
   };
@@ -71,7 +71,7 @@ function CustomizePage(props) {
       setCustomizeNValue(argN);
       setCustomizeScaleValue(argScale);
       setCustomizeStrokeWidthValue(argStrokeWidth);
-      setCustomizeColorValue(argColor);
+      setCustomizeColorValue( argColor == "" ? "#ffc700" : argColor );
     }
   );
   const clickedSaveTemplatePrompt = () => {

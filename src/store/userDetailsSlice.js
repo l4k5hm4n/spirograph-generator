@@ -136,7 +136,7 @@ const userDetailsSlice = createSlice({
       let { email } = state;
       let tempUser = db.collection("users").doc(email);
       const id = action.payload;
-      const updatedTemplates = state.myTemplates.filter(
+      let updatedTemplates = state.myTemplates.filter(
         (template) => template.id !== id
       );
 
@@ -165,22 +165,23 @@ const userDetailsSlice = createSlice({
       const { id, config } = action.payload;
 
       try {
-        const existingPost = state.myTemplates.find((template) => template.id === id);
-
-        const updatedTemplates = state.myTemplates.filter((template, index) => {
-          if (template.id === id) {
+        console.log(id, config)
+        let updatedTemplates = state.myTemplates.map((template, index) => {
+          if (template.id == id) {
+            console.log({...template,...config})
             return {
               ...template,
               ...config,
             };
           } else {
-            return template;
+            console.log({...template})
+            return {...template};
           }
         })
 
-        state.myTemplates = updatedTemplates;
+        state.myTemplates = [...updatedTemplates];
 
-        console.log(state.myTemplates, updatedTemplates)
+        console.log(state.myTemplates)
 
         // if (existingPost) {
         //   existingPost.date = new Date().toISOString();
@@ -220,7 +221,7 @@ const userDetailsSlice = createSlice({
         );
 
       } catch (error) {
-        console.log("error while deleting template", error);
+        console.log("error while editing template", error);
       }
 
     },

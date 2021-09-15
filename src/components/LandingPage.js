@@ -32,21 +32,27 @@ function LandingPage(props) {
   const [alterFValue, setAlterFValue] = useState(0.6);
   const [alterMValue, setAlterMValue] = useState(70);
   const [alterNValue, setAlterNValue] = useState(50);
-  const [alterScaleValue, setAlterScaleValue] = useState(110);
+  const [alterScaleValue, setAlterScaleValue] = useState(100);
   const [alterStrokeWidthValue, setAlterStrokeWidthValue] = useState(2);
   const [alterColorValue, setAlterColorValue] = useState("#ffc700");
   let svg;
 
-  const callChangeDisplay = useCallback(
+  const callChangeDisplay = useCallback (
     (argF, argM, argN, argScale, argStrokeWidth, argColor) => {
       setAlterFValue(argF);
       setAlterMValue(argM);
       setAlterNValue(argN);
       setAlterScaleValue(argScale);
       setAlterStrokeWidthValue(argStrokeWidth);
-      setAlterColorValue(argColor);
-    },
-    []
+      setAlterColorValue(
+          props.location.homeProps
+            ? (( props.location.homeProps.activeSection == "alter" )
+              ? ( argColor == "" ? "#ffc700" : argColor )
+              : "#ffc700" )
+            : "#ffc700"
+      );
+    } 
+    
   );
 
   const addTemplateListener = () => {
