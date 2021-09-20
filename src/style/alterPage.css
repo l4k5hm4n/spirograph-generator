@@ -2,7 +2,7 @@
   border: 1px solid var(--yellow);
 }
 
-.activeTab svg path{
+.activeTab svg path {
   fill: var(--yellow);
 }
 
@@ -134,7 +134,7 @@
   text-align: center;
   background: transparent;
   color: var(--white);
-  cursor: text;
+  cursor: pointer;
   outline: none;
   border: none;
 }
