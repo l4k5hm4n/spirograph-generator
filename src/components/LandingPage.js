@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback, createRef } from "react";
+import React, { useState, useRef, useCallback,useLayoutEffect, createRef } from "react";
 import DisplaySpirograph from "./DisplaySpirograph";
 import AlterPage from "./AlterPage";
 import Modal from "./Modal";
@@ -26,8 +26,9 @@ function LandingPage(props) {
   const modalWarningRef = createRef();
   const modalSaveTemplateSuccessRef = createRef();
   const modalInputRef = useRef();
-  const linesRef = useRef();
-  const shadowLinesRef = useRef();
+  const linesRef = createRef();
+  const shadowLinesRef = createRef();
+  const scrollRef = createRef();
   const [templateName, setTemplateName] = useState("");
   const [alterFValue, setAlterFValue] = useState(0.6);
   const [alterMValue, setAlterMValue] = useState(70);
@@ -72,6 +73,17 @@ function LandingPage(props) {
   const clickedSaveTemplatePrompt = () => {
     modalSaveTemplateRef.current.openModal();
   };
+
+  useLayoutEffect(() => {
+
+   if(scrollRef.current !== null) {
+    scrollRef.current.querySelector('.templatesContainer').onscroll = function() {
+      linesRef.current.style.transform = `rotate(${this.scrollTop/6}deg)`;
+      shadowLinesRef.current.style.transform = `rotate(${this.scrollTop/6}deg)`;
+    }
+   }
+  
+  }, [linesRef, shadowLinesRef])
 
   return (
     <React.Fragment>
@@ -192,8 +204,10 @@ function LandingPage(props) {
               <DisplaySpirograph
                 id="displaySpirograph"
                 linesID="lines"
-                ref={linesRef}
-                shadowRef={shadowLinesRef}
+                ref={{
+                  linesRef : linesRef,
+                  shadowLinesRef : shadowLinesRef
+                }}
                 f={alterFValue}
                 m={alterMValue}
                 n={alterNValue}
@@ -238,6 +252,13 @@ function LandingPage(props) {
                   : ""
                 : "active"
             }`}
+            ref={
+              props.location.homeProps
+                ? props.location.homeProps.activeSection == "home"
+                  ? scrollRef
+                  : null
+                : scrollRef
+            }
           >
             <ExistingTemplates
               callChangeDisplay={callChangeDisplay}

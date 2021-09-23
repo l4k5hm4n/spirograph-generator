@@ -24,7 +24,8 @@ function MyTemplates(props) {
   let userDetails = useSelector((state) => state.userDetails);
   let dispatch = useDispatch();
   const history = useHistory();
-  const linesRef = useRef();
+  const linesRef = createRef();
+  const shadowLinesRef = createRef();
   const [currentTemplateID, setcurrentTemplateID] = useState(
     userDetails.myTemplates[0] ? userDetails.myTemplates[0].id : ""
   );
@@ -191,7 +192,10 @@ function MyTemplates(props) {
                   <DisplaySpirograph
                     id="myTemplatesDisplaySpirograph"
                     linesID="myTemplateLines"
-                    ref={linesRef}
+                    ref={{
+                      linesRef : linesRef,
+                      shadowLinesRef : shadowLinesRef
+                    }}
                     f={alterMyTemplateFValue}
                     m={alterMyTemplateMValue}
                     n={alterMyTemplateNValue}

@@ -39,6 +39,7 @@ function drawSpirograph(cx, cy, fValue, mValue, nValue, scale) {
 }
 
 export default React.forwardRef((props, ref) => { 
+  const { linesRef, shadowLinesRef } = ref;
   let { f, m, n, scale, strokeWidth, color } = props;
 
   useEffect(() => {
@@ -47,22 +48,26 @@ export default React.forwardRef((props, ref) => {
     .fill("none")
     .stroke({ color: color, width: strokeWidth })
 
-    ref.current.innerHTML = draw.svg();
+    linesRef.current.innerHTML = draw.svg();
 
-    // draw.scale(1.2)
-    // .filterWith(function(add) {
-    //   var blur = add.offset(0, 0).gaussianBlur(8)
-    //   add.blend(add.$source, blur)
-    // })
-    // // ref.current.nextSibling.innerHTML = draw.svg();
+    // let prevWidth = draw.width()
+
+    draw
+    .css({ 
+      filter : 'blur(10px)',
+      '-webkit-filter' : 'blur(8px)',
+      transform: 'scale(1.14)'
+    })
+    
+    shadowLinesRef.current.innerHTML = draw.svg();
 
   });
   
 
   return (
   <React.Fragment>
-      <div className="actualSpirograph" ref={ref}></div>
-      {/* <div className="shadowSpirograph"></div> */}
+      <div className="actualSpirograph" ref={linesRef}></div>
+      <div className="shadowSpirograph" ref={shadowLinesRef}></div>
   </React.Fragment>
   )
  });

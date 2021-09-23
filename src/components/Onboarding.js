@@ -124,7 +124,7 @@ export default function Onboarding({ setOnboarding }) {
             Choose from a <span className="txtSecondary">hand picked</span>{" "}
             library of Spirographs
           </h1>
-          <img src="https://firebasestorage.googleapis.com/v0/b/spirous-figma-plugin.appspot.com/o/OB1.gif?alt=media&token=73cb2cef-2ba0-4484-8234-2b8fe828e808" />
+          <img src="https://firebasestorage.googleapis.com/v0/b/spirous-figma-plugin.appspot.com/o/OB1.gif?alt=media&token=8b1945e1-a423-4379-8354-2826c4d14196" />
           <div className="onBoardingRadioBtnSection">
             <div
               className="onBoardingRadioBtn activeRadioBtn"
@@ -163,7 +163,7 @@ export default function Onboarding({ setOnboarding }) {
             Get your creative juice running by creating spirographs that are{" "}
             <span className="txtSecondary">unique</span> to you
           </h1>
-          <img src="https://firebasestorage.googleapis.com/v0/b/spirous-figma-plugin.appspot.com/o/OB2.gif?alt=media&token=16ffdde7-9208-408d-8a14-3d62d5e55ebb" />
+          <img src="https://firebasestorage.googleapis.com/v0/b/spirous-figma-plugin.appspot.com/o/OB2.gif?alt=media&token=9f56ab26-7239-4996-9f79-2a09a70a0f40" />
           <div className="onBoardingRadioBtnSection">
             <div
               className="onBoardingRadioBtn"
@@ -210,7 +210,7 @@ export default function Onboarding({ setOnboarding }) {
             <span className="txtSecondary">Sign up to save </span> your
             self-created Spirographs on your account
           </h1>
-          <img src="https://firebasestorage.googleapis.com/v0/b/spirous-figma-plugin.appspot.com/o/OB3.gif?alt=media&token=a600f83b-75c4-4696-b46e-2e14b365aac6" />
+          <img src="https://firebasestorage.googleapis.com/v0/b/spirous-figma-plugin.appspot.com/o/OB3.gif?alt=media&token=41020145-1d2d-4a0e-bbdd-6e9b4d012a29" />
           <div className="onBoardingRadioBtnSection">
             <div
               className="onBoardingRadioBtn"

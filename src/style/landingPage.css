@@ -12,6 +12,7 @@
   height: 312px;
   width: 312px;
   position: relative;
+  overflow: hidden;
   z-index: 1;
   background-color: rgba(0, 0, 0, 0.24);
   border-radius: 18px;
@@ -51,6 +52,8 @@ div#hoverPen:hover {
 
 .alterSection {
   display: none;
+  position: relative;
+  z-index: 9999999;
 }
 
 .alterSection.active {
@@ -63,6 +66,8 @@ div#hoverPen:hover {
 
 .ETSection.active {
   display: block;
+  position: relative;
+  z-index: 9999999;
 }
 
 .shadowSpirograph {

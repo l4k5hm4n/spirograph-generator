@@ -18,7 +18,8 @@ function CustomizePage(props) {
   const modalSaveTemplateSuccessRef = createRef();
   const modalInputRef = useRef();
   const dispatch = useDispatch();
-  const linesRef = useRef();
+  const linesRef = createRef();
+  const shadowLinesRef = createRef();
   const [templateName, setTemplateName] = useState("");
   const [customizeFValue, setCustomizeFValue] = useState(0.6);
   const [customizeMValue, setCustomizeMValue] = useState(70);
@@ -175,7 +176,10 @@ function CustomizePage(props) {
                   scale={customizeScaleValue}
                   strokeWidth={customizeStrokeWidthValue}
                   color={customizeColorValue}
-                  ref={linesRef}
+                  ref={{
+                    linesRef : linesRef,
+                    shadowLinesRef : shadowLinesRef
+                  }}
                 />
               </div>
             </div>
