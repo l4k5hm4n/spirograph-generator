@@ -26,7 +26,7 @@
   display: block;
 }
 
-#linesContainer a.disable { 
+#linesContainer a.disable {
   display: none;
 }
 
@@ -47,13 +47,13 @@ div#hoverPen:hover {
 }
 
 #hoverInsert {
-  display: block
+  display: block;
 }
 
 .alterSection {
   display: none;
   position: relative;
-  z-index: 9999999;
+  z-index: 10000;
 }
 
 .alterSection.active {
@@ -67,11 +67,10 @@ div#hoverPen:hover {
 .ETSection.active {
   display: block;
   position: relative;
-  z-index: 9999999;
+  z-index: 10000;
 }
 
 .shadowSpirograph {
   position: absolute;
   top: 0;
 }
-

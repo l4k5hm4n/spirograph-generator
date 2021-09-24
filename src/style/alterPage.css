@@ -2,7 +2,7 @@
   border: 1px solid var(--yellow);
 }
 
-.activeTab svg path{
+.activeTab svg path {
   fill: var(--yellow);
 }
 
@@ -12,7 +12,7 @@
   display: block;
 }
 #alterTab {
-  margin: 24px 0;
+  margin: 16px 0;
 }
 .tabs {
   margin: 12px 0 12px 0;
@@ -69,7 +69,7 @@
   outline: none;
   border-radius: 4px;
   cursor: pointer;
-  z-index: 9999;
+  z-index: 9998;
   transition: box-shadow 0.3s ease-in-out;
 }
 #alterTab input[type="range"]:hover {
@@ -80,7 +80,7 @@
   height: 16px;
   width: 16px;
   cursor: pointer;
-  z-index: 9999;
+  z-index: 9998;
   background: var(--yellow);
   border-radius: 50%;
 }
@@ -93,6 +93,7 @@
   transform: translateY(-50%);
   position: absolute;
   pointer-events: none;
+  z-index: 9998;
 }
 .sliderInfo {
   width: 100%;

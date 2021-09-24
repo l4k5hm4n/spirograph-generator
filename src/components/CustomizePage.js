@@ -6,6 +6,8 @@ import Modal from "./Modal";
 import { useSelector, useDispatch } from "react-redux";
 import { addUserTemplate } from "../store/userDetailsSlice";
 import AlterPage from "./AlterPage";
+import ReactNotification, { store } from "react-notifications-component";
+import InsertedSpirographNotif from "./InsertedSpirographNotif";
 import "../style/style.css";
 import "../style/customizePage.css";
 
@@ -60,7 +62,7 @@ function CustomizePage(props) {
     );
     setCustomizeMValue(Math.floor(Math.random() * 70 + 30));
     setCustomizeNValue(Math.floor(Math.random() * 29 + 1));
-    setCustomizeScaleValue(Math.max(Math.floor(Math.random() * 12 + 12) * 5), 100);
+    setCustomizeScaleValue(Math.floor(Math.random() * 40 + 60));
     setCustomizeStrokeWidthValue(Math.floor(Math.random() * 19 + 1) / 10);
     setCustomizeColorValue(getRandomColor);
   };
@@ -72,7 +74,7 @@ function CustomizePage(props) {
       setCustomizeNValue(argN);
       setCustomizeScaleValue(argScale);
       setCustomizeStrokeWidthValue(argStrokeWidth);
-      setCustomizeColorValue( argColor == "" ? "#ffc700" : argColor );
+      setCustomizeColorValue(argColor == "" ? "#ffc700" : argColor);
     }
   );
   const clickedSaveTemplatePrompt = () => {
@@ -160,6 +162,18 @@ function CustomizePage(props) {
               id="customizeLinesContainer"
               onClick={(e) => {
                 svg = linesRef.current.innerHTML.toString();
+                store.addNotification({
+                  content: InsertedSpirographNotif,
+                  container: "bottom-center",
+                  animationIn: ["animate__animated animate__fadeInUp"],
+                  animationOut: ["animate__animated animate__fadeOut"],
+                  dismiss: {
+                    duration: 4000,
+                    showIcon: true,
+                    pauseOnHover: true,
+                  },
+                  width: 328,
+                });
                 parent.postMessage(
                   { pluginMessage: { type: "create-spirograph", svg } },
                   "*"
@@ -177,8 +191,8 @@ function CustomizePage(props) {
                   strokeWidth={customizeStrokeWidthValue}
                   color={customizeColorValue}
                   ref={{
-                    linesRef : linesRef,
-                    shadowLinesRef : shadowLinesRef
+                    linesRef: linesRef,
+                    shadowLinesRef: shadowLinesRef,
                   }}
                 />
               </div>
@@ -281,6 +295,7 @@ function CustomizePage(props) {
             Okay
           </button>
         </Modal>
+        <ReactNotification />
       </div>
     </React.Fragment>
   );

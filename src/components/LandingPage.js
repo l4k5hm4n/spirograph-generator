@@ -1,4 +1,10 @@
-import React, { useState, useRef, useCallback,useLayoutEffect, createRef } from "react";
+import React, {
+  useState,
+  useRef,
+  useCallback,
+  useLayoutEffect,
+  createRef,
+} from "react";
 import DisplaySpirograph from "./DisplaySpirograph";
 import AlterPage from "./AlterPage";
 import Modal from "./Modal";
@@ -38,7 +44,7 @@ function LandingPage(props) {
   const [alterColorValue, setAlterColorValue] = useState("#ffc700");
   let svg;
 
-  const callChangeDisplay = useCallback (
+  const callChangeDisplay = useCallback(
     (argF, argM, argN, argScale, argStrokeWidth, argColor) => {
       setAlterFValue(argF);
       setAlterMValue(argM);
@@ -46,14 +52,15 @@ function LandingPage(props) {
       setAlterScaleValue(argScale);
       setAlterStrokeWidthValue(argStrokeWidth);
       setAlterColorValue(
-          props.location.homeProps
-            ? (( props.location.homeProps.activeSection == "alter" )
-              ? ( argColor == "" ? "#ffc700" : argColor )
-              : "#ffc700" )
+        props.location.homeProps
+          ? props.location.homeProps.activeSection == "alter"
+            ? argColor == ""
+              ? "#ffc700"
+              : argColor
             : "#ffc700"
+          : "#ffc700"
       );
-    } 
-    
+    }
   );
 
   const addTemplateListener = () => {
@@ -75,15 +82,16 @@ function LandingPage(props) {
   };
 
   useLayoutEffect(() => {
-
-   if(scrollRef.current !== null) {
-    scrollRef.current.querySelector('.templatesContainer').onscroll = function() {
-      linesRef.current.style.transform = `rotate(${this.scrollTop/6}deg)`;
-      shadowLinesRef.current.style.transform = `rotate(${this.scrollTop/6}deg)`;
+    if (scrollRef.current !== null) {
+      scrollRef.current.querySelector(".templatesContainer").onscroll =
+        function () {
+          linesRef.current.style.transform = `rotate(${this.scrollTop / 6}deg)`;
+          shadowLinesRef.current.style.transform = `rotate(${
+            this.scrollTop / 6
+          }deg)`;
+        };
     }
-   }
-  
-  }, [linesRef, shadowLinesRef])
+  }, [linesRef, shadowLinesRef]);
 
   return (
     <React.Fragment>
@@ -189,7 +197,7 @@ function LandingPage(props) {
                   animationIn: ["animate__animated animate__fadeInUp"],
                   animationOut: ["animate__animated animate__fadeOut"],
                   dismiss: {
-                    duration: 4000,
+                    duration: 400000,
                     showIcon: true,
                     pauseOnHover: true,
                   },
@@ -205,8 +213,8 @@ function LandingPage(props) {
                 id="displaySpirograph"
                 linesID="lines"
                 ref={{
-                  linesRef : linesRef,
-                  shadowLinesRef : shadowLinesRef
+                  linesRef: linesRef,
+                  shadowLinesRef: shadowLinesRef,
                 }}
                 f={alterFValue}
                 m={alterMValue}

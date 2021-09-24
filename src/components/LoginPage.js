@@ -287,6 +287,30 @@ function LoginPage() {
                       </div>
                     </div>
                   </Link>
+                  <Link to="/loginPage/AboutUs" id="aboutUsLink">
+                    <div className="greyBgd loginTab">
+                      <div className="shapeBgd">
+                        <svg
+                          width="24"
+                          height="24"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M13 2.05003V4.05003C17.39 4.59003 20.5 8.58003 19.96 12.97C19.5 16.61 16.64 19.5 13 19.93V21.93C18.5 21.38 22.5 16.5 21.95 11C21.5 6.25003 17.73 2.50003 13 2.03003V2.05003ZM5.67 19.74C7.18478 21.0027 9.03927 21.7891 11 22V20C9.5774 19.8161 8.23041 19.2531 7.1 18.37L5.67 19.74ZM7.1 5.74003C8.22 4.84003 9.57 4.26003 11 4.06003V2.06003C9.05 2.25003 7.19 3.00003 5.67 4.26003L7.1 5.74003ZM5.69 7.10003L4.26 5.67003C3.00966 7.18737 2.24021 9.04311 2.05 11H4.05C4.24 9.58003 4.8 8.23003 5.69 7.10003ZM4.06 13H2.06C2.26 14.96 3.03 16.81 4.27 18.33L5.69 16.9C4.80693 15.7696 4.24396 14.4226 4.06 13ZM10 16.5L16 12L10 7.50003V16.5Z"
+                            fill="#EDB92E"
+                          />
+                        </svg>
+                      </div>
+                      <div className="loginTabTxt">
+                        <div className="boldTxtWhite">How this works?</div>
+                        <div className="lightTxtGrey">
+                          Learn how to use the plugin
+                        </div>
+                      </div>
+                    </div>
+                  </Link>
                 </React.Fragment>
               ) : (
                 <React.Fragment>
@@ -349,6 +373,30 @@ function LoginPage() {
                         <div className="boldTxtWhite">About Us</div>
                         <div className="lightTxtGrey">
                           Learn about our journey!
+                        </div>
+                      </div>
+                    </div>
+                  </Link>
+                  <Link to="/loginPage/AboutUs" id="aboutUsLink">
+                    <div className="greyBgd loginTab">
+                      <div className="shapeBgd">
+                        <svg
+                          width="24"
+                          height="24"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M13 2.05003V4.05003C17.39 4.59003 20.5 8.58003 19.96 12.97C19.5 16.61 16.64 19.5 13 19.93V21.93C18.5 21.38 22.5 16.5 21.95 11C21.5 6.25003 17.73 2.50003 13 2.03003V2.05003ZM5.67 19.74C7.18478 21.0027 9.03927 21.7891 11 22V20C9.5774 19.8161 8.23041 19.2531 7.1 18.37L5.67 19.74ZM7.1 5.74003C8.22 4.84003 9.57 4.26003 11 4.06003V2.06003C9.05 2.25003 7.19 3.00003 5.67 4.26003L7.1 5.74003ZM5.69 7.10003L4.26 5.67003C3.00966 7.18737 2.24021 9.04311 2.05 11H4.05C4.24 9.58003 4.8 8.23003 5.69 7.10003ZM4.06 13H2.06C2.26 14.96 3.03 16.81 4.27 18.33L5.69 16.9C4.80693 15.7696 4.24396 14.4226 4.06 13ZM10 16.5L16 12L10 7.50003V16.5Z"
+                            fill="#EDB92E"
+                          />
+                        </svg>
+                      </div>
+                      <div className="loginTabTxt">
+                        <div className="boldTxtWhite">How this works?</div>
+                        <div className="lightTxtGrey">
+                          Learn how to use the plugin
                         </div>
                       </div>
                     </div>
