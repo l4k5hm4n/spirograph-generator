@@ -10,9 +10,6 @@ export default function ExistingTemplates(props) {
   const [currentTemplateID, setcurrentTemplateID] = React.useState(0);
 
   let refs = [];
-  React.useEffect(() => {
-    refs[currentTemplateID].current.color = "##ffc700";
-  }, [currentTemplateID]);
   return (
     <div>
       <h3 className="chooseTemplates">Choose From Existing Templates</h3>
@@ -30,7 +27,6 @@ export default function ExistingTemplates(props) {
                 }`}
                 onClick={() => {
                   setcurrentTemplateID(predefinedTemplate.id);
-                  console.log(currentTemplateID);
                   props.callChangeDisplay(
                     predefinedTemplate.f,
                     predefinedTemplate.m,
@@ -42,29 +38,6 @@ export default function ExistingTemplates(props) {
                 }}
               >
                 <Suspense fallback={<div></div>}>
-                  {/* {currentTemplateID == predefinedTemplate.id ? (
-                    <Spirograph
-                      templateId={predefinedTemplate.predefinedTemplateNumber}
-                      f={predefinedTemplate.f}
-                      m={predefinedTemplate.m}
-                      n={predefinedTemplate.n}
-                      scale="30"
-                      strokeWidth="1"
-                      color="#ffc700"
-                      ref={newRef}
-                    />
-                  ) : (
-                    <Spirograph
-                      templateId={predefinedTemplate.predefinedTemplateNumber}
-                      f={predefinedTemplate.f}
-                      m={predefinedTemplate.m}
-                      n={predefinedTemplate.n}
-                      scale="30"
-                      strokeWidth="1"
-                      color="white"
-                      ref={newRef}
-                    />
-                  )} */}
                   <Spirograph
                     templateId={predefinedTemplate.predefinedTemplateNumber}
                     f={predefinedTemplate.f}
@@ -79,9 +52,6 @@ export default function ExistingTemplates(props) {
                 <div
                   className="hoverBtnSecondary hideClass"
                   onClick={(event) => {
-                    // var temp = refs[i].current;
-                    // temp.innerHTML.stroke = "";
-                    // let svg = temp.innerHTML.toString();
                     let svg = refs[i].current.innerHTML.toString();
                     parent.postMessage(
                       { pluginMessage: { type: "create-spirograph", svg } },
