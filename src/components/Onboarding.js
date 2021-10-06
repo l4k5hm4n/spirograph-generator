@@ -138,7 +138,9 @@ export default function Onboarding(props) {
             Choose from a <span className="txtSecondary">hand picked</span>{" "}
             library of Spirographs
           </h1>
+          <div className="shadowBorder">
           <img className={`${currentScreen == 1 ? 'shadow-bottom' : ''}`} src="https://firebasestorage.googleapis.com/v0/b/spirous-figma-plugin.appspot.com/o/OB1.gif?alt=media&token=8b1945e1-a423-4379-8354-2826c4d14196" />
+          </div>
           <div className="onBoardingRadioBtnSection">
             <div
               className="onBoardingRadioBtn activeRadioBtn"

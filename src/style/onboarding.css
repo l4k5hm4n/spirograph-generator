@@ -185,3 +185,24 @@ button#onBoardingGoogleBtn span {
   display: block;
   position: relative;  
 }
+
+.shadowBorder {
+  height: 500px;
+  display: block;
+  position: relative;
+  width: 100%;
+}
+
+.shadowBorder img {
+  height: 100%;
+}
+
+.shadowBorder:after { 
+  content: '';
+  display: block;
+  height: 10px;
+  width: 100%;
+  margin-top: -10px;
+  background: #252525;
+  position: relative;
+}
