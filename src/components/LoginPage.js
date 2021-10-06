@@ -287,7 +287,14 @@ function LoginPage() {
                       </div>
                     </div>
                   </Link>
-                  <Link to="/loginPage/AboutUs" id="aboutUsLink">
+                  <Link 
+                    to={{
+                      pathname: "/onboarding",
+                      onboardingProps: {
+                        routeFrom: 'login',
+                      },
+                    }}
+                  id="aboutUsLink">
                     <div className="greyBgd loginTab">
                       <div className="shapeBgd">
                         <svg
@@ -317,7 +324,6 @@ function LoginPage() {
                   <div
                     className="greyBgd loginTab"
                     onClick={() => {
-                      console.log("Clicked My templates");
                       store.addNotification({
                         content: LoginToViewTemplatesNotif,
                         container: "bottom-center",
@@ -377,7 +383,14 @@ function LoginPage() {
                       </div>
                     </div>
                   </Link>
-                  <Link to="/loginPage/AboutUs" id="aboutUsLink">
+                  <Link 
+                    to={{
+                      pathname: "/onboarding",
+                      onboardingProps: {
+                        routeFrom: 'login',
+                      },
+                    }}
+                   id="aboutUsLink">
                     <div className="greyBgd loginTab">
                       <div className="shapeBgd">
                         <svg

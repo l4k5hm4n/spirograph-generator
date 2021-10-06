@@ -51,7 +51,7 @@ export default React.forwardRef((props, ref) => {
   };
 
   useEffect(() => {
-    console.log("spirograph is drawn")
+    // console.log("spirograph is drawn")
     var temp = draw.path(
       drawSpirograph(constants.cx, constants.cy, f, m, n, scale)
     );

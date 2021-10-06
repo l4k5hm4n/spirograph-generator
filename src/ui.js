@@ -4,12 +4,6 @@ import "./ui.css";
 import App from "./components/App";
 import store from "./store/store";
 import { Provider } from 'react-redux';
-
-ReactDOM.render(
-  <React.StrictMode>
-    <Provider store={store}>
-    <App />
-    </Provider>
-  </React.StrictMode>,
-  document.getElementById("spirous-plugin")
-);
+ReactDOM.render(React.createElement(React.StrictMode, null,
+    React.createElement(Provider, { store: store },
+        React.createElement(App, null))), document.getElementById("spirous-plugin"));

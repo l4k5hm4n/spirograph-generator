@@ -275,7 +275,7 @@ function MyTemplates(props) {
                             ref={React.createRef()}
                           />
                           <div
-                            className="hoverBtnSecondary hideClass"
+                            className="hoverBtnSecondary hideClass deleteBtn"
                             onClick={
                               () => clickedDeletePrompt()
                               // dispatch(deleteUserTemplate(userTemplate.id))

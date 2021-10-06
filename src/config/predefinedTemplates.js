@@ -13,9 +13,9 @@ const predefinedTemplates = [
     },
     {
       id: 2,
-      f: -0.9,
-      m: 47,
-      n: 26,
+      f: -1.38,
+      m: 25,
+      n: 10,
     },
     {
       id: 3,
@@ -25,9 +25,9 @@ const predefinedTemplates = [
     },
     {
       id: 4,
-      f: 0.4,
-      m: 26,
-      n: 16,
+      f: -0.35,
+      m: 14,
+      n: 20,
     },
     {
       id: 5,
@@ -43,9 +43,9 @@ const predefinedTemplates = [
     },
     {
       id: 7,
-      f: 0.4,
-      m: 54,
-      n: 16,
+      f: 1.46,
+      m: 14,
+      n: 8,
     },
     {
       id: 8,
@@ -55,9 +55,9 @@ const predefinedTemplates = [
     },
     {
       id: 9,
-      f: -1.1,
-      m: 19,
-      n: 13,
+      f: 0.4,
+      m: 26,
+      n: 16,
     },
     {
       id: 10,
@@ -67,28 +67,28 @@ const predefinedTemplates = [
     },
     {
       id: 11,
-      f: 0.62,
-      m: 90,
-      n: 34,
+      f: -1.01,
+      m: 24,
+      n: 10,
     },
     {
       id: 12,
-      f: 0.62,
-      m: 90,
-      n: 34,
+      f: -0.9,
+      m: 47,
+      n: 26,
     },
     {
       id: 13,
-      f: 0.62,
-      m: 90,
-      n: 34,
+      f: -0.83,
+      m: 63,
+      n: 14,
     },
     {
       id: 14,
-      f: 0.62,
-      m: 90,
-      n: 34,
-    },
+      f: 0.4,
+      m: 15,
+      n: 6,
+    }
   ];
 
 export default predefinedTemplates;

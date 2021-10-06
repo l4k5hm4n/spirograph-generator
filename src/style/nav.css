@@ -16,9 +16,9 @@
   font-size: 14px;
   margin-left: -24px;
 }
-#logo:hover > path {
+/* #logo:hover > path {
   fill: #fff;
-}
+} */
 .links {
   display: flex;
   flex-direction: row;

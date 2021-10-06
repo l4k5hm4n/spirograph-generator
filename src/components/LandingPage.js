@@ -86,11 +86,10 @@ function LandingPage(props) {
       scrollRef.current.querySelector(".templatesContainer").onscroll =
         function () {
           linesRef.current.style.transform = `rotate(${this.scrollTop / 6}deg)`;
-          shadowLinesRef.current.style.transform = `rotate(${
-            this.scrollTop / 6
-          }deg)`;
+          shadowLinesRef.current.style.transform = `rotate(-${this.scrollTop / 6}deg)`;
         };
     }
+
   }, [linesRef, shadowLinesRef]);
 
   return (
@@ -197,7 +196,7 @@ function LandingPage(props) {
                   animationIn: ["animate__animated animate__fadeInUp"],
                   animationOut: ["animate__animated animate__fadeOut"],
                   dismiss: {
-                    duration: 400000,
+                    duration: 4000,
                     showIcon: true,
                     pauseOnHover: true,
                   },

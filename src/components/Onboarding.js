@@ -2,16 +2,18 @@ import React, { useState, useEffect } from "react";
 import { db } from "../config/firebase-config";
 import { useHistory, MemoryRouter as Router } from "react-router-dom";
 import { nanoid } from "@reduxjs/toolkit";
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { fetchUserDetails } from "../store/userDetailsSlice";
 import onboarding4Img from "../assets/onboarding4.svg";
 import "../style/app.css";
 import "../style/onboarding.css";
 
-export default function Onboarding({ setOnboarding }) {
+export default function Onboarding(props) {
   const [currentScreen, setCurrentScreen] = useState(1);
   let dispatch = useDispatch();
   let history = useHistory();
+  let userDetails = useSelector((state) => state.userDetails);
+
   const clickedLogin = async () => {
     let uniqueString = nanoid();
     let timeStamp = new Date().toLocaleString();
@@ -76,7 +78,7 @@ export default function Onboarding({ setOnboarding }) {
                     );
 
                     dispatch(fetchUserDetails()).then((response) => {
-                      history.push("/loginPage");
+                      history.push("/");
                     });
                   } else {
                     // create new user profile if email doesn't exist already
@@ -100,7 +102,7 @@ export default function Onboarding({ setOnboarding }) {
                     );
 
                     dispatch(fetchUserDetails()).then((response) => {
-                      history.push("/loginPage");
+                      history.replace("/loginPage");
                     });
                   }
                 })
@@ -116,6 +118,18 @@ export default function Onboarding({ setOnboarding }) {
       });
   };
 
+  let onboardingImage2 = React.createElement(
+    'img',
+    { src: 'https://firebasestorage.googleapis.com/v0/b/spirous-figma-plugin.appspot.com/o/OB2.gif?alt=media&token=9f56ab26-7239-4996-9f79-2a09a70a0f40' },
+    null
+  )
+
+  let onboardingImage3 = React.createElement(
+    'img',
+    { src: 'https://firebasestorage.googleapis.com/v0/b/spirous-figma-plugin.appspot.com/o/OB3.gif?alt=media&token=41020145-1d2d-4a0e-bbdd-6e9b4d012a29' },
+    null
+  )
+
   return (
     <div>
       {currentScreen == 1 && (
@@ -124,7 +138,7 @@ export default function Onboarding({ setOnboarding }) {
             Choose from a <span className="txtSecondary">hand picked</span>{" "}
             library of Spirographs
           </h1>
-          <img src="https://firebasestorage.googleapis.com/v0/b/spirous-figma-plugin.appspot.com/o/OB1.gif?alt=media&token=8b1945e1-a423-4379-8354-2826c4d14196" />
+          <img className={`${currentScreen == 1 ? 'shadow-bottom' : ''}`} src="https://firebasestorage.googleapis.com/v0/b/spirous-figma-plugin.appspot.com/o/OB1.gif?alt=media&token=8b1945e1-a423-4379-8354-2826c4d14196" />
           <div className="onBoardingRadioBtnSection">
             <div
               className="onBoardingRadioBtn activeRadioBtn"
@@ -163,7 +177,7 @@ export default function Onboarding({ setOnboarding }) {
             Get your creative juice running by creating spirographs that are{" "}
             <span className="txtSecondary">unique</span> to you
           </h1>
-          <img src="https://firebasestorage.googleapis.com/v0/b/spirous-figma-plugin.appspot.com/o/OB2.gif?alt=media&token=9f56ab26-7239-4996-9f79-2a09a70a0f40" />
+          {onboardingImage2}
           <div className="onBoardingRadioBtnSection">
             <div
               className="onBoardingRadioBtn"
@@ -210,7 +224,7 @@ export default function Onboarding({ setOnboarding }) {
             <span className="txtSecondary">Sign up to save </span> your
             self-created Spirographs on your account
           </h1>
-          <img src="https://firebasestorage.googleapis.com/v0/b/spirous-figma-plugin.appspot.com/o/OB3.gif?alt=media&token=41020145-1d2d-4a0e-bbdd-6e9b4d012a29" />
+          {onboardingImage3}
           <div className="onBoardingRadioBtnSection">
             <div
               className="onBoardingRadioBtn"
@@ -232,7 +246,8 @@ export default function Onboarding({ setOnboarding }) {
             ></div>
           </div>
           <div className="onBoardingStackedBtnSection">
-            <button
+            
+          {!userDetails.loggedIn && ( <button
               id="onBoardingGoogleBtn"
               className="onBoardingBtnSecondary"
               onClick={() => {
@@ -266,11 +281,25 @@ export default function Onboarding({ setOnboarding }) {
               </svg>
 
               <span>Signup With Google</span>
-            </button>
+            </button> )
+            }
             <button
-              className="onBoardingBtnHollow"
+              className={`onBoardingBtnHollow ${!userDetails.loggedIn ? 'margin-top-32' : '' }`}
               onClick={() => {
-                setOnboarding(false);
+
+                if(props.location && props.location.onboardingProps && props.location.onboardingProps.routeFrom!== 'login') {
+                  props.setOnboarding(false);
+                }
+
+                else if(props.location && props.location.onboardingProps && props.location.onboardingProps.routeFrom == 'login') {
+                  history.push("/");
+                }
+
+                else {
+                  props.setOnboarding(false);
+                  history.push("/");
+                }
+                
               }}
             >
               Skip
@@ -298,7 +327,8 @@ export default function Onboarding({ setOnboarding }) {
             <button
               className="onBoardingBtnHollow"
               onClick={() => {
-                setOnboarding(false);
+                props.setOnboarding(false);
+                history.push("/");
               }}
             >
               Skip

@@ -50,13 +50,12 @@ export default React.forwardRef((props, ref) => {
 
     linesRef.current.innerHTML = draw.svg();
 
-    // let prevWidth = draw.width()
-
     draw
     .css({ 
-      filter : 'blur(10px)',
-      '-webkit-filter' : 'blur(8px)',
-      transform: 'scale(1.14)'
+      filter : 'blur(6px)',
+      '-webkit-filter' : 'blur(6px)',
+      opacity: 0.4,
+      transform: 'scale(1.2)'
     })
     
     shadowLinesRef.current.innerHTML = draw.svg();

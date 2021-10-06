@@ -26,9 +26,9 @@ function AboutUs() {
           </div>
           <div className="boldTxtWhite">What do we do?</div>
           <div className="lightTxtGrey">
-            We are a bunch of designers, writers, and developers working to make
+            We are a bunch of designers, writers, and developers at Zeta working to make
             the user experience more seamless, delightful, and fun while
-            impacting the community
+            impacting the community.
           </div>
         </div>
         <div id="pluginDetails" className="greyBgd">
@@ -53,7 +53,7 @@ function AboutUs() {
           </div>
           <div className="listDiv">
             <span className="lightTxtGrey">Need Help</span>
-            <span className="lightTxtYellow">spirous@support.in</span>
+            <span className="lightTxtYellow">support@spirous.in</span>
           </div>
           <div className="listDiv">
             <span className="lightTxtGrey">Developed by </span>
@@ -61,7 +61,7 @@ function AboutUs() {
           </div>
           <div className="listDiv">
             <span className="lightTxtGrey">Last Updated on</span>
-            <span className="lightTxtWhite">Auguest 16, 2021</span>
+            <span className="lightTxtWhite">October 06, 2021</span>
           </div>
         </div>
       </div>

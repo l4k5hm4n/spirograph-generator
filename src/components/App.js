@@ -22,7 +22,6 @@ function App() {
     setOnboarding(!response.payload.loggedIn);
     setSplash(false);
   });
-
   }, [loginStatus]);
 
   const splashScreen = (
@@ -78,6 +77,11 @@ function App() {
                 exact
                 path="/loginPage/AboutUs"
                 component={() => <AboutUs />}
+              />
+              <Route
+                exact
+                path="/onboarding"
+                component={(props) => <Onboarding { ...props }/>}
               />
             </Switch>
             <div id="modalRoot"></div>

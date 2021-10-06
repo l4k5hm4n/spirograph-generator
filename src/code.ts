@@ -37,14 +37,20 @@ figma.ui.onmessage = async (msg) => {
       myTemplates: myTemplates,
     });
   } else if (msg.type === "create-spirograph") {
-    const nodes = [];
+    const nodes: SceneNode[] = [];
     var str = msg.svg;
     const node = figma.createNodeFromSvg(str);
     node.resize(500, 500);
-    node.x = 500;
-    node.y = 500;
+    let length = figma.currentPage.children.length
+    if(length > 1) {
+      node.x = figma.currentPage.children[length - 2].x + 350;
+    }
+    figma.currentPage.appendChild(node);
     nodes.push(node);
+    figma.currentPage.selection = nodes;
+    figma.viewport.scrollAndZoomIntoView(nodes);
     figma.flatten(nodes, figma.currentPage);
+
   } else if (msg.type === 'notify') {
     figma.notify(msg.text, { timeout : 1000 } );
   } 
